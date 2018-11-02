@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<head> 
+    <title>Getting Started</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!--<link rel="stylesheet" type="text/css" href="../static/css/main.css"/>-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+</head>
+<body>
+<div layout:fragment="content">
+	<h1>Start Game</h1>
+    <div class="fleet-container" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <div id="submarine" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">1</div>
+        <div id="destroyer" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">2</div>
+        <div id="cruiser" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">3</div>
+        <div id="battleship" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">4</div>
+        <div id="carrier" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">5</div>
+    </div>
+
+    <div class="map-container">
+        <table class="player-one-map test">
+            <tr th:each="i: ${#numbers.sequence(0,9)}">
+                <td th:each="j: ${#numbers.sequence(0,9)}">
+                    <div th:id="${i + ',' + j}" class="tiles" name="0" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="start-form-container">
+        <form action="#" th:action="@{/start}" th:object="${startForm}" method="post">
+            <p>data: <input type="text" th:field="*{data}" /></p>
+            <p><input type="submit" value="Submit" /></p>
+        </form>
+    </div>
+</div>
+
+<th:block layout:fragment="scripts">
+    <script type="text/javascript" th:src="@{/js/utils.js}"></script>
+
+    <script>
+  // var submarineRotated = false;
+  // var destroyerRotated = false;
+  // var cruiserRotated = false;
+  // var battleshipRotated = false;
+  // var carrierRotated = false;
+  //   function rotateShip(id){
+  //     console.log(id);
+  //     let degree = 0;
+  //     const element = document.getElementById(id);
+  //     switch (id) {
+  //       case 'submarine':
+  //         degree = submarineRotated? 90 : 0;
+  //         submarineRotated = !submarineRotated;
+  //         break;
+  //       case 'destroyer':
+  //         degree = destroyerRotated? 90 : 0;
+  //         destroyerRotated = !destroyerRotated;
+  //         break;
+  //       case 'cruiser':
+  //         degree = cruiserRotated? 90 : 0;
+  //         cruiserRotated = !cruiserRotated;
+  //         break;
+  //       case 'battleship':
+  //         degree = battleshipRotated? 90 : 0;
+  //         battleshipRotated = !battleshipRotated;
+  //         break;
+  //       case 'carrier':
+  //         degree = carrierRotated? 90 : 0;
+  //         carrierRotated = !carrierRotated;
+  //         break;
+  //     }
+  //     element.style.transform = `rotate(${degree}deg)`;
+  //   }
+  //
+  // function allowDrop(ev) {
+  //   ev.preventDefault();
+  //   ev.dataTransfer.dropEffect = "move"
+  // }
+  //
+  // function drag(ev) {
+  //     console.log(ev);
+  //     console.log(ev.target.id);
+  //   ev.dataTransfer.setData("text", ev.target.id);
+  // }
+  //
+  // function drop(ev) {
+  //   ev.preventDefault();
+  //   console.log('drop', ev);
+  //   var data = ev.dataTransfer.getData("text");
+  //   ev.target.appendChild(document.getElementById(data));
+  // }
+</script>
+</th:block>
+</body>
+</html>

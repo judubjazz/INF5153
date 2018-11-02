@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<head>
+    <title>Results</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+
+<body>
+<div layout:fragment="content">
+<h1>Result</h1>
+    <table class="player-one-map test">
+        <tr th:each="col: ${game.playerOne.playerGrid.map}">
+            <td th:each="colValue: ${col}">
+                <span class="tiles" th:name="${colValue}" th:text="${colValue}"></span>
+            </td>
+        </tr>
+    </table>
+
+    <table class="player-two-map test">
+        <tr th:each="col, iterX: ${game.playerOne.ennemyGrid.map}">
+          <td th:each="colValue, iterY: ${col}">
+               <span th:class="tiles" th:name="${colValue}" th:text="${colValue}" th:onclick="|torpedo(${iterX.index}, ${iterY.index})|" ></span>
+          </td>
+     </tr>
+    </table>
+
+
+<form class='torpedo-form' action="#" th:action="@{/torpedo}" th:object="${game}" method="post">
+    <p><input class='torpedo-form-submit' type="submit" value="Submit" /></p>
+    <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerGrid.map}" /></p>
+    <p>PlayerOne enemy map: <input class='torpedo-form' type="text" th:field="*{playerOne.ennemyGrid.map}"/></p>
+    <p>PlayerOne ships remaining: <input class='torpedo-form' type="text" th:field="*{playerOne.shipsRemaining}"/></p>
+    <p>targetX: <input class='torpedo-form' type="text" th:field="*{playerOne.targetX}" value=1/></p>
+    <p>targetY: <input class='torpedo-form' type="text" th:field="*{playerOne.targetY}" value=0/></p>
+    <p>playerTwo map: <input class='torpedo-form' type="text" th:field="*{playerTwo.playerGrid.map}" /></p>
+    <p>PlayerT ships remaining: <input class='torpedo-form' type="text" th:field="*{playerTwo.shipsRemaining}"/></p>
+    <p>playerTwo ennemy map: <input class='torpedo-form' type="text" th:field="*{playerTwo.ennemyGrid.map}"/></p>
+    <p>recorder: <input class='torpedo-form' type="text" th:field="*{recorder.playerOneMoves}"/></p>
+    <p>recorder: <input class='torpedo-form' type="text" th:field="*{recorder.playerTwoMoves}"/></p>
+
+</form>
+</div>
+
+<th:block layout:fragment="scripts">
+    <script>
+      // function torpedo(x, y){
+      //   const torpedo = {
+      //     x,
+      //     y,
+      //   };
+      //   $(".torpedo-form-data").eq(0).html(JSON.stringify(torpedo));
+      //   $(".torpedo-form-submit").eq(0).click();
+      // }
+
+    </script>
+</th:block>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+/*VARIABLES*/
+:root {
+    --submarine-color: aquamarine;
+    --destroyer-color: orange;
+    --battleship-color: yellow;
+    --cruiser-color: greenyellow;
+    --carrier-color: coral;
+    --hit-color: red;
+    --water-color: blue;
+    --tile-size:40px;
+}
+
+/*NORMALISATION*/
+div{
+    text-align: center;
+}
+html {
+    height: 100%;
+}
+body {
+    min-height: 100%;
+}
+
+table, td, th {
+    border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th {
+    text-align: center;
+}
+
+/*CONTAINERS*/
+.fleet-container{
+    display: flex;
+    justify-content: space-between;
+    min-height: 200px;
+}
+.main-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/*GRID*/
+.player-one-map {
+    margin:50px 50px 50px 50px;
+}
+
+.player-two-map {
+    margin:50px 50px 50px 50px;
+}
+
+.test{
+    transform: rotateX(180deg);
+}
+.tiles {
+    cursor: pointer;
+    width:var(--tile-size);
+    height:var(--tile-size);
+    z-index: -1;
+}
+
+
+
+/* SHIPS*/
+#submarine {
+    background-color: var(--submarine-color);
+    width:calc(var(--tile-size)*2);
+    height:calc(var(--tile-size)*1);
+    transition: transform .3s ease-in;
+    z-index: 2;
+}
+#destroyer {
+    background-color: var(--destroyer-color);
+    width:calc(var(--tile-size)*3);
+    height:calc(var(--tile-size)*1);
+    transition: transform .3s ease-in;
+    z-index: 2;
+}
+#cruiser {
+    background-color: var(--cruiser-color);
+    width:calc(var(--tile-size)*3);
+    height:calc(var(--tile-size)*1);
+    transition: transform .3s ease-in;
+    z-index: 2;
+}
+#battleship {
+    background-color: var(--battleship-color);
+    width:calc(var(--tile-size)*4);
+    height:calc(var(--tile-size)*1);
+    transition: transform .3s ease-in;
+    z-index: 2;
+}
+#carrier {
+    background-color: var(--carrier-color);
+    width:calc(var(--tile-size)*5);
+    height:calc(var(--tile-size)*1);
+    transition: transform .3s ease-in;
+    z-index: 2;
+}
+div[name="-1"] {
+    background-color: var(--hit-color);
+    width:var(--tile-size);
+    height:var(--tile-size);
+}
+div[name="0"] {
+    background-color: var(--water-color);
+    width:var(--tile-size);
+    height:var(--tile-size);
+}
+
+div[name="1"] {
+    background-color: var(--submarine-color);
+    width:var(--tile-size);
+    height:var(--tile-size);
+}
+
+div[name="2"] {
+    background-color: var(--destroyer-color);
+    width:var(--tile-size);
+    height:var(--tile-size);
+}
+
+div[name="3"] {
+    background-color: var(--cruiser-color);
+    width:var(--tile-size);
+    height:var(--tile-size);
+}
+
+div[name="4"] {
+    background-color: var(--battleship-color);
+    width:var(--tile-size);
+    height:var(--tile-size);
+}
+
+div[name="5"] {
+    background-color: var(--carrier-color);
+    width:var(--tile-size);
+    height:var(--tile-size);
+}
+
+
+
