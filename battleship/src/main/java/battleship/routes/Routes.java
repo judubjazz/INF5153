@@ -155,29 +155,29 @@ public class Routes {
         return "result";
     }
 
-    @GetMapping("/replay")
-    public String replayGame(@ModelAttribute Game game, Model model){
-        Player playerOne = game.playerOne;
-        Player playerTwo = game.playerTwo;
-
-        JSONObject playerOneFleetJSON = playerOne.fleet;
-        Grid playerOneGrid = new Grid();
-        Map<String, Ship> playerOneFleet = Ship.buildFleet(playerOneFleetJSON);
-        playerOneGrid.locateFleet(playerOneFleet);
-
-        Grid cpuGrid = new Grid();
-        // fleet has to be validated with the grid, therefore the grid is initialise inside generateFleet maybe change the function name
-        Map<String, Ship> cpuFleet = Cpu.generateFleet(cpuGrid);
-
-        ArrayList<Map<String,Integer>> list1 = game.recorder.playerOneMoves;
-        ArrayList<Map<String,Integer>> list2 = game.recorder.playerTwoMoves;
-        Map<String,Integer> target = list1.get(game.recorder.index);
-        int targetX = target.get("x");
-        int targetY = target.get("y");
-        playerOne.ennemyGrid.map[targetX][targetY] = -1;
-        playerTwo.playerGrid.map[targetX][targetY] = -1;
-        model.addAttribute("game", game);
-        return "result";
-    }
+//    @GetMapping("/replay")
+//    public String replayGame(@ModelAttribute Game game, Model model){
+//        Player playerOne = game.playerOne;
+//        Player playerTwo = game.playerTwo;
+//
+//        JSONObject playerOneFleetJSON = playerOne.fleet;
+//        Grid playerOneGrid = new Grid();
+//        Map<String, Ship> playerOneFleet = Ship.buildFleet(playerOneFleetJSON);
+//        playerOneGrid.locateFleet(playerOneFleet);
+//
+//        Grid cpuGrid = new Grid();
+//        // fleet has to be validated with the grid, therefore the grid is initialise inside generateFleet maybe change the function name
+//        Map<String, Ship> cpuFleet = Cpu.generateFleet(cpuGrid);
+//
+//        ArrayList<Map<String,Integer>> list1 = game.recorder.playerOneMoves;
+//        ArrayList<Map<String,Integer>> list2 = game.recorder.playerTwoMoves;
+//        Map<String,Integer> target = list1.get(game.recorder.index);
+//        int targetX = target.get("x");
+//        int targetY = target.get("y");
+//        playerOne.ennemyGrid.map[targetX][targetY] = -1;
+//        playerTwo.playerGrid.map[targetX][targetY] = -1;
+//        model.addAttribute("game", game);
+//        return "result";
+//    }
 }
 
