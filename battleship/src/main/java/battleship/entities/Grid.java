@@ -2,9 +2,6 @@ package battleship.entities;
 
 
 import battleship.entities.ships.Ship;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 public class Grid {

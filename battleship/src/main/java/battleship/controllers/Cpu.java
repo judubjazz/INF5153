@@ -1,8 +1,7 @@
-package battleship.controller;
+package battleship.controllers;
 
 import battleship.entities.Grid;
 import battleship.entities.ships.*;
-import net.sf.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -8,11 +8,10 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="home-options-container">
-        <a th:href="@{'/start'}">play against computer</a>
-        <a th:href="@{'/start'}">play against human</a>
-        <a th:href="@{'/load'}">load a saved game</a>
-    </div>
+    <form action="#" th:action="@{/start}" th:object="${startForm}" method="post">
+        <p>data: <input id="fleet-data-input" type="text" th:field="*{data}" /></p>
+        <p><input id="submit-fleet-button" type="submit" value="Submit" /></p>
+    </form>
 </div>
 
 <th:block layout:fragment="scripts">

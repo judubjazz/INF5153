@@ -1,7 +1,7 @@
 package battleship.routes;
 
-import battleship.controller.Cpu;
-import battleship.controller.StartForm;
+import battleship.controllers.Cpu;
+import battleship.controllers.StartForm;
 import battleship.entities.Game;
 import battleship.entities.Grid;
 import battleship.entities.Player;
@@ -12,11 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.stream.XMLEventWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-//import org.springframework.web.bind.annotation.HelloController;
-
 
 
 @Controller
@@ -35,15 +35,16 @@ public class Routes {
     }
 
     @PostMapping("/start")
-    public String greetingSubmit(@ModelAttribute StartForm startForm, Model model) {
+    public String startGame(@ModelAttribute StartForm startForm, Model model) {
         String data = startForm.getData();
 
         // TODO validation of the player fleet, some validation methods are available in Grid class, maybe add a Validation class
 
         JSONObject playerOneSettings = JSONObject.fromObject(data);
-        Grid playerGrid = new Grid();
-        Map<String, Ship> fleet = Ship.buildFleet(playerOneSettings);
-        playerGrid.locateFleet(fleet);
+        JSONObject playerOneFleetJSON = playerOneSettings.getJSONObject("fleet");
+        Grid playerOneGrid = new Grid();
+        Map<String, Ship> playerOneFleet = Ship.buildFleet(playerOneFleetJSON);
+        playerOneGrid.locateFleet(playerOneFleet);
 
 
         Grid cpuGrid = new Grid();
@@ -51,12 +52,13 @@ public class Routes {
         // maybe change the function name
         Map<String, Ship> cpuFleet = Cpu.generateFleet(cpuGrid);
 
-        Player cpu = new Player(fleet, cpuGrid, playerGrid);
-        Player player = new Player(fleet, playerGrid, cpuGrid);
+        Player cpu = new Player(cpuFleet, cpuGrid, playerOneGrid);
+        Player player = new Player(playerOneFleet, playerOneGrid, cpuGrid);
         Recorder recorder = new Recorder(new ArrayList<>(), new ArrayList<>());
+        boolean difficulty = playerOneSettings.getBoolean("difficulty");
 
         // TODO add the references as an id to the game
-        Game game = new Game(player, cpu, recorder);
+        Game game = new Game(1, player, cpu, recorder, difficulty);
 
         model.addAttribute("game", game);
         return "result";
@@ -83,10 +85,17 @@ public class Routes {
         playerOne.ennemyGrid.map[targetX][targetY] = -1;
         playerTwo.playerGrid.map[targetX][targetY] = -1;
 
+        model.addAttribute("game", game);
         if(playerTwo.shipsRemaining == 0){return "you-won";}
 
         // cpu counter attacks
-        target = Cpu.targetRandomPosition();
+        if(game.difficulty){
+            // TODO implement minMax algorithm
+//            target = Cpu.targetMinMaxPosition();
+        } else {
+            target = Cpu.targetRandomPosition();
+        }
+
         while(true){
             if(game.recorder.playerTwoMoves.contains(target)){
                 target = Cpu.targetRandomPosition();
@@ -95,7 +104,7 @@ public class Routes {
                 break;
             }
         }
-        // TODO record the targets to replay the game and prevents the cpu from targeting two time the same position, maybe create a Recorder class
+
         // TODO refactor the code below because it repeats itself, maybe a Game class playTurn() function
         int cpuTargetX = target.get("x");
         int cpuTargetY = target.get("y");
@@ -108,7 +117,65 @@ public class Routes {
         playerOne.playerGrid.map[cpuTargetX][cpuTargetY] = -1;
 
         if(playerOne.shipsRemaining == 0){return "you-lost";}
+        return "result";
+    }
 
+    @PostMapping("/save")
+    public String saveGame(@ModelAttribute Game game, Model model){
+        Player playerOne = game.playerOne;
+        Player playerTwo = game.playerTwo;
+//        try {
+//            // TODO save to the current path instead of absolute
+//            FileWriter fw = new FileWriter("/home/ju/JetBrainsProjects/IdeaProjects/INF5153/INF5153/battleship/src/main/db/db.xml");
+//            fw.write("test");
+//            fw.close();
+//        } catch (Exception e){
+//            System.out.println(e);
+//        }
+        System.out.println(game.recorder.playerOneMoves);
+//        for (Map<String,Integer> r1: game.recorder.playerOneMoves) {
+//            System.out.println("player one");
+//            System.out.print(r1.get("x"));
+//            System.out.println(r1.get("y"));
+//        }
+//        for (Map<String,Integer> r2: game.recorder.playerTwoMoves) {
+//            System.out.println("player two");
+//            System.out.print(r2.get("x"));
+//            System.out.println(r2.get("y"));
+//        }
+        model.addAttribute("game", game);
+        return "result";
+    }
+
+    @GetMapping("/load")
+    public String loadGame(@ModelAttribute Game game, Model model){
+        // TODO add an id to request params to load game, then construct the game from the xml db
+
+        model.addAttribute("game", game);
+        return "result";
+    }
+
+    @GetMapping("/replay")
+    public String replayGame(@ModelAttribute Game game, Model model){
+        Player playerOne = game.playerOne;
+        Player playerTwo = game.playerTwo;
+
+        JSONObject playerOneFleetJSON = playerOne.fleet;
+        Grid playerOneGrid = new Grid();
+        Map<String, Ship> playerOneFleet = Ship.buildFleet(playerOneFleetJSON);
+        playerOneGrid.locateFleet(playerOneFleet);
+
+        Grid cpuGrid = new Grid();
+        // fleet has to be validated with the grid, therefore the grid is initialise inside generateFleet maybe change the function name
+        Map<String, Ship> cpuFleet = Cpu.generateFleet(cpuGrid);
+
+        ArrayList<Map<String,Integer>> list1 = game.recorder.playerOneMoves;
+        ArrayList<Map<String,Integer>> list2 = game.recorder.playerTwoMoves;
+        Map<String,Integer> target = list1.get(game.recorder.index);
+        int targetX = target.get("x");
+        int targetY = target.get("y");
+        playerOne.ennemyGrid.map[targetX][targetY] = -1;
+        playerTwo.playerGrid.map[targetX][targetY] = -1;
         model.addAttribute("game", game);
         return "result";
     }

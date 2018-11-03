@@ -11,7 +11,7 @@
 
 <body>
 <div layout:fragment="content">
-<h1>Result</h1>
+    <h1>Replay</h1>
     <table class="player-one-map test">
         <tr th:each="col: ${game.playerOne.playerGrid.map}">
             <td th:each="colValue: ${col}">
@@ -22,26 +22,14 @@
 
     <table class="player-two-map test">
         <tr th:each="col, iterX: ${game.playerOne.ennemyGrid.map}">
-          <td th:each="colValue, iterY: ${col}">
-               <div th:class="tiles" th:name="${colValue}" th:text="${colValue}" th:onclick="|torpedo(event, ${iterX.index}, ${iterY.index})|" ></div>
-          </td>
+            <td th:each="colValue, iterY: ${col}">
+                <div th:class="tiles" th:name="${colValue}" th:text="${colValue}" th:onclick="|torpedo(event, ${iterX.index}, ${iterY.index})|" ></div>
+            </td>
         </tr>
     </table>
 
-    <form class='torpedo-form' action="#" th:action="@{/save}" th:object="${game}" method="post">
-        <p><input id="savegame-form-input" class='torpedo-form-submit' type="submit" value="Replay" /></p>
-        <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerGrid.map}" /></p>
-        <p>PlayerOne enemy map: <input class='torpedo-form' type="text" th:field="*{playerOne.ennemyGrid.map}"/></p>
-        <p>PlayerOne ships remaining: <input class='torpedo-form' type="text" th:field="*{playerOne.shipsRemaining}"/></p>
-        <p>playerTwo map: <input class='torpedo-form' type="text" th:field="*{playerTwo.playerGrid.map}" /></p>
-        <p>PlayerT ships remaining: <input class='torpedo-form' type="text" th:field="*{playerTwo.shipsRemaining}"/></p>
-        <p>playerTwo ennemy map: <input class='torpedo-form' type="text" th:field="*{playerTwo.ennemyGrid.map}"/></p>
-        <p>recorder: <input class='torpedo-form' type="text" th:field="*{recorder.playerOneMoves}"/></p>
-        <p>recorder: <input class='torpedo-form' type="text" th:field="*{recorder.playerTwoMoves}"/></p>
-    </form>
-
-    <form class='torpedo-form' action="#" th:action="@{/torpedo}" th:object="${game}" method="post">
-        <p><input id="torpedo-form-submit" class='torpedo-form-submit' type="submit" value="Torpedo" /></p>
+    <form class='torpedo-form' action="#" th:action="@{/replay}" th:object="${game}" method="post">
+        <p><input id="replay-form-submit" class='torpedo-form-submit' type="submit" value="replay" /></p>
         <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerGrid.map}" /></p>
         <p>PlayerOne enemy map: <input class='torpedo-form' type="text" th:field="*{playerOne.ennemyGrid.map}"/></p>
         <p>PlayerOne ships remaining: <input class='torpedo-form' type="text" th:field="*{playerOne.shipsRemaining}"/></p>

@@ -6,6 +6,7 @@ import java.util.Map;
 public class Recorder {
     public ArrayList<Map<String, Integer>> playerOneMoves;
     public ArrayList<Map<String, Integer>> playerTwoMoves;
+    public int index;
 
     public Recorder() {
 

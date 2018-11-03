@@ -1,7 +1,5 @@
 package battleship.entities.ships;
 
-import javafx.util.Pair;
-
 public class Carrier extends Ship {
     public String name;
 

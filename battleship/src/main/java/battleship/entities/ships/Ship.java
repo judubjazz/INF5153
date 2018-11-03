@@ -1,6 +1,5 @@
 package battleship.entities.ships;
 import battleship.entities.Grid;
-import javafx.util.Pair;
 import net.sf.json.JSONObject;
 
 import java.util.*;

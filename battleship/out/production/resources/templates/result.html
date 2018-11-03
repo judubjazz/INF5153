@@ -6,6 +6,7 @@
 <head>
     <title>Results</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
 </head>
 
 <body>
@@ -14,7 +15,7 @@
     <table class="player-one-map test">
         <tr th:each="col: ${game.playerOne.playerGrid.map}">
             <td th:each="colValue: ${col}">
-                <span class="tiles" th:name="${colValue}" th:text="${colValue}"></span>
+                <div class="tiles" th:name="${colValue}" th:text="${colValue}"></div>
             </td>
         </tr>
     </table>
@@ -22,19 +23,31 @@
     <table class="player-two-map test">
         <tr th:each="col, iterX: ${game.playerOne.ennemyGrid.map}">
           <td th:each="colValue, iterY: ${col}">
-               <span th:class="tiles" th:name="${colValue}" th:text="${colValue}" th:onclick="|torpedo(${iterX.index}, ${iterY.index})|" ></span>
+               <div th:class="tiles" th:name="${colValue}" th:text="${colValue}" th:onclick="|torpedo(event, ${iterX.index}, ${iterY.index})|" ></div>
           </td>
      </tr>
     </table>
 
+    <form class='torpedo-form' action="#" th:action="@{/save}" th:object="${game}" method="post">
+        <p><input id="savegame-form-input" class='torpedo-form-submit' type="submit" value="Submit" /></p>
+        <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerGrid.map}" /></p>
+        <p>PlayerOne enemy map: <input class='torpedo-form' type="text" th:field="*{playerOne.ennemyGrid.map}"/></p>
+        <p>PlayerOne ships remaining: <input class='torpedo-form' type="text" th:field="*{playerOne.shipsRemaining}"/></p>
+        <p>playerTwo map: <input class='torpedo-form' type="text" th:field="*{playerTwo.playerGrid.map}" /></p>
+        <p>PlayerT ships remaining: <input class='torpedo-form' type="text" th:field="*{playerTwo.shipsRemaining}"/></p>
+        <p>playerTwo ennemy map: <input class='torpedo-form' type="text" th:field="*{playerTwo.ennemyGrid.map}"/></p>
+        <p>recorder: <input class='torpedo-form' type="text" th:field="*{recorder.playerOneMoves}"/></p>
+        <p>recorder: <input class='torpedo-form' type="text" th:field="*{recorder.playerTwoMoves}"/></p>
+
+    </form>
 
 <form class='torpedo-form' action="#" th:action="@{/torpedo}" th:object="${game}" method="post">
-    <p><input class='torpedo-form-submit' type="submit" value="Submit" /></p>
+    <p><input id="torpedo-form-submit" class='torpedo-form-submit' type="submit" value="Submit" /></p>
     <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerGrid.map}" /></p>
     <p>PlayerOne enemy map: <input class='torpedo-form' type="text" th:field="*{playerOne.ennemyGrid.map}"/></p>
     <p>PlayerOne ships remaining: <input class='torpedo-form' type="text" th:field="*{playerOne.shipsRemaining}"/></p>
-    <p>targetX: <input class='torpedo-form' type="text" th:field="*{playerOne.targetX}" value=1/></p>
-    <p>targetY: <input class='torpedo-form' type="text" th:field="*{playerOne.targetY}" value=0/></p>
+    <p>targetX: <input id="targetX" class='torpedo-form' type="text" th:field="*{playerOne.targetX}" value=1/></p>
+    <p>targetY: <input id="targetY" class='torpedo-form' type="text" th:field="*{playerOne.targetY}" value=0/></p>
     <p>playerTwo map: <input class='torpedo-form' type="text" th:field="*{playerTwo.playerGrid.map}" /></p>
     <p>PlayerT ships remaining: <input class='torpedo-form' type="text" th:field="*{playerTwo.shipsRemaining}"/></p>
     <p>playerTwo ennemy map: <input class='torpedo-form' type="text" th:field="*{playerTwo.ennemyGrid.map}"/></p>
@@ -45,17 +58,8 @@
 </div>
 
 <th:block layout:fragment="scripts">
-    <script>
-      // function torpedo(x, y){
-      //   const torpedo = {
-      //     x,
-      //     y,
-      //   };
-      //   $(".torpedo-form-data").eq(0).html(JSON.stringify(torpedo));
-      //   $(".torpedo-form-submit").eq(0).click();
-      // }
-
-    </script>
+    <script type="text/javascript" th:src="@{/js/main.js}"></script>
+    <script type="text/javascript" th:src="@{/js/lib/jquery-1.9.0.js}"></script>
 </th:block>
 
 </body>

@@ -1,6 +1,5 @@
 package battleship.entities.ships;
 
-import javafx.util.Pair;
 
 public class Submarine extends Ship {
     public String name;

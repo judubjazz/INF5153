@@ -21,7 +21,7 @@ body {
     min-height: 100%;
 }
 
-table, td, th {
+table, td, th, tr {
     border: 1px solid black;
 }
 
@@ -45,6 +45,18 @@ th {
     justify-content: center;
 }
 
+.start-form-options-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.home-options-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 /*GRID*/
 .player-one-map {
     margin:50px 50px 50px 50px;
@@ -55,13 +67,16 @@ th {
 }
 
 .test{
-    transform: rotateX(180deg);
+    /*transform: rotateX(180deg);*/
 }
 .tiles {
     cursor: pointer;
     width:var(--tile-size);
     height:var(--tile-size);
-    z-index: -1;
+}
+
+.tiles div{
+    position: absolute;
 }
 
 
@@ -71,36 +86,31 @@ th {
     background-color: var(--submarine-color);
     width:calc(var(--tile-size)*2);
     height:calc(var(--tile-size)*1);
-    transition: transform .3s ease-in;
-    z-index: 2;
+    transition: transform .3s ease-in;;
 }
 #destroyer {
     background-color: var(--destroyer-color);
     width:calc(var(--tile-size)*3);
     height:calc(var(--tile-size)*1);
     transition: transform .3s ease-in;
-    z-index: 2;
 }
 #cruiser {
     background-color: var(--cruiser-color);
     width:calc(var(--tile-size)*3);
     height:calc(var(--tile-size)*1);
     transition: transform .3s ease-in;
-    z-index: 2;
 }
 #battleship {
     background-color: var(--battleship-color);
     width:calc(var(--tile-size)*4);
     height:calc(var(--tile-size)*1);
     transition: transform .3s ease-in;
-    z-index: 2;
 }
 #carrier {
     background-color: var(--carrier-color);
     width:calc(var(--tile-size)*5);
     height:calc(var(--tile-size)*1);
     transition: transform .3s ease-in;
-    z-index: 2;
 }
 div[name="-1"] {
     background-color: var(--hit-color);
@@ -143,5 +153,9 @@ div[name="5"] {
     height:var(--tile-size);
 }
 
+/*BUTTONS*/
+#submit-fleet-button{
+    display: none;
+}
 
 

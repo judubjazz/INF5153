@@ -2,7 +2,6 @@ package battleship.entities;
 
 import battleship.entities.ships.*;
 import net.sf.json.JSONObject;
-
 import java.util.Map;
 
 public class Player {
@@ -13,6 +12,7 @@ public class Player {
     public Ship cruiser;
     public Grid playerGrid;
     public Grid ennemyGrid;
+    public JSONObject fleet;
     public int targetX;
     public int targetY;
     public int shipsRemaining;
@@ -34,6 +34,7 @@ public class Player {
         this.destroyer = (Ship) fleet.get("destroyer");
         this.battleship = (Ship) fleet.get("battleship");
         this.cruiser = (Ship) fleet.get("cruiser");
+        this.fleet = fleet;
     }
 
     public Player(Map fleet, Grid playerGrid, Grid ennemyGrid) {

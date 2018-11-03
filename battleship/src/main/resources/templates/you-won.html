@@ -1,11 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <h1>You won</h1>
-<a href="start.html">Play again</a>
+<div class="home-options-container">
+    <a th:href="@{'/start'}">Play again</a>
+    <form class='torpedo-form' action="#" th:action="@{/replay}" th:object="${game}" method="post">
+        <p><input id="replay-form-submit" class='torpedo-form-submit' type="submit" value="replay last game" /></p>
+        <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerGrid.map}" /></p>
+        <p>PlayerOne enemy map: <input class='torpedo-form' type="text" th:field="*{playerOne.ennemyGrid.map}"/></p>
+        <p>PlayerOne ships remaining: <input class='torpedo-form' type="text" th:field="*{playerOne.shipsRemaining}"/></p>
+        <p>targetX: <input id="targetX" class='torpedo-form' type="text" th:field="*{playerOne.targetX}" value=1/></p>
+        <p>targetY: <input id="targetY" class='torpedo-form' type="text" th:field="*{playerOne.targetY}" value=0/></p>
+        <p>playerTwo map: <input class='torpedo-form' type="text" th:field="*{playerTwo.playerGrid.map}" /></p>
+        <p>PlayerT ships remaining: <input class='torpedo-form' type="text" th:field="*{playerTwo.shipsRemaining}"/></p>
+        <p>playerTwo ennemy map: <input class='torpedo-form' type="text" th:field="*{playerTwo.ennemyGrid.map}"/></p>
+        <p>recorder: <input class='torpedo-form' type="text" th:field="*{recorder.playerOneMoves}"/></p>
+        <p>recorder: <input class='torpedo-form' type="text" th:field="*{recorder.playerTwoMoves}"/></p>
+    </form>
+</div>
 </body>
 </html>

@@ -8,10 +8,12 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <a th:href="@{'/start'}">play against computer</a>
-    <a th:href="@{'/start'}">play against human</a>
+    <div class="home-options-container">
+        <a th:href="@{'/start'}">play against computer</a>
+        <a th:href="@{'/start'}">play against human</a>
+        <a th:href="@{'/load'}">load a saved game</a>
+    </div>
 </div>
-
 
 <th:block layout:fragment="scripts">
 

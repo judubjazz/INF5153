@@ -4,6 +4,7 @@ import battleship.recorder.Recorder;
 
 public class Game {
     public int id;
+    public boolean difficulty;
     public Player playerOne;
     public Player playerTwo;
     public Recorder recorder;
@@ -17,10 +18,12 @@ public class Game {
         this.playerTwo = playerTwo;
     }
 
-    public Game(Player playerOne, Player playerTwo, Recorder recorder) {
+    public Game(int id, Player playerOne, Player playerTwo, Recorder recorder, boolean difficulty) {
+        this.id = id;
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.recorder = recorder;
+        this.difficulty = difficulty;
     }
 
     public Player getPlayerOne() {
