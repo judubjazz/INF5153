@@ -12,47 +12,156 @@
 <body>
 <div layout:fragment="content">
 <h1>Result</h1>
-    <table class="player-one-map test">
-        <tr th:each="col: ${game.playerOne.playerGrid.map}">
-            <td th:each="colValue: ${col}">
-                <div class="tiles" th:name="${colValue}" th:text="${colValue}"></div>
-            </td>
-        </tr>
-    </table>
+    <div class="map-container">
+        <table class="player-one-map test">
+            <tr th:each="col: ${game.playerOne.playerGrid.map}">
+                <td th:each="colValue: ${col}">
+                    <div class="tiles" th:name="${colValue}" th:text="${colValue}"></div>
+                </td>
+            </tr>
+        </table>
 
-    <table class="player-two-map test">
-        <tr th:each="col, iterX: ${game.playerOne.ennemyGrid.map}">
-          <td th:each="colValue, iterY: ${col}">
-               <div th:class="tiles" th:name="${colValue}" th:text="${colValue}" th:onclick="|torpedo(event, ${iterX.index}, ${iterY.index})|" ></div>
-          </td>
-        </tr>
-    </table>
+        <table class="player-two-map test">
+            <tr th:each="col, iterX: ${game.playerOne.ennemyGrid.map}">
+                <td th:each="colValue, iterY: ${col}">
+                    <div th:class="tiles" th:name="${colValue}" th:text="${colValue}" th:onclick="|torpedo(event, ${iterX.index}, ${iterY.index})|" ></div>
+                </td>
+            </tr>
+        </table>
+    </div>
 
-    <form class='torpedo-form' action="#" th:action="@{/save}" th:object="${game}" method="post">
-        <p><input id="savegame-form-input" class='torpedo-form-submit' type="submit" value="Replay" /></p>
-        <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerGrid.map}" /></p>
-        <p>PlayerOne enemy map: <input class='torpedo-form' type="text" th:field="*{playerOne.ennemyGrid.map}"/></p>
-        <p>PlayerOne ships remaining: <input class='torpedo-form' type="text" th:field="*{playerOne.shipsRemaining}"/></p>
-        <p>playerTwo map: <input class='torpedo-form' type="text" th:field="*{playerTwo.playerGrid.map}" /></p>
-        <p>PlayerT ships remaining: <input class='torpedo-form' type="text" th:field="*{playerTwo.shipsRemaining}"/></p>
-        <p>playerTwo ennemy map: <input class='torpedo-form' type="text" th:field="*{playerTwo.ennemyGrid.map}"/></p>
-        <p>recorder: <input class='torpedo-form' type="text" th:field="*{recorder.playerOneMoves}"/></p>
-        <p>recorder: <input class='torpedo-form' type="text" th:field="*{recorder.playerTwoMoves}"/></p>
-    </form>
 
-    <form class='torpedo-form' action="#" th:action="@{/torpedo}" th:object="${game}" method="post">
-        <p><input id="torpedo-form-submit" class='torpedo-form-submit' type="submit" value="Torpedo" /></p>
-        <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerGrid.map}" /></p>
-        <p>PlayerOne enemy map: <input class='torpedo-form' type="text" th:field="*{playerOne.ennemyGrid.map}"/></p>
-        <p>PlayerOne ships remaining: <input class='torpedo-form' type="text" th:field="*{playerOne.shipsRemaining}"/></p>
-        <p>targetX: <input id="targetX" class='torpedo-form' type="text" th:field="*{playerOne.targetX}" value=1/></p>
-        <p>targetY: <input id="targetY" class='torpedo-form' type="text" th:field="*{playerOne.targetY}" value=0/></p>
-        <p>playerTwo map: <input class='torpedo-form' type="text" th:field="*{playerTwo.playerGrid.map}" /></p>
-        <p>PlayerT ships remaining: <input class='torpedo-form' type="text" th:field="*{playerTwo.shipsRemaining}"/></p>
-        <p>playerTwo ennemy map: <input class='torpedo-form' type="text" th:field="*{playerTwo.ennemyGrid.map}"/></p>
-        <p>recorder: <input class='torpedo-form' type="text" th:field="*{recorder.playerOneMoves}"/></p>
-        <p>recorder: <input class='torpedo-form' type="text" th:field="*{recorder.playerTwoMoves}"/></p>
-    </form>
+    <div class="form-container">
+        <form class='torpedo-form' action="#" th:action="@{/save}" th:object="${game}" method="post">
+            <p><input id="savegame-form-input" class='torpedo-form-submit' type="submit" value="Save game" /></p>
+            <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerGrid.map}" /></p>
+            <p>PlayerOne enemy map: <input class='torpedo-form' type="text" th:field="*{playerOne.ennemyGrid.map}"/></p>
+            <p>PlayerOne ships remaining: <input class='torpedo-form' type="text" th:field="*{playerOne.shipsRemaining}"/></p>
+            <!--<p>PlayerOne fleet: <input class='torpedo-form' type="text" th:field="*{playerOne.fleet}"/></p>-->
+            <p>playerTwo map: <input class='torpedo-form' type="text" th:field="*{playerTwo.playerGrid.map}" /></p>
+            <p>PlayerT ships remaining: <input class='torpedo-form' type="text" th:field="*{playerTwo.shipsRemaining}"/></p>
+            <p>playerTwo ennemy map: <input class='torpedo-form' type="text" th:field="*{playerTwo.ennemyGrid.map}"/></p>
+            <!--<p>PlayerTwo fleet: <input class='torpedo-form' type="text" th:field="*{playerTwo.fleet}"/></p>-->
+            <p>recorder: <input class='torpedo-form' type="text" th:field="*{recorder.playerOneMoves}"/></p>
+            <p>recorder: <input class='torpedo-form' type="text" th:field="*{recorder.playerTwoMoves}"/></p>
+
+            <p>PlayerOne carrier BowX: <input class='torpedo-form' type="text" th:field="*{playerOne.carrier.bowX}"/></p>
+            <p>PlayerOne carrier BowY: <input class='torpedo-form' type="text" th:field="*{playerOne.carrier.bowY}"/></p>
+            <p>PlayerOne carrier StemX: <input class='torpedo-form' type="text" th:field="*{playerOne.carrier.stemX}"/></p>
+            <p>PlayerOne carrier StemY: <input class='torpedo-form' type="text" th:field="*{playerOne.carrier.stemY}"/></p>
+
+            <p>PlayerOne submarine BowX: <input class='torpedo-form' type="text" th:field="*{playerOne.submarine.bowX}"/></p>
+            <p>PlayerOne submarine BowY: <input class='torpedo-form' type="text" th:field="*{playerOne.submarine.bowY}"/></p>
+            <p>PlayerOne submarine StemX: <input class='torpedo-form' type="text" th:field="*{playerOne.submarine.stemX}"/></p>
+            <p>PlayerOne submarine StemY: <input class='torpedo-form' type="text" th:field="*{playerOne.submarine.stemY}"/></p>
+
+            <p>PlayerOne destroyer BowX: <input class='torpedo-form' type="text" th:field="*{playerOne.destroyer.bowX}"/></p>
+            <p>PlayerOne destroyer BowY: <input class='torpedo-form' type="text" th:field="*{playerOne.destroyer.bowY}"/></p>
+            <p>PlayerOne destroyer StemX: <input class='torpedo-form' type="text" th:field="*{playerOne.destroyer.stemX}"/></p>
+            <p>PlayerOne destroyer StemY: <input class='torpedo-form' type="text" th:field="*{playerOne.destroyer.stemY}"/></p>
+
+            <p>PlayerOne cruiser BowX: <input class='torpedo-form' type="text" th:field="*{playerOne.cruiser.bowX}"/></p>
+            <p>PlayerOne cruiser BowY: <input class='torpedo-form' type="text" th:field="*{playerOne.cruiser.bowY}"/></p>
+            <p>PlayerOne cruiser StemX: <input class='torpedo-form' type="text" th:field="*{playerOne.cruiser.stemX}"/></p>
+            <p>PlayerOne cruiser StemY: <input class='torpedo-form' type="text" th:field="*{playerOne.cruiser.stemY}"/></p>
+
+            <p>PlayerOne battleship BowX: <input class='torpedo-form' type="text" th:field="*{playerOne.battleship.bowX}"/></p>
+            <p>PlayerOne battleship BowY: <input class='torpedo-form' type="text" th:field="*{playerOne.battleship.bowY}"/></p>
+            <p>PlayerOne battleship StemX: <input class='torpedo-form' type="text" th:field="*{playerOne.battleship.stemX}"/></p>
+            <p>PlayerOne battleship StemY: <input class='torpedo-form' type="text" th:field="*{playerOne.battleship.stemY}"/></p>
+
+            <p>playerTwo carrier BowX: <input class='torpedo-form' type="text" th:field="*{playerTwo.carrier.bowX}"/></p>
+            <p>playerTwo carrier BowY: <input class='torpedo-form' type="text" th:field="*{playerTwo.carrier.bowY}"/></p>
+            <p>playerTwo carrier StemX: <input class='torpedo-form' type="text" th:field="*{playerTwo.carrier.stemX}"/></p>
+            <p>playerTwo carrier StemY: <input class='torpedo-form' type="text" th:field="*{playerTwo.carrier.stemY}"/></p>
+
+            <p>playerTwo submarine BowX: <input class='torpedo-form' type="text" th:field="*{playerTwo.submarine.bowX}"/></p>
+            <p>playerTwo submarine BowY: <input class='torpedo-form' type="text" th:field="*{playerTwo.submarine.bowY}"/></p>
+            <p>playerTwo submarine StemX: <input class='torpedo-form' type="text" th:field="*{playerTwo.submarine.stemX}"/></p>
+            <p>playerTwo submarine StemY: <input class='torpedo-form' type="text" th:field="*{playerTwo.submarine.stemY}"/></p>
+
+            <p>playerTwo destroyer BowX: <input class='torpedo-form' type="text" th:field="*{playerTwo.destroyer.bowX}"/></p>
+            <p>playerTwo destroyer BowY: <input class='torpedo-form' type="text" th:field="*{playerTwo.destroyer.bowY}"/></p>
+            <p>playerTwo destroyer StemX: <input class='torpedo-form' type="text" th:field="*{playerTwo.destroyer.stemX}"/></p>
+            <p>playerTwo destroyer StemY: <input class='torpedo-form' type="text" th:field="*{playerTwo.destroyer.stemY}"/></p>
+
+            <p>playerTwo cruiser BowX: <input class='torpedo-form' type="text" th:field="*{playerTwo.cruiser.bowX}"/></p>
+            <p>playerTwo cruiser BowY: <input class='torpedo-form' type="text" th:field="*{playerTwo.cruiser.bowY}"/></p>
+            <p>playerTwo cruiser StemX: <input class='torpedo-form' type="text" th:field="*{playerTwo.cruiser.stemX}"/></p>
+            <p>playerTwo cruiser StemY: <input class='torpedo-form' type="text" th:field="*{playerTwo.cruiser.stemY}"/></p>
+
+            <p>playerTwo battleship BowX: <input class='torpedo-form' type="text" th:field="*{playerTwo.battleship.bowX}"/></p>
+            <p>playerTwo battleship BowY: <input class='torpedo-form' type="text" th:field="*{playerTwo.battleship.bowY}"/></p>
+            <p>playerTwo battleship StemX: <input class='torpedo-form' type="text" th:field="*{playerTwo.battleship.stemX}"/></p>
+            <p>playerTwo battleship StemY: <input class='torpedo-form' type="text" th:field="*{playerTwo.battleship.stemY}"/></p>
+        </form>
+
+        <form class='torpedo-form' action="#" th:action="@{/torpedo}" th:object="${game}" method="post">
+            <p><input id="torpedo-form-submit" class='torpedo-form-submit' type="submit" value="Torpedo" /></p>
+            <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerGrid.map}" /></p>
+            <p>PlayerOne enemy map: <input class='torpedo-form' type="text" th:field="*{playerOne.ennemyGrid.map}"/></p>
+            <p>PlayerOne ships remaining: <input class='torpedo-form' type="text" th:field="*{playerOne.shipsRemaining}"/></p>
+
+            <p>PlayerOne carrier BowX: <input class='torpedo-form' type="text" th:field="*{playerOne.carrier.bowX}"/></p>
+            <p>PlayerOne carrier BowY: <input class='torpedo-form' type="text" th:field="*{playerOne.carrier.bowY}"/></p>
+            <p>PlayerOne carrier StemX: <input class='torpedo-form' type="text" th:field="*{playerOne.carrier.stemX}"/></p>
+            <p>PlayerOne carrier StemY: <input class='torpedo-form' type="text" th:field="*{playerOne.carrier.stemY}"/></p>
+
+            <p>PlayerOne submarine BowX: <input class='torpedo-form' type="text" th:field="*{playerOne.submarine.bowX}"/></p>
+            <p>PlayerOne submarine BowY: <input class='torpedo-form' type="text" th:field="*{playerOne.submarine.bowY}"/></p>
+            <p>PlayerOne submarine StemX: <input class='torpedo-form' type="text" th:field="*{playerOne.submarine.stemX}"/></p>
+            <p>PlayerOne submarine StemY: <input class='torpedo-form' type="text" th:field="*{playerOne.submarine.stemY}"/></p>
+
+            <p>PlayerOne destroyer BowX: <input class='torpedo-form' type="text" th:field="*{playerOne.destroyer.bowX}"/></p>
+            <p>PlayerOne destroyer BowY: <input class='torpedo-form' type="text" th:field="*{playerOne.destroyer.bowY}"/></p>
+            <p>PlayerOne destroyer StemX: <input class='torpedo-form' type="text" th:field="*{playerOne.destroyer.stemX}"/></p>
+            <p>PlayerOne destroyer StemY: <input class='torpedo-form' type="text" th:field="*{playerOne.destroyer.stemY}"/></p>
+
+            <p>PlayerOne cruiser BowX: <input class='torpedo-form' type="text" th:field="*{playerOne.cruiser.bowX}"/></p>
+            <p>PlayerOne cruiser BowY: <input class='torpedo-form' type="text" th:field="*{playerOne.cruiser.bowY}"/></p>
+            <p>PlayerOne cruiser StemX: <input class='torpedo-form' type="text" th:field="*{playerOne.cruiser.stemX}"/></p>
+            <p>PlayerOne cruiser StemY: <input class='torpedo-form' type="text" th:field="*{playerOne.cruiser.stemY}"/></p>
+
+            <p>PlayerOne battleship BowX: <input class='torpedo-form' type="text" th:field="*{playerOne.battleship.bowX}"/></p>
+            <p>PlayerOne battleship BowY: <input class='torpedo-form' type="text" th:field="*{playerOne.battleship.bowY}"/></p>
+            <p>PlayerOne battleship StemX: <input class='torpedo-form' type="text" th:field="*{playerOne.battleship.stemX}"/></p>
+            <p>PlayerOne battleship StemY: <input class='torpedo-form' type="text" th:field="*{playerOne.battleship.stemY}"/></p>
+
+            <p>playerTwo carrier BowX: <input class='torpedo-form' type="text" th:field="*{playerTwo.carrier.bowX}"/></p>
+            <p>playerTwo carrier BowY: <input class='torpedo-form' type="text" th:field="*{playerTwo.carrier.bowY}"/></p>
+            <p>playerTwo carrier StemX: <input class='torpedo-form' type="text" th:field="*{playerTwo.carrier.stemX}"/></p>
+            <p>playerTwo carrier StemY: <input class='torpedo-form' type="text" th:field="*{playerTwo.carrier.stemY}"/></p>
+
+            <p>playerTwo submarine BowX: <input class='torpedo-form' type="text" th:field="*{playerTwo.submarine.bowX}"/></p>
+            <p>playerTwo submarine BowY: <input class='torpedo-form' type="text" th:field="*{playerTwo.submarine.bowY}"/></p>
+            <p>playerTwo submarine StemX: <input class='torpedo-form' type="text" th:field="*{playerTwo.submarine.stemX}"/></p>
+            <p>playerTwo submarine StemY: <input class='torpedo-form' type="text" th:field="*{playerTwo.submarine.stemY}"/></p>
+
+            <p>playerTwo destroyer BowX: <input class='torpedo-form' type="text" th:field="*{playerTwo.destroyer.bowX}"/></p>
+            <p>playerTwo destroyer BowY: <input class='torpedo-form' type="text" th:field="*{playerTwo.destroyer.bowY}"/></p>
+            <p>playerTwo destroyer StemX: <input class='torpedo-form' type="text" th:field="*{playerTwo.destroyer.stemX}"/></p>
+            <p>playerTwo destroyer StemY: <input class='torpedo-form' type="text" th:field="*{playerTwo.destroyer.stemY}"/></p>
+
+            <p>playerTwo cruiser BowX: <input class='torpedo-form' type="text" th:field="*{playerTwo.cruiser.bowX}"/></p>
+            <p>playerTwo cruiser BowY: <input class='torpedo-form' type="text" th:field="*{playerTwo.cruiser.bowY}"/></p>
+            <p>playerTwo cruiser StemX: <input class='torpedo-form' type="text" th:field="*{playerTwo.cruiser.stemX}"/></p>
+            <p>playerTwo cruiser StemY: <input class='torpedo-form' type="text" th:field="*{playerTwo.cruiser.stemY}"/></p>
+
+            <p>playerTwo battleship BowX: <input class='torpedo-form' type="text" th:field="*{playerTwo.battleship.bowX}"/></p>
+            <p>playerTwo battleship BowY: <input class='torpedo-form' type="text" th:field="*{playerTwo.battleship.bowY}"/></p>
+            <p>playerTwo battleship StemX: <input class='torpedo-form' type="text" th:field="*{playerTwo.battleship.stemX}"/></p>
+            <p>playerTwo battleship StemY: <input class='torpedo-form' type="text" th:field="*{playerTwo.battleship.stemY}"/></p>
+
+            <p>targetX: <input id="targetX" class='torpedo-form' type="text" th:field="*{playerOne.targetX}" value=1/></p>
+            <p>targetY: <input id="targetY" class='torpedo-form' type="text" th:field="*{playerOne.targetY}" value=0/></p>
+            <p>playerTwo map: <input class='torpedo-form' type="text" th:field="*{playerTwo.playerGrid.map}" /></p>
+            <p>PlayerT ships remaining: <input class='torpedo-form' type="text" th:field="*{playerTwo.shipsRemaining}"/></p>
+            <p>playerTwo ennemy map: <input class='torpedo-form' type="text" th:field="*{playerTwo.ennemyGrid.map}"/></p>
+            <p>recorder: <input class='torpedo-form' type="text" th:field="*{recorder.playerOneMoves}"/></p>
+            <p>recorder: <input class='torpedo-form' type="text" th:field="*{recorder.playerTwoMoves}"/></p>
+        </form>
+    </div>
+
 </div>
 
 <th:block layout:fragment="scripts">

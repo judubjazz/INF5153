@@ -47,6 +47,16 @@ public class Ship {
         return fleet;
     }
 
+    public static Map<String, Ship> buildFleetFromShips(Ship carrier, Ship battleship, Ship cruiser, Ship destroyer, Ship submarine){
+        Map<String, Ship> fleet = new HashMap<>();
+        fleet.put("carrier", carrier);
+        fleet.put("battleship", battleship);
+        fleet.put("cruiser", cruiser);
+        fleet.put("destroyer", destroyer);
+        fleet.put("submarine", submarine);
+        return fleet;
+    }
+
     private static Ship buildShipFromJSON(JSONObject options, String key) {
         JSONObject ship = options.getJSONObject(key);
         JSONObject bow = ship.getJSONObject("bow");

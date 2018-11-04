@@ -111,6 +111,16 @@ public class Grid {
         return true;
     }
 
+    public static int [][] Stringto2DArray(String source) {
+        String[] data = source.split(",");
+        int[][] map = new int[10][10];
+        for(int i=0; i < 10; ++i){
+            for(int j = 0; j < 10; ++j){
+                map[i][j] = Integer.parseInt(data[(j) + (i*10)]);
+            }
+        }
+        return map;
+    }
     // Getters & Setters
     public int getHeight() {
         return height;

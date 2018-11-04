@@ -4,14 +4,15 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{base}">
 <head>
-    <title>Battleship home</title>
+    <title>Save</title>
 </head>
 <body>
 <div layout:fragment="content">
+    <h1>Document has bben saved with id</h1>
     <div class="home-options-container">
-        <div><a th:href="@{'/start'}">play against computer</a></div>
-        <div><a th:href="@{'/start'}">play against computer</a></div>
-        <div><a th:href="@{'/load'}">load a saved game</a></div>
+        <a th:href="@{'/start'}">play against computer</a>
+        <a th:href="@{'/start'}">play against human</a>
+        <a th:href="@{'/load'}">load a saved game</a>
     </div>
 </div>
 

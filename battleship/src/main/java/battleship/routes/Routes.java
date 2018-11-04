@@ -7,10 +7,12 @@ import battleship.entities.Grid;
 import battleship.entities.Player;
 import battleship.entities.ships.*;
 import battleship.recorder.Recorder;
+import db.XML;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.w3c.dom.NodeList;
 
 import javax.xml.stream.XMLEventWriter;
 import java.io.FileWriter;
@@ -48,8 +50,7 @@ public class Routes {
 
 
         Grid cpuGrid = new Grid();
-        // fleet has to be validated with the grid, therefore the grid is initialise inside generateFleet
-        // maybe change the function name
+        // fleet has to be validated with the grid, therefore the grid is initialise inside generateFleet maybe change the function name
         Map<String, Ship> cpuFleet = Cpu.generateFleet(cpuGrid);
 
         Player cpu = new Player(cpuFleet, cpuGrid, playerOneGrid);
@@ -66,27 +67,25 @@ public class Routes {
 
     @PostMapping("/torpedo")
     public String torpedo(@ModelAttribute Game game, Model model){
-        Player playerOne = game.playerOne;
-        Player playerTwo = game.playerTwo;
+        Player p1 = game.playerOne;
+        Player p2 = game.playerTwo;
+        model.addAttribute("game", game);
 
         // player one attacks
         Map<String, Integer> target = new HashMap<>();
-        int targetX = playerOne.targetX;
-        int targetY = playerOne.targetY;
+        int targetX = p1.targetX;
+        int targetY = p1.targetY;
         target.put("x", targetX);
         target.put("y", targetY);
         game.recorder.playerOneMoves.add(target);
 
-        int targetedArea = playerOne.ennemyGrid.map[targetX][targetY];
+        int targetedArea = p1.ennemyGrid.map[targetX][targetY];
+        if(targetedArea > 0){p2.shipsRemaining--;}
 
-        // not water
-        if(targetedArea > 0){playerTwo.shipsRemaining--;}
+        p1.ennemyGrid.map[targetX][targetY] = -1;
+        p2.playerGrid.map[targetX][targetY] = -1;
 
-        playerOne.ennemyGrid.map[targetX][targetY] = -1;
-        playerTwo.playerGrid.map[targetX][targetY] = -1;
-
-        model.addAttribute("game", game);
-        if(playerTwo.shipsRemaining == 0){return "you-won";}
+        if(p2.shipsRemaining == 0){return "you-won";}
 
         // cpu counter attacks
         if(game.difficulty){
@@ -109,75 +108,95 @@ public class Routes {
         int cpuTargetX = target.get("x");
         int cpuTargetY = target.get("y");
 
-        targetedArea = playerOne.playerGrid.map[cpuTargetX][cpuTargetY];
+        targetedArea = p1.playerGrid.map[cpuTargetX][cpuTargetY];
+        if(targetedArea > 0){p1.shipsRemaining--;}
 
-        if(targetedArea > 0){playerOne.shipsRemaining--;}
+        p2.ennemyGrid.map[cpuTargetX][cpuTargetY] = -1;
+        p1.playerGrid.map[cpuTargetX][cpuTargetY] = -1;
 
-        playerTwo.ennemyGrid.map[cpuTargetX][cpuTargetY] = -1;
-        playerOne.playerGrid.map[cpuTargetX][cpuTargetY] = -1;
-
-        if(playerOne.shipsRemaining == 0){return "you-lost";}
+        if(p1.shipsRemaining == 0){return "you-lost";}
         return "result";
     }
 
     @PostMapping("/save")
     public String saveGame(@ModelAttribute Game game, Model model){
-        Player playerOne = game.playerOne;
-        Player playerTwo = game.playerTwo;
-//        try {
-//            // TODO save to the current path instead of absolute
-//            FileWriter fw = new FileWriter("/home/ju/JetBrainsProjects/IdeaProjects/INF5153/INF5153/battleship/src/main/db/db.xml");
-//            fw.write("test");
-//            fw.close();
-//        } catch (Exception e){
-//            System.out.println(e);
-//        }
+        Player p1 = game.playerOne;
+        Player p2 = game.playerTwo;
+
+        XML.read();
         System.out.println(game.recorder.playerOneMoves);
-//        for (Map<String,Integer> r1: game.recorder.playerOneMoves) {
-//            System.out.println("player one");
-//            System.out.print(r1.get("x"));
-//            System.out.println(r1.get("y"));
-//        }
-//        for (Map<String,Integer> r2: game.recorder.playerTwoMoves) {
-//            System.out.println("player two");
-//            System.out.print(r2.get("x"));
-//            System.out.println(r2.get("y"));
-//        }
         model.addAttribute("game", game);
-        return "result";
+        return "save";
     }
 
     @GetMapping("/load")
-    public String loadGame(@ModelAttribute Game game, Model model){
+    public String loadGame(Model model){
         // TODO add an id to request params to load game, then construct the game from the xml db
-
+//        XML.read();
+        NodeList nodeList = XML.getNodeList();
+        XML.printNote(nodeList);
+        Game game = new Game();
+        game.id = 1;
+        game.buildGameFromNodeList(nodeList, game.id, "1");
         model.addAttribute("game", game);
-        return "result";
+        return "home";
     }
 
-//    @GetMapping("/replay")
-//    public String replayGame(@ModelAttribute Game game, Model model){
-//        Player playerOne = game.playerOne;
-//        Player playerTwo = game.playerTwo;
-//
-//        JSONObject playerOneFleetJSON = playerOne.fleet;
-//        Grid playerOneGrid = new Grid();
-//        Map<String, Ship> playerOneFleet = Ship.buildFleet(playerOneFleetJSON);
-//        playerOneGrid.locateFleet(playerOneFleet);
-//
-//        Grid cpuGrid = new Grid();
-//        // fleet has to be validated with the grid, therefore the grid is initialise inside generateFleet maybe change the function name
-//        Map<String, Ship> cpuFleet = Cpu.generateFleet(cpuGrid);
-//
-//        ArrayList<Map<String,Integer>> list1 = game.recorder.playerOneMoves;
-//        ArrayList<Map<String,Integer>> list2 = game.recorder.playerTwoMoves;
-//        Map<String,Integer> target = list1.get(game.recorder.index);
-//        int targetX = target.get("x");
-//        int targetY = target.get("y");
-//        playerOne.ennemyGrid.map[targetX][targetY] = -1;
-//        playerTwo.playerGrid.map[targetX][targetY] = -1;
-//        model.addAttribute("game", game);
-//        return "result";
-//    }
+    @PostMapping("/replay")
+    public String replayGame(@ModelAttribute Game game, Model model){
+        Player p1 = game.playerOne;
+        Player p2 = game.playerTwo;
+
+        ArrayList<Map<String,Integer>> p1Moves = game.recorder.playerOneMoves;
+        ArrayList<Map<String,Integer>> p2Moves = game.recorder.playerTwoMoves;
+
+        // TODO Refactor this in one function , maybe playTurn() in Game class
+        // playerOne turn
+        Map<String,Integer> target = p1Moves.get(game.recorder.index);
+        int targetX = target.get("x");
+        int targetY = target.get("y");
+        int targetedArea = p1.ennemyGrid.map[targetX][targetY];
+        if(targetedArea > 0){p2.shipsRemaining--;}
+        p1.ennemyGrid.map[targetX][targetY] = -1;
+        p2.playerGrid.map[targetX][targetY] = -1;
+        if(p2.shipsRemaining == 0){return "you-won";}
+
+        // playerTwo turn
+        target = p2Moves.get(game.recorder.index);
+        targetX = target.get("x");
+        targetY = target.get("y");
+        targetedArea = p2.ennemyGrid.map[targetX][targetY];
+        if(targetedArea > 0){p1.shipsRemaining--;}
+        p2.ennemyGrid.map[targetX][targetY] = -1;
+        p1.playerGrid.map[targetX][targetY] = -1;
+        if(p2.shipsRemaining == 0){return "you-won";}
+
+        game.recorder.index++;
+        model.addAttribute("game", game);
+        return "replay";
+    }
+
+    @GetMapping("/replay")
+    public String getReplayGame(@ModelAttribute Game game, Model model){
+        Player p1 = game.playerOne;
+        Player p2 = game.playerTwo;
+
+        Map<String, Ship> p1Fleet = Ship.buildFleetFromShips(p1.carrier, p1.battleship, p1.cruiser, p1.destroyer, p1.submarine);
+        Map<String, Ship> p2Fleet = Ship.buildFleetFromShips(p2.carrier, p2.battleship, p2.cruiser, p2.destroyer, p2.submarine);
+        Grid p1Grid = new Grid();
+        Grid p2Grid = new Grid();
+        p1.playerGrid = p2.ennemyGrid = p1Grid;
+        p2.playerGrid = p1.ennemyGrid = p2Grid;
+
+        p1.playerGrid.locateFleet(p1Fleet);
+        p1.ennemyGrid.locateFleet(p2Fleet);
+        p2.playerGrid.locateFleet(p2Fleet);
+        p2.ennemyGrid.locateFleet(p1Fleet);
+
+        p1.shipsRemaining = p2.shipsRemaining = 17;
+
+        model.addAttribute("game", game);
+        return "replay";
+    }
 }
 

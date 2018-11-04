@@ -2,6 +2,9 @@ package battleship.entities;
 
 import battleship.entities.ships.*;
 import net.sf.json.JSONObject;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import java.util.Map;
 
 public class Player {
@@ -12,7 +15,8 @@ public class Player {
     public Ship cruiser;
     public Grid playerGrid;
     public Grid ennemyGrid;
-    public JSONObject fleet;
+//    public JSONObject fleet;
+    public Map<String, Ship> fleet;
     public int targetX;
     public int targetY;
     public int shipsRemaining;
@@ -34,7 +38,7 @@ public class Player {
         this.destroyer = (Ship) fleet.get("destroyer");
         this.battleship = (Ship) fleet.get("battleship");
         this.cruiser = (Ship) fleet.get("cruiser");
-        this.fleet = fleet;
+//        this.fleet = fleet;
     }
 
     public Player(Map fleet, Grid playerGrid, Grid ennemyGrid) {
@@ -46,9 +50,27 @@ public class Player {
         this.playerGrid = playerGrid;
         this.ennemyGrid = ennemyGrid;
         this.shipsRemaining = 17;
-        ennemyGrid.setHidden(true);
+        this.fleet = fleet;
+        ennemyGrid.hidden = true;
     }
 
+    public void setPlayerFromNodeList(NodeList nodeList){
+        for(int j = 0; j < nodeList.getLength(); ++j ){
+            Node player1Settings = nodeList.item(j);
+            if (player1Settings.getNodeType() == Node.ELEMENT_NODE) {
+
+                if(player1Settings.getNodeName().equals("shipsRemaining")){
+
+                }else if(player1Settings.getNodeName().equals("map")){
+
+                }else if(player1Settings.getNodeName().equals("fleet")){
+
+                }else if(player1Settings.getNodeName().equals("recorder")){
+
+                }
+            }
+        }
+    }
 
     // Getters & Setters
     public Ship getCarrier() {
@@ -89,28 +111,24 @@ public class Player {
     public void setEnnemyGrid(Grid ennemyGrid) {
         this.ennemyGrid = ennemyGrid;
     }
-
     public int getTargetX() {
         return targetX;
     }
-
     public void setTargetX(int targetX) {
         this.targetX = targetX;
     }
-
     public int getTargetY() {
         return targetY;
     }
-
     public void setTargetY(int targetY) {
         this.targetY = targetY;
     }
-
     public int getShipsRemaining() {
         return shipsRemaining;
     }
-
     public void setShipsRemaining(int shipsRemaining) {
         this.shipsRemaining = shipsRemaining;
     }
+    public Map<String, Ship> getFleet() {return fleet; }
+    public void setFleet(Map<String, Ship> fleet) {this.fleet = fleet; }
 }

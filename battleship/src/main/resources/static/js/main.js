@@ -87,12 +87,7 @@ function setFleetData(){
   }
 }
 
-/*REPLAY*/
-function replay(){
-  setInterval(function replayFirst(){
-    $("#replay-form-submit").click();
-  },1000);
-}
+
 
 /*HTTP REQUEST*/
 function handleResponse(response) {

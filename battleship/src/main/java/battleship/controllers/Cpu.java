@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class Cpu {
+    // TODO refactor this in two or three different functions
     public static Map<String, Ship> generateFleet(Grid grid) {
         Map<String, Ship> fleet = new HashMap<>();
         Ship carrier = new Carrier();
@@ -26,6 +27,11 @@ public class Cpu {
         grid.locateShip(destroyer);
         submarine = submarine.generateRandomPosition(grid);
         grid.locateShip(submarine);
+        fleet.put("carrier", carrier);
+        fleet.put("battleship", battleship);
+        fleet.put("cruiser", cruiser);
+        fleet.put("destroyer", destroyer);
+        fleet.put("submarine", submarine);
         return fleet;
     }
 

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StringToMapConverter implements Converter<String, Map<String, Integer>> {
+public class StringToMapStringIntegerConverter implements Converter<String, Map<String, Integer>> {
 
     @Override
     public Map<String, Integer> convert(String source) {

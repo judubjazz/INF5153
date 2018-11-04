@@ -9,7 +9,9 @@
 <body>
 <h1>You lost</h1>
 <div class="home-options-container">
-    <a th:href="@{'/start'}">Play again</a>
+    <div><a th:href="@{'/start'}">play vs computer</a></div>
+    <div><a th:href="@{'/start'}">play vs human</a></div>
+    <div><a th:href="@{'/load'}">load a saved game</a></div>
     <form class='torpedo-form' action="#" th:action="@{/replay}" th:object="${game}" method="post">
         <p><input id="replay-form-submit" class='torpedo-form-submit' type="submit" value="replay" /></p>
         <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerGrid.map}" /></p>

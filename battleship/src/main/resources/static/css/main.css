@@ -41,10 +41,20 @@ th {
 }
 .main-container{
     display: flex;
-    flex-direction: column;
+    flex-direction:column;
     justify-content: center;
 }
 
+.map-container{
+    display: flex;
+    justify-content: center;
+}
+
+.form-container{
+    display: flex;
+    justify-content: center;
+
+}
 .start-form-options-container{
     display: flex;
     flex-direction: column;
