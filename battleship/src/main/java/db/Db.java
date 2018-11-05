@@ -16,7 +16,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
 
 // TODO in the db.xml file, set an attribute to game instead of an inner element
@@ -67,6 +66,7 @@ public class Db {
                         setPlayer(playerSettings, game.playerTwo, game);
                         break;
                     case "difficulty":
+                        // TODO set difficulty
                         break;
                     default:
                         break;
@@ -85,6 +85,7 @@ public class Db {
                         player.shipsRemaining = shipsRemaining;
                         break;
                     case "map":
+                        // TODO create a function setMap()
                         String mapToString = setting.getTextContent();
                         int [][] map = Grid.Stringto2DArray(mapToString);
                         if(player.name.equals("player1")) {
@@ -98,6 +99,7 @@ public class Db {
                         setFleet(fleetNodeList, player);
                         break;
                     case "recorder":
+                        // TODO create a function setRecorder();
                         String recorderToString = setting.getTextContent();
                         StringToArrayListConverter c = new StringToArrayListConverter();
                         ArrayList<Map<String, Integer>> playerMoves = c.convert(recorderToString);
@@ -195,7 +197,7 @@ public class Db {
         Element bowY = document.createElement("bowY");
 
         Element carrier = document.createElement("carrier");
-        stemX.appendChild(document.createTextNode(String.valueOf()))
+        stemX.appendChild(document.createTextNode(String.valueOf(game.playerOne.carrier.stemX)));
 
         Element battleship = document.createElement("batlleship");
         Element cruiser = document.createElement("cruiser");
