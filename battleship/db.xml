@@ -77,4 +77,4 @@
             <recorder>[{x=2, y=1}, {x=7, y=3}, {x=7, y=0}, {x=1[, y=7}, {x=8, y=6}, {x=3, y=5}]</recorder>
         </player2>
     </game>
-<game><id>0</id><difficulty>false[[I@4c9f1fcb</difficulty><player1>battleship.entities.Player@230d3331</player1></game></games>
+<game><name>test</name><port>0</port></game></games>

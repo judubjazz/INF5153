@@ -7,15 +7,12 @@ import battleship.entities.Grid;
 import battleship.entities.Player;
 import battleship.entities.ships.*;
 import battleship.recorder.Recorder;
-import db.XML;
+import db.Db;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.NodeList;
 
-import javax.xml.stream.XMLEventWriter;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,8 +50,8 @@ public class Routes {
         // fleet has to be validated with the grid, therefore the grid is initialise inside generateFleet maybe change the function name
         Map<String, Ship> cpuFleet = Cpu.generateFleet(cpuGrid);
 
-        Player cpu = new Player(cpuFleet, cpuGrid, playerOneGrid);
-        Player player = new Player(playerOneFleet, playerOneGrid, cpuGrid);
+        Player cpu = new Player(cpuFleet, cpuGrid, playerOneGrid, "player2");
+        Player player = new Player(playerOneFleet, playerOneGrid, cpuGrid, "player1");
         Recorder recorder = new Recorder(new ArrayList<>(), new ArrayList<>());
         boolean difficulty = playerOneSettings.getBoolean("difficulty");
 
@@ -120,26 +117,22 @@ public class Routes {
 
     @PostMapping("/save")
     public String saveGame(@ModelAttribute Game game, Model model){
-        Player p1 = game.playerOne;
-        Player p2 = game.playerTwo;
-
-        XML.read();
-        System.out.println(game.recorder.playerOneMoves);
+        Db.save(game);
         model.addAttribute("game", game);
         return "save";
     }
 
     @GetMapping("/load")
     public String loadGame(Model model){
-        // TODO add an id to request params to load game, then construct the game from the xml db
-//        XML.read();
-        NodeList nodeList = XML.getNodeList();
-        XML.printNote(nodeList);
-        Game game = new Game();
-        game.id = 1;
-        game.buildGameFromNodeList(nodeList, game.id, "1");
+        // TODO add game id to request params to load game
+
+        Recorder r = new Recorder();
+        Player p1 = new Player("player1");
+        Player p2 = new Player("player2");
+        Game game = new Game(1,p1,p2,r,false);
+        Db.load(game);
         model.addAttribute("game", game);
-        return "home";
+        return "result";
     }
 
     @PostMapping("/replay")

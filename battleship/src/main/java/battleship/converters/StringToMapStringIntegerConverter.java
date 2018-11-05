@@ -17,18 +17,6 @@ public class StringToMapStringIntegerConverter implements Converter<String, Map<
         String key = null;
         int value;
         String[] keyValueArr = null;
-//        if(from.contains("x")) {
-//            key = "x";
-//            int index = from.indexOf("x");
-//            value = from.charAt(index+2);
-//        }
-//        if(from.contains("y")) {
-//            key = "y";
-//            int index = from.indexOf("y");
-//            value = from.charAt(index+2);
-//            map.put(key, value);
-//        }
-//
         if(source.contains("x")) {
             for (String keyValuePair : keyValuePairs) {
                 keyValueArr = keyValuePair.split(":");

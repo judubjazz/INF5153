@@ -1,7 +1,10 @@
 package battleship.recorder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Recorder {
     public ArrayList<Map<String, Integer>> playerOneMoves;
@@ -13,6 +16,23 @@ public class Recorder {
     public Recorder(ArrayList<Map<String, Integer>> playerOneMoves, ArrayList<Map<String, Integer>> playerTwoMoves) {
         this.playerOneMoves = playerOneMoves;
         this.playerTwoMoves = playerTwoMoves;
+    }
+
+    public static ArrayList<Map<String, Integer>> convert(String source) {
+        ArrayList<Map<String, Integer>> arrayList = new ArrayList<>();
+        String pattern = "\\b([^\\s]+)=([^\\s]+)\\b,\\s([^\\s]+)=([^\\s]+)\\b";
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(source);
+        boolean match = m.find();
+
+        while (match) {
+            Map<String, Integer> map = new HashMap<>();
+            map.put(m.group(1), Integer.parseInt(m.group(2)));
+            map.put(m.group(3), Integer.parseInt(m.group(4)));
+            arrayList.add(map);
+            match=m.find();
+        }
+        return arrayList;
     }
 
     // GETTERS & SETTERS

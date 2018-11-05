@@ -15,7 +15,7 @@ public class Player {
     public Ship cruiser;
     public Grid playerGrid;
     public Grid ennemyGrid;
-//    public JSONObject fleet;
+    public String name;
     public Map<String, Ship> fleet;
     public int targetX;
     public int targetY;
@@ -31,17 +31,28 @@ public class Player {
         this.ennemyGrid = new Grid();
         this.shipsRemaining = 17;
     }
-
-    public Player(JSONObject fleet, Grid playerGrid, Grid ennemyGrid) {
-        this.carrier = (Ship) fleet.get("carrier");
-        this.submarine = (Ship) fleet.get("submarine");
-        this.destroyer = (Ship) fleet.get("destroyer");
-        this.battleship = (Ship) fleet.get("battleship");
-        this.cruiser = (Ship) fleet.get("cruiser");
-//        this.fleet = fleet;
+    public Player (String name) {
+        this.carrier = new Carrier();
+        this.submarine = new Submarine();
+        this.destroyer = new Destroyer();
+        this.battleship = new Battleship();
+        this.cruiser = new Cruiser();
+        this.playerGrid = new Grid();
+        this.ennemyGrid = new Grid();
+        this.shipsRemaining = 17;
+        this.name = name;
     }
 
-    public Player(Map fleet, Grid playerGrid, Grid ennemyGrid) {
+//    public Player(JSONObject fleet, Grid playerGrid, Grid ennemyGrid) {
+//        this.carrier = (Ship) fleet.get("carrier");
+//        this.submarine = (Ship) fleet.get("submarine");
+//        this.destroyer = (Ship) fleet.get("destroyer");
+//        this.battleship = (Ship) fleet.get("battleship");
+//        this.cruiser = (Ship) fleet.get("cruiser");
+////        this.fleet = fleet;
+//    }
+
+    public Player(Map fleet, Grid playerGrid, Grid ennemyGrid, String name) {
         this.carrier = (Ship) fleet.get("carrier");
         this.submarine = (Ship) fleet.get("submarine");
         this.destroyer = (Ship) fleet.get("destroyer");
@@ -51,6 +62,7 @@ public class Player {
         this.ennemyGrid = ennemyGrid;
         this.shipsRemaining = 17;
         this.fleet = fleet;
+        this.name = name;
         ennemyGrid.hidden = true;
     }
 
