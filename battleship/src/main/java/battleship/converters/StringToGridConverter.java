@@ -1,14 +1,14 @@
 package battleship.converters;
 
-import battleship.entities.Grid;
+import battleship.entities.Board;
 import org.springframework.core.convert.converter.Converter;
 
-public class StringToGridConverter implements Converter<String, Grid> {
+public class StringToGridConverter implements Converter<String, Board> {
 
     @Override
-    public Grid convert(String source) {
+    public Board convert(String source) {
         String[] data = source.split(",");
-        return new Grid(
+        return new Board(
 //                Integer.parseInt(data[0]),
 //                Integer.parseInt(data[1]),
 //                Integer.parseInt(data[2]),

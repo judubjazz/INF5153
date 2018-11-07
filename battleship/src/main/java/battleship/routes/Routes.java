@@ -2,11 +2,11 @@ package battleship.routes;
 
 import battleship.controllers.Cpu;
 import battleship.controllers.StartForm;
+import battleship.entities.Board;
 import battleship.entities.Game;
-import battleship.entities.Grid;
 import battleship.entities.Player;
 import battleship.entities.ships.*;
-import battleship.recorder.Recorder;
+import battleship.entities.Recorder;
 import db.Db;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -37,21 +37,19 @@ public class Routes {
     public String startGame(@ModelAttribute StartForm startForm, Model model) {
         String data = startForm.getData();
 
-        // TODO validation of the player fleet, some validation methods are available in Grid class, maybe add a Validation class
+        // TODO validation of the player fleet, some validation methods are available in Board class, maybe add a Validation class
 
         JSONObject playerOneSettings = JSONObject.fromObject(data);
         JSONObject playerOneFleetJSON = playerOneSettings.getJSONObject("fleet");
-        Grid playerOneGrid = new Grid();
+        Board playerOneBoard = new Board();
         Map<String, Ship> playerOneFleet = Ship.buildFleet(playerOneFleetJSON);
-        playerOneGrid.locateFleet(playerOneFleet);
-
-
-        Grid cpuGrid = new Grid();
+        playerOneBoard.locateFleet(playerOneFleet);
+        Board cpuBoard = new Board();
         // fleet has to be validated with the grid, therefore the grid is initialise inside generateFleet maybe change the function name
-        Map<String, Ship> cpuFleet = Cpu.generateFleet(cpuGrid);
+        Map<String, Ship> cpuFleet = Cpu.generateFleet(cpuBoard);
 
-        Player cpu = new Player(cpuFleet, cpuGrid, playerOneGrid, "player2");
-        Player player = new Player(playerOneFleet, playerOneGrid, cpuGrid, "player1");
+        Player cpu = new Player(cpuFleet, cpuBoard, playerOneBoard, "player2");
+        Player player = new Player(playerOneFleet, playerOneBoard, cpuBoard, "player1");
         Recorder recorder = new Recorder(new ArrayList<>(), new ArrayList<>());
         boolean difficulty = playerOneSettings.getBoolean("difficulty");
 
@@ -76,11 +74,11 @@ public class Routes {
         target.put("y", targetY);
         game.recorder.playerOneMoves.add(target);
 
-        int targetedArea = p1.ennemyGrid.map[targetX][targetY];
+        int targetedArea = p1.ennemyBoard.map[targetX][targetY];
         if(targetedArea > 0){p2.shipsRemaining--;}
 
-        p1.ennemyGrid.map[targetX][targetY] = -1;
-        p2.playerGrid.map[targetX][targetY] = -1;
+        p1.ennemyBoard.map[targetX][targetY] = -1;
+        p2.playerBoard.map[targetX][targetY] = -1;
 
         if(p2.shipsRemaining == 0){return "you-won";}
 
@@ -105,11 +103,11 @@ public class Routes {
         int cpuTargetX = target.get("x");
         int cpuTargetY = target.get("y");
 
-        targetedArea = p1.playerGrid.map[cpuTargetX][cpuTargetY];
+        targetedArea = p1.playerBoard.map[cpuTargetX][cpuTargetY];
         if(targetedArea > 0){p1.shipsRemaining--;}
 
-        p2.ennemyGrid.map[cpuTargetX][cpuTargetY] = -1;
-        p1.playerGrid.map[cpuTargetX][cpuTargetY] = -1;
+        p2.ennemyBoard.map[cpuTargetX][cpuTargetY] = -1;
+        p1.playerBoard.map[cpuTargetX][cpuTargetY] = -1;
 
         if(p1.shipsRemaining == 0){return "you-lost";}
         return "result";
@@ -148,20 +146,20 @@ public class Routes {
         Map<String,Integer> target = p1Moves.get(game.recorder.index);
         int targetX = target.get("x");
         int targetY = target.get("y");
-        int targetedArea = p1.ennemyGrid.map[targetX][targetY];
+        int targetedArea = p1.ennemyBoard.map[targetX][targetY];
         if(targetedArea > 0){p2.shipsRemaining--;}
-        p1.ennemyGrid.map[targetX][targetY] = -1;
-        p2.playerGrid.map[targetX][targetY] = -1;
+        p1.ennemyBoard.map[targetX][targetY] = -1;
+        p2.playerBoard.map[targetX][targetY] = -1;
         if(p2.shipsRemaining == 0){return "you-won";}
 
         // playerTwo turn
         target = p2Moves.get(game.recorder.index);
         targetX = target.get("x");
         targetY = target.get("y");
-        targetedArea = p2.ennemyGrid.map[targetX][targetY];
+        targetedArea = p2.ennemyBoard.map[targetX][targetY];
         if(targetedArea > 0){p1.shipsRemaining--;}
-        p2.ennemyGrid.map[targetX][targetY] = -1;
-        p1.playerGrid.map[targetX][targetY] = -1;
+        p2.ennemyBoard.map[targetX][targetY] = -1;
+        p1.playerBoard.map[targetX][targetY] = -1;
         if(p2.shipsRemaining == 0){return "you-won";}
 
         game.recorder.index++;
@@ -176,15 +174,15 @@ public class Routes {
 
         Map<String, Ship> p1Fleet = Ship.buildFleetFromShips(p1.carrier, p1.battleship, p1.cruiser, p1.destroyer, p1.submarine);
         Map<String, Ship> p2Fleet = Ship.buildFleetFromShips(p2.carrier, p2.battleship, p2.cruiser, p2.destroyer, p2.submarine);
-        Grid p1Grid = new Grid();
-        Grid p2Grid = new Grid();
-        p1.playerGrid = p2.ennemyGrid = p1Grid;
-        p2.playerGrid = p1.ennemyGrid = p2Grid;
+        Board p1Board = new Board();
+        Board p2Board = new Board();
+        p1.playerBoard = p2.ennemyBoard = p1Board;
+        p2.playerBoard = p1.ennemyBoard = p2Board;
 
-        p1.playerGrid.locateFleet(p1Fleet);
-        p1.ennemyGrid.locateFleet(p2Fleet);
-        p2.playerGrid.locateFleet(p2Fleet);
-        p2.ennemyGrid.locateFleet(p1Fleet);
+        p1.playerBoard.locateFleet(p1Fleet);
+        p1.ennemyBoard.locateFleet(p2Fleet);
+        p2.playerBoard.locateFleet(p2Fleet);
+        p2.ennemyBoard.locateFleet(p1Fleet);
 
         p1.shipsRemaining = p2.shipsRemaining = 17;
 

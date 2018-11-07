@@ -1,9 +1,6 @@
 package battleship.entities;
 
 import battleship.entities.ships.*;
-import net.sf.json.JSONObject;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import java.util.Map;
 
@@ -13,8 +10,8 @@ public class Player {
     public Ship destroyer;
     public Ship battleship;
     public Ship cruiser;
-    public Grid playerGrid;
-    public Grid ennemyGrid;
+    public Board playerBoard;
+    public Board ennemyBoard;
     public String name;
     public Map<String, Ship> fleet;
     public int targetX;
@@ -27,8 +24,8 @@ public class Player {
         this.destroyer = new Destroyer();
         this.battleship = new Battleship();
         this.cruiser = new Cruiser();
-        this.playerGrid = new Grid();
-        this.ennemyGrid = new Grid();
+        this.playerBoard = new Board();
+        this.ennemyBoard = new Board();
         this.shipsRemaining = 17;
     }
     public Player (String name) {
@@ -37,13 +34,13 @@ public class Player {
         this.destroyer = new Destroyer();
         this.battleship = new Battleship();
         this.cruiser = new Cruiser();
-        this.playerGrid = new Grid();
-        this.ennemyGrid = new Grid();
+        this.playerBoard = new Board();
+        this.ennemyBoard = new Board();
         this.shipsRemaining = 17;
         this.name = name;
     }
 
-//    public Player(JSONObject fleet, Grid playerGrid, Grid ennemyGrid) {
+//    public Player(JSONObject fleet, Board playerBoard, Board ennemyBoard) {
 //        this.carrier = (Ship) fleet.get("carrier");
 //        this.submarine = (Ship) fleet.get("submarine");
 //        this.destroyer = (Ship) fleet.get("destroyer");
@@ -52,36 +49,18 @@ public class Player {
 ////        this.fleet = fleet;
 //    }
 
-    public Player(Map fleet, Grid playerGrid, Grid ennemyGrid, String name) {
+    public Player(Map fleet, Board playerBoard, Board ennemyBoard, String name) {
         this.carrier = (Ship) fleet.get("carrier");
         this.submarine = (Ship) fleet.get("submarine");
         this.destroyer = (Ship) fleet.get("destroyer");
         this.battleship = (Ship) fleet.get("battleship");
         this.cruiser = (Ship) fleet.get("cruiser");
-        this.playerGrid = playerGrid;
-        this.ennemyGrid = ennemyGrid;
+        this.playerBoard = playerBoard;
+        this.ennemyBoard = ennemyBoard;
         this.shipsRemaining = 17;
         this.fleet = fleet;
         this.name = name;
-        ennemyGrid.hidden = true;
-    }
-
-    public void setPlayerFromNodeList(NodeList nodeList){
-        for(int j = 0; j < nodeList.getLength(); ++j ){
-            Node player1Settings = nodeList.item(j);
-            if (player1Settings.getNodeType() == Node.ELEMENT_NODE) {
-
-                if(player1Settings.getNodeName().equals("shipsRemaining")){
-
-                }else if(player1Settings.getNodeName().equals("map")){
-
-                }else if(player1Settings.getNodeName().equals("fleet")){
-
-                }else if(player1Settings.getNodeName().equals("recorder")){
-
-                }
-            }
-        }
+        ennemyBoard.hidden = true;
     }
 
     // Getters & Setters
@@ -111,17 +90,17 @@ public class Player {
     public void setCruiser(Ship cruiser) {
         this.cruiser = cruiser;
     }
-    public Grid getPlayerGrid() {
-        return playerGrid;
+    public Board getPlayerBoard() {
+        return playerBoard;
     }
-    public void setPlayerGrid(Grid playerGrid) {
-        this.playerGrid = playerGrid;
+    public void setPlayerBoard(Board playerBoard) {
+        this.playerBoard = playerBoard;
     }
-    public Grid getEnnemyGrid() {
-        return ennemyGrid;
+    public Board getEnnemyBoard() {
+        return ennemyBoard;
     }
-    public void setEnnemyGrid(Grid ennemyGrid) {
-        this.ennemyGrid = ennemyGrid;
+    public void setEnnemyBoard(Board ennemyBoard) {
+        this.ennemyBoard = ennemyBoard;
     }
     public int getTargetX() {
         return targetX;

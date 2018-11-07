@@ -1,4 +1,4 @@
-package battleship.recorder;
+package battleship.entities;
 
 import java.util.ArrayList;
 import java.util.HashMap;

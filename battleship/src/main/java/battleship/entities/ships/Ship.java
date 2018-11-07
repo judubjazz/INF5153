@@ -1,5 +1,5 @@
 package battleship.entities.ships;
-import battleship.entities.Grid;
+import battleship.entities.Board;
 import net.sf.json.JSONObject;
 
 import java.util.*;
@@ -82,24 +82,24 @@ public class Ship {
         }
     }
 
-    public Ship generateRandomPosition(Grid grid) {
+    public Ship generateRandomPosition(Board board) {
         Random random = new Random();
-        this.stemX = random.nextInt(grid.getWidth());
-        this.stemY = random.nextInt(grid.getHeight());
+        this.stemX = random.nextInt(board.getWidth());
+        this.stemY = random.nextInt(board.getHeight());
         boolean horizontalDirection = random.nextBoolean();
         boolean hasValidPosition;
         if(horizontalDirection){
             this.bowY = stemY;
             this.bowX = stemX + this.size - 1 ;
-            if(this.bowX > 9)generateRandomPosition(grid);
-            hasValidPosition = grid.validateRow(this);
+            if(this.bowX > 9)generateRandomPosition(board);
+            hasValidPosition = board.validateRow(this);
         } else {
             this.bowY = stemY + this.size - 1;
             this.bowX = stemX;
-            if(this.bowY > 9)generateRandomPosition(grid);
-            hasValidPosition = grid.validateCol(this);
+            if(this.bowY > 9)generateRandomPosition(board);
+            hasValidPosition = board.validateCol(this);
         }
-        if(!hasValidPosition)generateRandomPosition(grid);
+        if(!hasValidPosition)generateRandomPosition(board);
         return this;
     }
 

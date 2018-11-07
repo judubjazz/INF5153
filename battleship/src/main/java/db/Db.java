@@ -1,8 +1,8 @@
 package db;
 
 import battleship.converters.StringToArrayListConverter;
+import battleship.entities.Board;
 import battleship.entities.Game;
-import battleship.entities.Grid;
 import battleship.entities.Player;
 import battleship.entities.ships.Ship;
 import org.w3c.dom.*;
@@ -87,11 +87,11 @@ public class Db {
                     case "map":
                         // TODO create a function setMap()
                         String mapToString = setting.getTextContent();
-                        int [][] map = Grid.Stringto2DArray(mapToString);
+                        int [][] map = Board.Stringto2DArray(mapToString);
                         if(player.name.equals("player1")) {
-                            game.playerOne.playerGrid.map = game.playerTwo.ennemyGrid.map = map;
+                            game.playerOne.playerBoard.map = game.playerTwo.ennemyBoard.map = map;
                         } else {
-                            game.playerTwo.playerGrid.map = game.playerOne.ennemyGrid.map = map;
+                            game.playerTwo.playerBoard.map = game.playerOne.ennemyBoard.map = map;
                         }
                         break;
                     case "fleet":
@@ -188,7 +188,7 @@ public class Db {
         shipsRemaining.appendChild(document.createTextNode(String.valueOf(game.playerOne.shipsRemaining)));
 
         Element map = document.createElement("map");
-        difficulty.appendChild(document.createTextNode(String.valueOf(game.playerOne.playerGrid.map)));
+        difficulty.appendChild(document.createTextNode(String.valueOf(game.playerOne.playerBoard.map)));
 
         Element fleet = document.createElement("fleet");
         Element stemX = document.createElement("stemX");

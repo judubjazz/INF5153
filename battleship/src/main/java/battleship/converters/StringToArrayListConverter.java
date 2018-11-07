@@ -1,15 +1,12 @@
 package battleship.converters;
 
-import battleship.entities.Grid;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class StringToArrayListConverter implements Converter<String, ArrayList> {
 

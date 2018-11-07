@@ -4,14 +4,13 @@ package battleship.entities;
 import battleship.entities.ships.Ship;
 import java.util.Map;
 
-public class Grid {
+public class Board {
     public int height = 10;
     public int width = 10;
     public boolean hidden;
     public int[][] map;
-//    public ArrayList [][] map;
 
-    public Grid() {
+    public Board() {
         this.map = new int[][]{
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -24,13 +23,9 @@ public class Grid {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         };
-//        this.map = new ArrayList[10][10];
-//        for(int i = 0; i< 9; ++i){
-//            this.map[i][0] = new ArrayList();
-//        }
         this.hidden = false;
     }
-    public Grid(boolean hidden) {
+    public Board(boolean hidden) {
         this.map = new int[][]{
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -44,20 +39,6 @@ public class Grid {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         };
         this.hidden = hidden;
-//        this.map = new ArrayList[10][10];
-    }
-
-//    public Grid(int [][] map) {
-//        this.map = map;
-//        this.hidden = false;
-//    }
-//    public Grid(ArrayList [][] map) {
-//        this.map = map;
-//        this.hidden = false;
-//    }
-
-    public Grid generateRandomGrid() {
-        return this;
     }
 
     public void locateFleet(Map<String, Ship> fleet) {

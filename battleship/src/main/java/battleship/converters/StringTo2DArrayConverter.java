@@ -1,6 +1,5 @@
 package battleship.converters;
 
-import battleship.entities.Grid;
 import org.springframework.core.convert.converter.Converter;
 
 public class StringTo2DArrayConverter implements Converter<String, int [][]> {

@@ -1,11 +1,5 @@
 package battleship.entities;
 
-import battleship.converters.StringToArrayListConverter;
-import battleship.entities.ships.Ship;
-import battleship.recorder.Recorder;
-import java.util.ArrayList;
-import java.util.Map;
-
 public class Game {
     public int id;
     public boolean difficulty;

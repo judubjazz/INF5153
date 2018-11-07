@@ -1,6 +1,6 @@
 package battleship.controllers;
 
-import battleship.entities.Grid;
+import battleship.entities.Board;
 import battleship.entities.ships.*;
 
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Cpu {
     // TODO refactor this in two or three different functions
-    public static Map<String, Ship> generateFleet(Grid grid) {
+    public static Map<String, Ship> generateFleet(Board board) {
         Map<String, Ship> fleet = new HashMap<>();
         Ship carrier = new Carrier();
         Ship battleship = new Battleship();
@@ -17,16 +17,16 @@ public class Cpu {
         Ship destroyer = new Destroyer();
         Ship submarine = new Submarine();
 
-        carrier = carrier.generateRandomPosition(grid);
-        grid.locateShip(carrier);
-        battleship = battleship.generateRandomPosition(grid);
-        grid.locateShip(battleship);
-        cruiser = cruiser.generateRandomPosition(grid);
-        grid.locateShip(cruiser);
-        destroyer = destroyer.generateRandomPosition(grid);
-        grid.locateShip(destroyer);
-        submarine = submarine.generateRandomPosition(grid);
-        grid.locateShip(submarine);
+        carrier = carrier.generateRandomPosition(board);
+        board.locateShip(carrier);
+        battleship = battleship.generateRandomPosition(board);
+        board.locateShip(battleship);
+        cruiser = cruiser.generateRandomPosition(board);
+        board.locateShip(cruiser);
+        destroyer = destroyer.generateRandomPosition(board);
+        board.locateShip(destroyer);
+        submarine = submarine.generateRandomPosition(board);
+        board.locateShip(submarine);
         fleet.put("carrier", carrier);
         fleet.put("battleship", battleship);
         fleet.put("cruiser", cruiser);
@@ -35,11 +35,11 @@ public class Cpu {
         return fleet;
     }
 
-    public static Map<String, Integer> targetRandomPosition(Grid grid){
+    public static Map<String, Integer> targetRandomPosition(Board board){
         Random r = new Random();
         Map<String, Integer> map = new HashMap<>();
-        int x = r.nextInt(grid.width - 1);
-        int y = r.nextInt(grid.height - 1);
+        int x = r.nextInt(board.width - 1);
+        int y = r.nextInt(board.height - 1);
         map.put("x", x );
         map.put("y", y);
         return map;
