@@ -1,22 +1,22 @@
 package battleship.entities;
 
-public class Game {
+public class BattleshipGame {
     public int id;
     public boolean difficulty;
     public Player playerOne;
     public Player playerTwo;
     public Recorder recorder;
 
-    public Game(){
+    public BattleshipGame(){
 
     }
 
-    public Game(Player playerOne, Player playerTwo) {
+    public BattleshipGame(Player playerOne, Player playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
     }
 
-    public Game(int id, Player playerOne, Player playerTwo, Recorder recorder, boolean difficulty) {
+    public BattleshipGame(int id, Player playerOne, Player playerTwo, Recorder recorder, boolean difficulty) {
         this.id = id;
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;

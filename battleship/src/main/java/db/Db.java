@@ -1,8 +1,8 @@
 package db;
 
 import battleship.converters.StringToArrayListConverter;
+import battleship.entities.BattleshipGame;
 import battleship.entities.Board;
-import battleship.entities.Game;
 import battleship.entities.Player;
 import battleship.entities.ships.Ship;
 import org.w3c.dom.*;
@@ -21,30 +21,42 @@ import java.util.Map;
 // TODO in the db.xml file, set an attribute to game instead of an inner element
 public class Db {
     // TODO construct relative path
+    static private Db instance = null;
     private final static String dbLocation = "/home/ju/JetBrainsProjects/IdeaProjects/INF5153/battleship/src/main/java/db/db.xml";
 
-    public static void save(Game game){
+    private Db() {
+
+    }
+
+    static public Db getInstance() {
+        if (instance == null ){
+            instance = new Db();
+        }
+        return instance;
+    }
+
+    public void save(BattleshipGame battleshipGame){
         try{
-            addNode(game);
+            Db.getInstance().addNode(battleshipGame);
         } catch (Exception e){
             System.out.println(e);
         }
 
     }
-    public static void load(Game game){
+    public void load(BattleshipGame battleshipGame){
         NodeList tree = getRootNodeList();
         Node root = tree.item(0);
         NodeList gamesTree = root.getChildNodes();
         for (int count = 0; count < gamesTree.getLength(); count++) {
             Node gameNode = gamesTree.item(count);
-            if (gameNode.getNodeType() == Node.ELEMENT_NODE && gameNode.getNodeName().equals("game")) {
+            if (gameNode.getNodeType() == Node.ELEMENT_NODE && gameNode.getNodeName().equals("battleshipGame")) {
                 NodeList gameSettings = gameNode.getChildNodes();
                 for (int i = 0; count < gameSettings.getLength(); i++) {
                     Node gameSetting = gameSettings.item(i);
                     if (gameNode.getNodeType() == Node.ELEMENT_NODE && gameSetting.getNodeName().equals("id")) {
                         String gameID = gameSetting.getTextContent();
-                        if (gameID.equals(String.valueOf(game.id))) {
-                            setGame(gameSettings, game);
+                        if (gameID.equals(String.valueOf(battleshipGame.id))) {
+                            setGame(gameSettings, battleshipGame);
                             break;
                         }
                     }
@@ -53,17 +65,17 @@ public class Db {
         }
     }
 
-    private static void setGame(NodeList gameSettings, Game game){
+    private void setGame(NodeList gameSettings, BattleshipGame battleshipGame){
         for (int i = 0; i < gameSettings.getLength(); i++) {
             Node setting = gameSettings.item(i);
             if (setting.getNodeType() == Node.ELEMENT_NODE) {
                 NodeList playerSettings = setting.getChildNodes();
                 switch(setting.getNodeName()){
                     case "player1":
-                        setPlayer(playerSettings, game.playerOne, game);
+                        setPlayer(playerSettings, battleshipGame.playerOne, battleshipGame);
                         break;
                     case "player2":
-                        setPlayer(playerSettings, game.playerTwo, game);
+                        setPlayer(playerSettings, battleshipGame.playerTwo, battleshipGame);
                         break;
                     case "difficulty":
                         // TODO set difficulty
@@ -75,7 +87,7 @@ public class Db {
         }
     }
 
-    private static void setPlayer(NodeList playerSettings, Player player, Game game){
+    private void setPlayer(NodeList playerSettings, Player player, BattleshipGame battleshipGame){
         for(int j = 0; j < playerSettings.getLength(); ++j ){
             Node setting = playerSettings.item(j);
             if (setting.getNodeType() == Node.ELEMENT_NODE) {
@@ -89,9 +101,9 @@ public class Db {
                         String mapToString = setting.getTextContent();
                         int [][] map = Board.Stringto2DArray(mapToString);
                         if(player.name.equals("player1")) {
-                            game.playerOne.playerBoard.map = game.playerTwo.ennemyBoard.map = map;
+                            battleshipGame.playerOne.playerBoard.map = battleshipGame.playerTwo.ennemyBoard.map = map;
                         } else {
-                            game.playerTwo.playerBoard.map = game.playerOne.ennemyBoard.map = map;
+                            battleshipGame.playerTwo.playerBoard.map = battleshipGame.playerOne.ennemyBoard.map = map;
                         }
                         break;
                     case "fleet":
@@ -104,18 +116,18 @@ public class Db {
                         StringToArrayListConverter c = new StringToArrayListConverter();
                         ArrayList<Map<String, Integer>> playerMoves = c.convert(recorderToString);
                         if(player.name.equals("player1")) {
-                            game.recorder.playerOneMoves = playerMoves;
+                            battleshipGame.recorder.playerOneMoves = playerMoves;
                         } else {
-                            game.recorder.playerTwoMoves = playerMoves;
+                            battleshipGame.recorder.playerTwoMoves = playerMoves;
                         }
-                        game.recorder.index = 0;
+                        battleshipGame.recorder.index = 0;
                         break;
                 }
             }
         }
     }
 
-    private static void setFleet(NodeList nodeList, Player player){
+    private void setFleet(NodeList nodeList, Player player){
         for(int i = 0; i < nodeList.getLength(); ++i){
             Node shipNode = nodeList.item(i);
             if(shipNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -141,7 +153,7 @@ public class Db {
         }
     }
 
-    private static void setShip(NodeList shipSettings, Ship ship) {
+    private void setShip(NodeList shipSettings, Ship ship) {
         for(int i = 0; i < shipSettings.getLength(); ++i){
             Node shipLocationNode = shipSettings.item(i);
             if(shipLocationNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -166,29 +178,29 @@ public class Db {
     }
 
 
-    private static void addNode(Game game) throws Exception {
+    private void addNode(BattleshipGame battleshipGame) throws Exception {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document document = documentBuilder.parse("/home/ju/JetBrainsProjects/IdeaProjects/INF5153/battleship/src/main/java/db/db.xml");
         Element root = document.getDocumentElement();
 
-        Element newGame = document.createElement("game");
+        Element newGame = document.createElement("battleshipGame");
 
         Element id = document.createElement("id");
-        id.appendChild(document.createTextNode(String.valueOf(game.id)));
+        id.appendChild(document.createTextNode(String.valueOf(battleshipGame.id)));
         newGame.appendChild(id);
 
         Element difficulty = document.createElement("difficulty");
-        difficulty.appendChild(document.createTextNode(String.valueOf(game.difficulty)));
+        difficulty.appendChild(document.createTextNode(String.valueOf(battleshipGame.difficulty)));
         newGame.appendChild(difficulty);
 
         Element player1 = document.createElement("player1");
 
         Element shipsRemaining = document.createElement("shipsRemaining");
-        shipsRemaining.appendChild(document.createTextNode(String.valueOf(game.playerOne.shipsRemaining)));
+        shipsRemaining.appendChild(document.createTextNode(String.valueOf(battleshipGame.playerOne.shipsRemaining)));
 
         Element map = document.createElement("map");
-        difficulty.appendChild(document.createTextNode(String.valueOf(game.playerOne.playerBoard.map)));
+        difficulty.appendChild(document.createTextNode(String.valueOf(battleshipGame.playerOne.playerBoard.map)));
 
         Element fleet = document.createElement("fleet");
         Element stemX = document.createElement("stemX");
@@ -197,14 +209,14 @@ public class Db {
         Element bowY = document.createElement("bowY");
 
         Element carrier = document.createElement("carrier");
-        stemX.appendChild(document.createTextNode(String.valueOf(game.playerOne.carrier.stemX)));
+        stemX.appendChild(document.createTextNode(String.valueOf(battleshipGame.playerOne.carrier.stemX)));
 
         Element battleship = document.createElement("batlleship");
         Element cruiser = document.createElement("cruiser");
         Element destroyer = document.createElement("destroyer");
         Element submarine = document.createElement("submarine");
         Element recorder = document.createElement("recorder");
-        player1.appendChild(document.createTextNode(String.valueOf(game.playerOne)));
+        player1.appendChild(document.createTextNode(String.valueOf(battleshipGame.playerOne)));
         newGame.appendChild(player1);
 
 
@@ -217,7 +229,7 @@ public class Db {
         transformer.transform(source, result);
     }
 
-    public static void write() {
+    public void write() {
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -275,7 +287,7 @@ public class Db {
         }
     }
 
-    public static void read() {
+    public void read() {
         try {
             // TODO add an id to request params to load game, then construct the game from the xml db
             File file = new File("/home/ju/JetBrainsProjects/IdeaProjects/INF5153/INF5153/battleship/src/main/java/db/db.xml");
@@ -288,8 +300,7 @@ public class Db {
         }
     }
 
-    // TODO create singleton
-    public static NodeList getRootNodeList() {
+    public NodeList getRootNodeList() {
         NodeList nodeList = null;
         try {
 //            File file = new File(dbLocation);
@@ -306,7 +317,7 @@ public class Db {
         return nodeList;
     }
 
-    public static void printNote(NodeList nodeList) {
+    public void printNote(NodeList nodeList) {
         for (int count = 0; count < nodeList.getLength(); count++) {
             Node tempNode = nodeList.item(count);
             // make sure it's element node.

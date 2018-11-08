@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class Cpu {
+public class AiController {
     // TODO refactor this in two or three different functions
     public static Map<String, Ship> generateFleet(Board board) {
         Map<String, Ship> fleet = new HashMap<>();

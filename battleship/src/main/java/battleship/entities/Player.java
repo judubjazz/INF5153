@@ -1,7 +1,6 @@
 package battleship.entities;
 
 import battleship.entities.ships.*;
-
 import java.util.Map;
 
 public class Player {
@@ -17,6 +16,7 @@ public class Player {
     public int targetX;
     public int targetY;
     public int shipsRemaining;
+    public boolean winner;
 
     public Player () {
         this.carrier = new Carrier();
@@ -27,6 +27,7 @@ public class Player {
         this.playerBoard = new Board();
         this.ennemyBoard = new Board();
         this.shipsRemaining = 17;
+        this.winner = false;
     }
     public Player (String name) {
         this.carrier = new Carrier();
@@ -38,16 +39,8 @@ public class Player {
         this.ennemyBoard = new Board();
         this.shipsRemaining = 17;
         this.name = name;
+        this.winner = false;
     }
-
-//    public Player(JSONObject fleet, Board playerBoard, Board ennemyBoard) {
-//        this.carrier = (Ship) fleet.get("carrier");
-//        this.submarine = (Ship) fleet.get("submarine");
-//        this.destroyer = (Ship) fleet.get("destroyer");
-//        this.battleship = (Ship) fleet.get("battleship");
-//        this.cruiser = (Ship) fleet.get("cruiser");
-////        this.fleet = fleet;
-//    }
 
     public Player(Map fleet, Board playerBoard, Board ennemyBoard, String name) {
         this.carrier = (Ship) fleet.get("carrier");
@@ -60,6 +53,7 @@ public class Player {
         this.shipsRemaining = 17;
         this.fleet = fleet;
         this.name = name;
+        this.winner = false;
         ennemyBoard.hidden = true;
     }
 

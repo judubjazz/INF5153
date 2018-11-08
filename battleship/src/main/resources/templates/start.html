@@ -12,7 +12,7 @@
 <body>
 <div layout:fragment="content">
 	<h1>Start Game</h1>
-    <!--TODO add rules game-->
+    <!--TODO add rules battleshipGame-->
     <div class="fleet-container" ondrop="drop(event)" ondragover="allowDrop(event)">
         <div id="submarine" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">1</div>
         <div id="destroyer" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">2</div>
@@ -34,7 +34,7 @@
     </div>
 
     <div class="start-form-container">
-        <form action="#" th:action="@{/start}" th:object="${startForm}" method="post">
+        <form action="#" th:action="@{/start}" th:object="${formController}" method="post">
             <p>data: <input id="fleet-data-input" type="text" th:field="*{data}" /></p>
             <p><input id="submit-fleet-button" type="submit" value="Submit" /></p>
         </form>

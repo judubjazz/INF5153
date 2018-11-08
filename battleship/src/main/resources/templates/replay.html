@@ -14,7 +14,7 @@
     <h1>Replay</h1>
     <div class="map-container">
     <table class="player-one-map test">
-        <tr th:each="col: ${game.playerOne.playerBoard.map}">
+        <tr th:each="col: ${battleshipGame.playerOne.playerBoard.map}">
             <td th:each="colValue: ${col}">
                 <div class="tiles" th:name="${colValue}" th:text="${colValue}"></div>
             </td>
@@ -22,7 +22,7 @@
     </table>
 
     <table class="player-two-map test">
-        <tr th:each="col, iterX: ${game.playerOne.ennemyBoard.map}">
+        <tr th:each="col, iterX: ${battleshipGame.playerOne.ennemyBoard.map}">
             <td th:each="colValue, iterY: ${col}">
                 <div th:class="tiles" th:name="${colValue}" th:text="${colValue}" th:onclick="|torpedo(event, ${iterX.index}, ${iterY.index})|" ></div>
             </td>
@@ -31,7 +31,7 @@
     </div>
 
     <div class="form-container">
-    <form class='torpedo-form' action="#" th:action="@{/replay}" th:object="${game}" method="post">
+    <form class='torpedo-form' action="#" th:action="@{/replay}" th:object="${battleshipGame}" method="post">
         <p><input id="replay-form-submit" class='torpedo-form-submit' type="submit" value="replay" /></p>
         <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerBoard.map}" /></p>
         <p>PlayerOne enemy map: <input class='torpedo-form' type="text" th:field="*{playerOne.ennemyBoard.map}"/></p>

@@ -10,9 +10,9 @@
 <div class="home-options-container">
     <div><a th:href="@{'/start'}">play vs computer</a></div>
     <div><a th:href="@{'/start'}">play vs human</a></div>
-    <div><a th:href="@{'/load'}">load a saved game</a></div>
-    <form class='torpedo-form' action="#" th:action="@{/replay}" th:object="${game}" method="get">
-        <p><input id="replay-form-submit" class='torpedo-form-submit' type="submit" value="replay last game" /></p>
+    <div><a th:href="@{'/load'}">load a saved battleshipGame</a></div>
+    <form class='torpedo-form' action="#" th:action="@{/replay}" th:object="${battleshipGame}" method="get">
+        <p><input id="replay-form-submit" class='torpedo-form-submit' type="submit" value="replay last battleshipGame" /></p>
         <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerBoard.map}" /></p>
         <p>PlayerOne enemy map: <input class='torpedo-form' type="text" th:field="*{playerOne.ennemyBoard.map}"/></p>
         <p>PlayerOne ships remaining: <input class='torpedo-form' type="text" th:field="*{playerOne.shipsRemaining}"/></p>

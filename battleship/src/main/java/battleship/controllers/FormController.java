@@ -1,8 +1,8 @@
 package battleship.controllers;
 
-public class StartForm {
+public class FormController {
 
-    private String data;
+    public String data;
 
     public String getData() {
         return data;

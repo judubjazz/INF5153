@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><games>
-    <game>
+    <battleshipGame>
         <id>1</id>
         <difficulty>false</difficulty>
         <player1>
@@ -76,5 +76,5 @@
             </fleet>
             <recorder>[{x=2, y=1}, {x=7, y=3}, {x=7, y=0}, {x=1[, y=7}, {x=8, y=6}, {x=3, y=5}]</recorder>
         </player2>
-    </game>
-<game><name>test</name><port>0</port></game></games>
+    </battleshipGame>
+<battleshipGame><name>test</name><port>0</port></battleshipGame></games>
