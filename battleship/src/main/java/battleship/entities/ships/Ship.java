@@ -1,10 +1,8 @@
 package battleship.entities.ships;
 import battleship.entities.Board;
 import net.sf.json.JSONObject;
-
 import java.util.*;
 
-import static org.apache.commons.lang.math.RandomUtils.nextInt;
 
 public class Ship {
     public boolean hasSank;
@@ -18,12 +16,7 @@ public class Ship {
 
     public Ship() {
         this.hasSank = false;
-        this.id = 0;
-        this.size = 0;
-        this.stemX = 0;
-        this.stemY = 0;
-        this.bowX = 0;
-        this.bowY = 0;
+        this.id = this.size = this.stemX = this.stemY = this.bowX = this.bowY = 0;
     }
 
     public Ship(int id, int size, int stemX, int stemY, int bowX, int bowY) {
@@ -36,17 +29,6 @@ public class Ship {
         this.bowY = bowY;
     }
 
-//    public static Map<String, Ship> buildFleet(JSONObject options){
-//        Map<String, Ship> fleet = new HashMap<>();
-//        Iterator<String> keys = options.keys();
-//        while(keys.hasNext()) {
-//            String key = keys.next();
-//            Ship buildedShip = buildShipFromJSON(options, key);
-//            fleet.put(key, buildedShip);
-//        }
-//        return fleet;
-//    }
-
     public static Map<String, Ship> buildFleetFromShips(Ship carrier, Ship battleship, Ship cruiser, Ship destroyer, Ship submarine){
         Map<String, Ship> fleet = new HashMap<>();
         fleet.put("carrier", carrier);
@@ -57,49 +39,60 @@ public class Ship {
         return fleet;
     }
 
-//    private static Ship buildShipFromJSON(JSONObject options, String key) {
-//        JSONObject ship = options.getJSONObject(key);
-//        JSONObject bow = ship.getJSONObject("bow");
-//        JSONObject stem = ship.getJSONObject("stem");
-//        int bowX = bow.getInt("x");
-//        int bowY = bow.getInt("y");
-//        int stemX = stem.getInt("x");
-//        int stemY = stem.getInt("y");
-//
-//        switch(key) {
-//            case "carrier":
-//                return new Carrier(stemX, stemY, bowX, bowY);
-//            case "submarine":
-//                return new Submarine(stemX, stemY, bowX, bowY);
-//            case "destroyer":
-//                return new Destroyer(stemX, stemY, bowX, bowY);
-//            case "cruiser":
-//                return new Cruiser(stemX, stemY, bowX, bowY);
-//            case "battleship":
-//                return new Battleship(stemX, stemY, bowX, bowY);
-//            default:
-//                return null;
-//        }
-//    }
+    public static Map<String, Ship> buildFleet(JSONObject options){
+        Map<String, Ship> fleet = new HashMap<>();
+        Iterator<String> keys = options.keys();
+        while(keys.hasNext()) {
+            String key = keys.next();
+            Ship buildedShip = buildShipFromJSON(options, key);
+            fleet.put(key, buildedShip);
+        }
+        return fleet;
+    }
 
-    public Ship generateRandomPosition(Board board) {
+    private static Ship buildShipFromJSON(JSONObject options, String key) {
+        JSONObject ship = options.getJSONObject(key);
+        JSONObject bow = ship.getJSONObject("bow");
+        JSONObject stem = ship.getJSONObject("stem");
+        int bowX = bow.getInt("x");
+        int bowY = bow.getInt("y");
+        int stemX = stem.getInt("x");
+        int stemY = stem.getInt("y");
+
+        switch(key) {
+            case "carrier":
+                return new Carrier(stemX, stemY, bowX, bowY);
+            case "submarine":
+                return new Submarine(stemX, stemY, bowX, bowY);
+            case "destroyer":
+                return new Destroyer(stemX, stemY, bowX, bowY);
+            case "cruiser":
+                return new Cruiser(stemX, stemY, bowX, bowY);
+            case "battleship":
+                return new Battleship(stemX, stemY, bowX, bowY);
+            default:
+                return null;
+        }
+    }
+
+    public Ship locateToRandomPosition(Board board) {
         Random random = new Random();
         this.stemX = random.nextInt(board.getWidth());
         this.stemY = random.nextInt(board.getHeight());
-        boolean horizontalDirection = random.nextBoolean();
+        boolean willLocateHorizontaly = random.nextBoolean();
         boolean hasValidPosition;
-        if(horizontalDirection){
+        if(willLocateHorizontaly){
             this.bowY = stemY;
             this.bowX = stemX + this.size - 1 ;
-            if(this.bowX > 9)generateRandomPosition(board);
+            if(this.bowX > 9) locateToRandomPosition(board);
             hasValidPosition = board.validateRow(this);
         } else {
             this.bowY = stemY + this.size - 1;
             this.bowX = stemX;
-            if(this.bowY > 9)generateRandomPosition(board);
+            if(this.bowY > 9) locateToRandomPosition(board);
             hasValidPosition = board.validateCol(this);
         }
-        if(!hasValidPosition)generateRandomPosition(board);
+        if(!hasValidPosition) locateToRandomPosition(board);
         return this;
     }
 

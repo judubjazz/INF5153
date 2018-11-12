@@ -14,7 +14,7 @@ public class StringToArrayListConverter implements Converter<String, ArrayList> 
     public ArrayList<Map<String, Integer>> convert(String source) {
 
         ArrayList<Map<String, Integer>> arrayList = new ArrayList<>();
-        String pattern = "\\b([^\\s]+)=([^\\s]+)\\b,\\s([^\\s]+)=([^\\s]+)\\b";
+        String pattern = "\\b([^\\s]+)=([^\\s]+)\\b,\\s([^\\s]+)=([^\\s]+)\\b,\\s([^\\s]+)=([^\\s]+)\\b";
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(source);
         boolean match = m.find();
@@ -23,6 +23,7 @@ public class StringToArrayListConverter implements Converter<String, ArrayList> 
             Map<String, Integer> map = new HashMap<>();
             map.put(m.group(1), Integer.parseInt(m.group(2)));
             map.put(m.group(3), Integer.parseInt(m.group(4)));
+            map.put(m.group(5), Integer.parseInt(m.group(6)));
             arrayList.add(map);
             match=m.find();
         }

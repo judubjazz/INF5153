@@ -7,9 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 
 @Controller
 public class Routes {
@@ -38,7 +35,7 @@ public class Routes {
     @PostMapping("/torpedo")
     public String torpedo(@ModelAttribute BattleshipGame battleshipGame, Model model){
         GameController controller = new BattleShipGameController();
-        battleshipGame = controller.playTurn(battleshipGame);
+        battleshipGame = controller.play(battleshipGame);
         model.addAttribute("battleshipGame", battleshipGame);
         if(battleshipGame.playerOne.winner) return "you-won";
         if(battleshipGame.playerTwo.winner) return "you-lost";
@@ -74,7 +71,7 @@ public class Routes {
         return "replay";
     }
 
-    @GetMapping("/replay")
+    @PostMapping("/restart")
     public String getReplayGame(@ModelAttribute BattleshipGame battleshipGame, Model model){
         GameController controller = new BattleShipGameController();
         battleshipGame = controller.restart(battleshipGame);

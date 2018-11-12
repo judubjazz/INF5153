@@ -191,7 +191,7 @@ public class Db {
         newGame.appendChild(id);
 
         Element difficulty = document.createElement("difficulty");
-        difficulty.appendChild(document.createTextNode(String.valueOf(battleshipGame.difficulty)));
+        difficulty.appendChild(document.createTextNode(String.valueOf(battleshipGame.ai.difficulty)));
         newGame.appendChild(difficulty);
 
         Element player1 = document.createElement("player1");

@@ -10,11 +10,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-//        registry.addConverter(new StringToShipConverter());
-//        registry.addConverter(new StringToGridConverter());
         registry.addConverter(new StringTo2DArrayConverter());
         registry.addConverter(new StringToArrayListConverter());
         registry.addConverter(new StringToMapStringIntegerConverter());
-//        registry.addConverter(new StringToMapStringShipConverter());
     }
 }

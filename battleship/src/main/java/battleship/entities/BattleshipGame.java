@@ -2,10 +2,10 @@ package battleship.entities;
 
 public class BattleshipGame {
     public int id;
-    public boolean difficulty;
     public Player playerOne;
     public Player playerTwo;
     public Recorder recorder;
+    public Ai ai;
 
     public BattleshipGame(){
 
@@ -16,12 +16,12 @@ public class BattleshipGame {
         this.playerTwo = playerTwo;
     }
 
-    public BattleshipGame(int id, Player playerOne, Player playerTwo, Recorder recorder, boolean difficulty) {
+    public BattleshipGame(int id, Player playerOne, Player playerTwo, Recorder recorder, Ai ai) {
         this.id = id;
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.recorder = recorder;
-        this.difficulty = difficulty;
+        this.ai = ai;
     }
 
 
@@ -49,4 +49,6 @@ public class BattleshipGame {
     public void setRecorder(Recorder recorder) {
         this.recorder = recorder;
     }
+    public Ai getAi() {return ai; }
+    public void setAi(Ai ai) {this.ai = ai; }
 }
