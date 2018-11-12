@@ -18,23 +18,6 @@ public class Recorder {
         this.playerTwoMoves = playerTwoMoves;
     }
 
-    public static ArrayList<Map<String, Integer>> convert(String source) {
-        ArrayList<Map<String, Integer>> arrayList = new ArrayList<>();
-        String pattern = "\\b([^\\s]+)=([^\\s]+)\\b,\\s([^\\s]+)=([^\\s]+)\\b";
-        Pattern r = Pattern.compile(pattern);
-        Matcher m = r.matcher(source);
-        boolean match = m.find();
-
-        while (match) {
-            Map<String, Integer> map = new HashMap<>();
-            map.put(m.group(1), Integer.parseInt(m.group(2)));
-            map.put(m.group(3), Integer.parseInt(m.group(4)));
-            arrayList.add(map);
-            match=m.find();
-        }
-        return arrayList;
-    }
-
     // GETTERS & SETTERS
     public ArrayList<Map<String, Integer>> getPlayerOneMoves() {return playerOneMoves; }
     public void setPlayerOneMoves(ArrayList<Map<String, Integer>> playerOneMoves) {this.playerOneMoves = playerOneMoves; }

@@ -1,4 +1,6 @@
-package battleship.entities;
+package battleship.middlewares;
+
+import battleship.entities.Board;
 
 import java.util.Map;
 

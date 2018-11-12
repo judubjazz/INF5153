@@ -1,6 +1,7 @@
 package battleship.entities;
 
 import battleship.entities.ships.*;
+import battleship.middlewares.Validation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,9 +9,7 @@ import java.util.Random;
 
 public class Ai {
     public enum State {UP, DOWN, LEFT, RIGHT, START}
-
     public boolean difficulty;
-    //    public ArrayList<State> statusList;
     public State state;
     public Map<String, Integer> startPosition;
 

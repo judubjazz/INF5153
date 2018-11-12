@@ -32,8 +32,8 @@ public class Routes {
         return "play";
     }
 
-    @PostMapping("/torpedo")
-    public String torpedo(@ModelAttribute BattleshipGame battleshipGame, Model model){
+    @PostMapping("/play")
+    public String postPlay(@ModelAttribute BattleshipGame battleshipGame, Model model){
         GameController controller = new BattleShipGameController();
         battleshipGame = controller.play(battleshipGame);
         model.addAttribute("battleshipGame", battleshipGame);
@@ -42,11 +42,15 @@ public class Routes {
         return "play";
     }
 
+    @PostMapping("/play-vs-human")
+    public String postPlayHuman(@ModelAttribute BattleshipGame battleshipGame, Model model){
+        return "home";
+    }
+
     @PostMapping("/save")
     public String postSave(@ModelAttribute BattleshipGame battleshipGame, Model model){
         GameController controller = new BattleShipGameController();
         battleshipGame = controller.save(battleshipGame);
-//        Db.getInstance().save(battleshipGame);
         model.addAttribute("game", battleshipGame);
         return "save";
     }

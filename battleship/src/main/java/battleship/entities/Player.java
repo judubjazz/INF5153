@@ -116,4 +116,20 @@ public class Player {
     }
     public Map<String, Ship> getFleet() {return fleet; }
     public void setFleet(Map<String, Ship> fleet) {this.fleet = fleet; }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isWinner() {
+        return winner;
+    }
+
+    public void setWinner(boolean winner) {
+        this.winner = winner;
+    }
 }

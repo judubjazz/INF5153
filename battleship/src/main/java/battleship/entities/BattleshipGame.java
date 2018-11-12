@@ -24,6 +24,13 @@ public class BattleshipGame {
         this.ai = ai;
     }
 
+    public BattleshipGame(int id, Player playerOne, Player playerTwo, Ai ai) {
+        this.id = id;
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
+        this.ai = ai;
+    }
+
 
     public Player getPlayerOne() {
         return playerOne;

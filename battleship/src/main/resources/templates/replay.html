@@ -33,6 +33,7 @@
     <div class="form-container">
     <form class='torpedo-form' action="#" th:action="@{/replay}" th:object="${battleshipGame}" method="post">
         <p><input id="replay-form-submit" class='torpedo-form-submit' type="submit" value="replay" /></p>
+        <p>playerOne name: <input class='torpedo-form' type="text" th:field="*{playerOne.name}" /></p>
         <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerBoard.map}" /></p>
         <p>PlayerOne enemy map: <input class='torpedo-form' type="text" th:field="*{playerOne.ennemyBoard.map}"/></p>
         <p>PlayerOne ships remaining: <input class='torpedo-form' type="text" th:field="*{playerOne.shipsRemaining}"/></p>
@@ -95,6 +96,8 @@
         <p>playerTwo battleship BowY: <input class='torpedo-form' type="text" th:field="*{playerTwo.battleship.bowY}"/></p>
         <p>playerTwo battleship StemX: <input class='torpedo-form' type="text" th:field="*{playerTwo.battleship.stemX}"/></p>
         <p>playerTwo battleship StemY: <input class='torpedo-form' type="text" th:field="*{playerTwo.battleship.stemY}"/></p>
+
+        <p>playerTwo name: <input class='torpedo-form' type="text" th:field="*{playerTwo.name}" /></p>
     </form>
     </div>
 </div>

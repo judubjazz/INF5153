@@ -1,6 +1,6 @@
 package db;
 
-import battleship.converters.StringToArrayListConverter;
+import battleship.middlewares.converters.StringToArrayListConverter;
 import battleship.entities.BattleshipGame;
 import battleship.entities.Board;
 import battleship.entities.Player;

@@ -1,4 +1,4 @@
-package battleship.converters;
+package battleship.middlewares.converters;
 
 import org.springframework.core.convert.converter.Converter;
 
