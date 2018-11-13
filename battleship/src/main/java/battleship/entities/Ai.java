@@ -152,6 +152,15 @@ public class Ai {
         return false;
     }
 
+    public State stringToState(String s){
+        if(s.equals("START")) return State.START;
+        else if(s.equals("UP")) return State.UP;
+        else if(s.equals("DOWN")) return State.DOWN;
+        else if(s.equals("LEFT")) return State.LEFT;
+        else if(s.equals("RIGHT")) return State.RIGHT;
+        else return State.START;
+    }
+
     //GETTERS & SETTERS //
 //    public ArrayList<State> getStatusList() {return statusList;}
 //    public void setStatusList(ArrayList<State> statusList) {this.statusList = statusList;}

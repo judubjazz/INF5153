@@ -2,7 +2,6 @@ package battleship.routes;
 
 import battleship.controllers.*;
 import battleship.entities.BattleshipGame;
-//import db.Db;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class Routes {
 
     @GetMapping("/")
-    public String home() {;
+    public String home() {
         return "home";
     }
 

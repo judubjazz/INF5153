@@ -50,7 +50,7 @@ public class BattleShipGameController implements GameController {
     }
     @Override
     public BattleshipGame save(BattleshipGame battleshipGame){
-        Db.getInstance().save(battleshipGame);
+        Db.getDb().save(battleshipGame);
         return null;
     }
     @Override
@@ -59,7 +59,7 @@ public class BattleShipGameController implements GameController {
         Player p1 = new Player("player1");
         Player p2 = new Player("player2");
         BattleshipGame battleshipGame = new BattleshipGame(1,p1,p2,r,null);
-        Db.getInstance().load(battleshipGame);
+        Db.getDb().load(battleshipGame);
         return battleshipGame;
     }
 

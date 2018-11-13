@@ -18,17 +18,8 @@ public class Player {
     public int shipsRemaining;
     public boolean winner;
 
-    public Player () {
-        this.carrier = new Carrier();
-        this.submarine = new Submarine();
-        this.destroyer = new Destroyer();
-        this.battleship = new Battleship();
-        this.cruiser = new Cruiser();
-        this.playerBoard = new Board();
-        this.ennemyBoard = new Board();
-        this.shipsRemaining = 17;
-        this.winner = false;
-    }
+    public Player () {}
+
     public Player (String name) {
         this.carrier = new Carrier();
         this.submarine = new Submarine();
