@@ -48,12 +48,12 @@ public class Board {
     }
 
     public void locateShip(Ship ship) {
-        int stemX = ship.getStemX();
-        int stemY = ship.getStemY();
-        int bowX = ship.getBowX();
-        int bowY = ship.getBowY();
-        int shipID = ship.getId();
-        int shipSize = ship.getSize();
+        int stemX = ship.stemX;
+        int stemY = ship.stemY;
+        int bowX = ship.bowX;
+        int bowY = ship.bowY;
+        int shipID = ship.id;
+        int shipSize = ship.size;
 
             for(int i = 0; i < shipSize; ++i) {
                 if(stemX != bowX) {

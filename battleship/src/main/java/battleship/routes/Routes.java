@@ -76,7 +76,7 @@ public class Routes {
     }
 
     @PostMapping("/restart")
-    public String getReplayGame(@ModelAttribute BattleshipGame battleshipGame, Model model){
+    public String postRestartGame(@ModelAttribute BattleshipGame battleshipGame, Model model){
         GameController controller = new BattleShipGameController();
         battleshipGame = controller.restart(battleshipGame);
         model.addAttribute("game", battleshipGame);
