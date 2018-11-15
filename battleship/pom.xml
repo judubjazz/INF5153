@@ -43,8 +43,9 @@
 
         <dependency>
             <groupId>net.sf.json-lib</groupId>
-            <artifactId>json-lib:2.4</artifactId>
-            <version>jdk15</version>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
         </dependency>
 
         <dependency>
@@ -54,8 +55,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.corundumstudio</groupId>
-            <artifactId>socketio:netty-socketio</artifactId>
+            <groupId>com.corundumstudio.socketio</groupId>
+            <artifactId>netty-socketio</artifactId>
             <version>1.7.12</version>
         </dependency>
 
@@ -88,3 +89,4 @@
         </pluginRepository>
     </pluginRepositories>
 </project>
+
