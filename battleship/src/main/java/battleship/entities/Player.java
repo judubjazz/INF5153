@@ -18,6 +18,7 @@ public class Player {
     public int shipsRemaining;
     public boolean winner;
 
+
     public Player () {}
 
     public Player (String name) {

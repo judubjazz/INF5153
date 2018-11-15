@@ -5,6 +5,7 @@ import battleship.entities.BattleshipGame;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import battleship.SocketCS;
 
 
 @Controller
@@ -80,6 +81,17 @@ public class Routes {
         battleshipGame = controller.restart(battleshipGame);
         model.addAttribute("game", battleshipGame);
         return "replay";
+    }
+
+    @GetMapping("/play-vs-human")
+    public String test(){
+        try {
+            SocketCS.startServer();
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return "home";
     }
 }
 

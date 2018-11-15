@@ -15,19 +15,24 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
 // TODO in the db.xml file, set an attribute to game instead of an inner element
 public class Db {
-    // TODO construct relative path
     static private Db db = null;
     private Document document;
-    private final static String dbLocation = "/home/ju/JetBrainsProjects/IdeaProjects/INF5153/battleship/src/main/java/db/db.xml";
+    private String path;
 
     private Db() {
-        this.document = parseXmlDocument("/home/ju/JetBrainsProjects/IdeaProjects/INF5153/battleship/src/main/java/db/db.xml");
+        Path currentRelativePath = Paths.get("");
+        String s = currentRelativePath.toAbsolutePath().toString();
+        String path = (s + "/src/main/java/db/db.xml");
+        this.path = path;
+        this.document = parseXmlDocument(path);
     }
 
     public static Db getDb() {
@@ -415,7 +420,7 @@ public class Db {
         DOMSource source = new DOMSource(document);
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
-        StreamResult result = new StreamResult("/home/ju/JetBrainsProjects/IdeaProjects/INF5153/battleship/src/main/java/db/db.xml");
+        StreamResult result = new StreamResult(path);
         transformer.transform(source, result);
     }
 
@@ -423,7 +428,7 @@ public class Db {
         NodeList nodeList = null;
         try {
 //            File file = new File(dbLocation);
-            File file = new File("/home/ju/JetBrainsProjects/IdeaProjects/INF5153/battleship/src/main/java/db/db.xml");
+            File file = new File(path);
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document doc = dBuilder.parse(file);
             System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
