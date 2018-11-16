@@ -4,7 +4,7 @@ import battleship.entities.BattleshipGame;
 
 
 public interface GameController {
-    public BattleshipGame load();
+    public BattleshipGame load(int gameID);
     public BattleshipGame save(BattleshipGame battleshipGame);
     public BattleshipGame play(BattleshipGame battleshipGame);
 //    public BattleshipGame playTurn(BattleshipGame battleshipGame);

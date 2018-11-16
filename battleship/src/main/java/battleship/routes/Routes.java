@@ -57,10 +57,21 @@ public class Routes {
 
     @GetMapping("/load")
     public String getLoad(Model model){
+//        // TODO add battleshipGame id to request params to load battleshipGame
+//
+//        GameController controller = new BattleShipGameController();
+//        BattleshipGame battleshipGame = controller.load();
+//        model.addAttribute("battleshipGame", battleshipGame);
+//        return "play";
+        return "load-game-id";
+    }
+
+    @RequestMapping(value="/load/{gameID}", method = RequestMethod.GET)
+    public String getLoadGameID(@PathVariable("gameID") int gameID, Model model){
         // TODO add battleshipGame id to request params to load battleshipGame
 
         GameController controller = new BattleShipGameController();
-        BattleshipGame battleshipGame = controller.load();
+        BattleshipGame battleshipGame = controller.load(gameID);
         model.addAttribute("battleshipGame", battleshipGame);
         return "play";
     }

@@ -3,6 +3,8 @@ var gameSettings = {
   difficulty:false,
   fleet:null,
 };
+
+const home_url = 'http://localhost:8090';
 var fleet = {
   carrier:   {stem:{x:0,y:0},bow:{x:0,y:4}, size:5, rotated:false},
   destroyer: {stem:{x:1,y:0},bow:{x:1,y:1}, size:3, rotated:false},
@@ -59,8 +61,8 @@ function torpedo(event, x, y){
 function triggerHiddenSubmit(){
   const fleetStringified = JSON.stringify(fleet);
   gameSettings.fleet = fleet;
-  const test = JSON.stringify(gameSettings);
-  $("#fleet-data-input").val(test);
+  const data = JSON.stringify(gameSettings);
+  $("#fleet-data-input").val(data);
   $("#submit-fleet-button").click();
 }
 
@@ -109,5 +111,11 @@ function sendMove(options){
   fetch(url, params);
   //   // .then(handleResponse);
   //   // .then(res => res);
+}
+
+function sendGameID(){
+  const id = $('#game-id').val();
+  const url = `${home_url}/load/${id}`;
+  location.href = url;
 }
 

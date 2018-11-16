@@ -54,11 +54,12 @@ public class BattleShipGameController implements GameController {
         return null;
     }
     @Override
-    public BattleshipGame load(){
+    public BattleshipGame load(int gameID){
         Recorder r = new Recorder();
         Player p1 = new Player("player1");
         Player p2 = new Player("player2");
-        BattleshipGame battleshipGame = new BattleshipGame(1,p1,p2,r,null);
+        Ai ai = new Ai();
+        BattleshipGame battleshipGame = new BattleshipGame(gameID,p1,p2,r,ai);
         Db.getDb().load(battleshipGame);
         return battleshipGame;
     }
