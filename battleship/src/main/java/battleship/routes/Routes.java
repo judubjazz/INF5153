@@ -53,6 +53,7 @@ public class Routes {
 
     @GetMapping("/load")
     public String getLoad(Model model){
+        // TODO could simple be in the same template as load
         return "load-game-id";
     }
 
@@ -84,28 +85,25 @@ public class Routes {
 
     @GetMapping("/join")
     public String join(Model model){
+        // TODO add a link to join/{gameID} in the html
         System.out.println(Application.gameList);
         model.addAttribute("gameList", Application.gameList);
-        return "join-game";
+        return "join-online-games";
     }
 
-    @GetMapping("/play-vs-human")
+    @GetMapping("/create-online-game")
     public String test(Model model){
         try {
-
             SocketCS.startServer();
-
         }catch (Exception e){
             System.out.println(e);
         }
-        FormController form = new FormController();
-        model.addAttribute("formController", form);
-        return "play-vs-human-start";
+        return "create-online-games";
     }
 
-    @PostMapping("/play-vs-human")
-    public String postPlayHuman(@ModelAttribute BattleshipGame battleshipGame, Model model){
-        return "home";
+    @RequestMapping(value="/join/{gameID}", method = RequestMethod.GET)
+    public String joinGame(@PathVariable("gameID") int gameID, Model model){
+        return "join-this-game";
     }
 }
 

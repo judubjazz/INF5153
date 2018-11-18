@@ -15,4 +15,7 @@ dependency-reduced-pom.xml
 README.html
 *.iml
 .idea
+.vscode
+.mvn
+battleship.code-workspace
 /battleship/out

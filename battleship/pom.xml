@@ -49,8 +49,8 @@
         </dependency>
 
         <dependency>
-            <groupId>io.socket</groupId>
-            <artifactId>socket.io-client</artifactId>
+            <groupId>io.player1Socket</groupId>
+            <artifactId>player1Socket.io-client</artifactId>
             <version>1.0.0</version>
         </dependency>
 
@@ -61,8 +61,8 @@
         </dependency>
 
         <dependency>
-            <groupId>io.socket</groupId>
-            <artifactId>socket.io-client</artifactId>
+            <groupId>io.player1Socket</groupId>
+            <artifactId>player1Socket.io-client</artifactId>
             <version>1.0.0</version>
         </dependency>
 

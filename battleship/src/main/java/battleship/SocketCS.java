@@ -7,10 +7,7 @@ import java.util.Map;
 import battleship.entities.BattleshipGame;
 import battleship.entities.Player;
 import battleship.entities.ships.Ship;
-import com.corundumstudio.socketio.AckRequest;
-import com.corundumstudio.socketio.Configuration;
-import com.corundumstudio.socketio.SocketIOClient;
-import com.corundumstudio.socketio.SocketIOServer;
+import com.corundumstudio.socketio.*;
 import com.corundumstudio.socketio.listener.DataListener;
 import db.Db;
 import io.socket.client.IO;
@@ -18,12 +15,13 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
+import battleship.entities.*;
 
 
 public class SocketCS {
     static private Socket socket;
     static final int PORT = 9291;
-    static SocketIOServer server;
+    public static SocketIOServer server;
 
     public static void startServer() throws InterruptedException {
         Thread ts = new Thread(new Runnable() {
@@ -39,55 +37,58 @@ public class SocketCS {
             }
         });
         ts.start();
-//        try {
-//            client();
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
     }
-//    public static void main(String[] args) throws InterruptedException {
-//        Thread ts = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    server();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                } catch (UnsupportedEncodingException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//        ts.start();
-//        try {
-//            client();
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
-//    }
+
     public static void server() throws InterruptedException, UnsupportedEncodingException {
+        // TODO do a singleton for the server
         Configuration config = new Configuration();
         config.setHostname("127.0.0.1");
         config.setPort(PORT);
+        SocketConfig sockConfig = new SocketConfig();
+        sockConfig.setReuseAddress(true);
+        config.setSocketConfig(sockConfig);
         server = new SocketIOServer(config);
+
         server.addEventListener("createGame", String.class, new DataListener<String>() {
             @Override
             public void onData(SocketIOClient client, String data, AckRequest ackRequest) {
                 int id = Db.getDb().getMaxID();
-                Player player = new Player("player1");
                 JSONObject json = JSONObject.fromObject(data);
-                Map<String, Ship> fleet = Ship.buildFleet(json);
+                Player player = new Player("player1");
                 BattleshipGame game = new BattleshipGame(id, player, null, null);
-                Db.getDb().save(game);
+                game.p1Socket = client;
                 Application.gameList.add(game);
-                json.accumulate("game", game.id);
-                client.sendEvent("toClient", json);
+                json.put("id", game.id);
+                System.out.println(json.toString());
+                client.sendEvent("toClient", json.toString());
             }
         });
-        server.addEventListener("message", String.class, new DataListener<String>() {
+//        server.addEventListener("join-game", String.class, new DataListener<String>() {
+//            @Override
+//            public void onData(SocketIOClient client, String data, AckRequest ackRequest) {
+//                JSONObject json = JSONObject.fromObject(data);
+//                BattleshipGame game = Application.gameList.get(0);
+//                game.p2Socket = client;
+//                client.sendEvent("toClient", "message from server " + data);
+//                client.sendEvent("toPlayer1", "message from server " + data);
+//                client.sendEvent("toPlayer2", "message from server " + data);
+//            }
+//        });
+
+        // TODO make the events Listen to gameIDs
+        server.addEventListener("player1-turn", String.class, new DataListener<String>() {
             @Override
             public void onData(SocketIOClient client, String data, AckRequest ackRequest) {
-                client.sendEvent("toClient", "message from server " + data);
+                client.sendEvent("toPlayer1", data);
+                client.sendEvent("toPlayer2", data);
+            }
+        });
+        server.addEventListener("player2-turn", String.class, new DataListener<String>() {
+            @Override
+            public void onData(SocketIOClient client, String data, AckRequest ackRequest) {
+                BattleshipGame game = Application.gameList.get(0);
+                game.p1Socket.sendEvent("toPlayer1", data);
+                client.sendEvent("toPlayer2", data);
             }
         });
         server.start();

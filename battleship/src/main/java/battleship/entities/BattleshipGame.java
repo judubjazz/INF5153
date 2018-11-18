@@ -1,11 +1,17 @@
 package battleship.entities;
 
+import com.corundumstudio.socketio.SocketIOClient;
+
 public class BattleshipGame {
     public int id;
     public Player playerOne;
     public Player playerTwo;
     public Recorder recorder;
     public Ai ai;
+
+    // TODO make a battleshipGame extends Game and a online game extends Game
+    public SocketIOClient p1Socket;
+    public SocketIOClient p2Socket;
 
     public BattleshipGame(){
 
