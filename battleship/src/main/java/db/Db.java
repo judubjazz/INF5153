@@ -1,9 +1,11 @@
 package db;
 
 import battleship.entities.*;
+import battleship.middlewares.converters.StringTo2DArrayConverter;
 import battleship.middlewares.converters.StringToArrayListConverter;
 import battleship.entities.ships.Ship;
 import battleship.middlewares.converters.StringToMapStringIntegerConverter;
+import battleship.middlewares.converters.toStringConverters;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -73,6 +75,11 @@ public class Db {
     }
 
     public void load(BattleshipGame battleshipGame) {
+        NodeList gameSettings = getGameNodeListById(battleshipGame.id);
+        setGame(gameSettings, battleshipGame);
+    }
+
+    public NodeList getGameNodeListById(int id) {
         try {
             NodeList games = document.getElementsByTagName("game");
             for (int j = 0; j < games.getLength(); ++j) {
@@ -82,20 +89,25 @@ public class Db {
                     Node gameSetting = gameSettings.item(i);
                     if (gameSetting.getNodeType() == Node.ELEMENT_NODE && gameSetting.getNodeName().equals("id")) {
                         String gameID = gameSetting.getTextContent();
-                        if (gameID.equals(String.valueOf(battleshipGame.id))) {
-                            setGame(gameSettings, battleshipGame);
-                            break;
+                        if (gameID.equals(String.valueOf(id))) {
+                            return gameSettings;
                         }
                     }
                 }
             }
         } catch (Exception e) {
             System.out.println(e);
-            System.out.println("error db");
+            System.out.println("error get nodelist by id");
         }
+        return null;
     }
 
-    private void setAi(NodeList aiSettings, Ai ai){
+    public void update(BattleshipGame battleshipGame) {
+        NodeList gameSettings = getGameNodeListById(battleshipGame.id);
+        updateGame(gameSettings, battleshipGame);
+    }
+
+    private void setAi(NodeList aiSettings, Ai ai) {
         for (int i = 0; i < aiSettings.getLength(); i++) {
             Node setting = aiSettings.item(i);
             if (setting.getNodeType() == Node.ELEMENT_NODE) {
@@ -120,14 +132,14 @@ public class Db {
         }
     }
 
-    private void setRecorder(NodeList recorderSettings, Recorder recorder){
+    private void setRecorder(NodeList recorderSettings, Recorder recorder) {
         for (int i = 0; i < recorderSettings.getLength(); i++) {
             Node setting = recorderSettings.item(i);
             if (setting.getNodeType() == Node.ELEMENT_NODE) {
                 String text;
                 ArrayList<Map<String, Integer>> playerMoves;
                 StringToArrayListConverter c = new StringToArrayListConverter();
-                switch (setting.getNodeName()){
+                switch (setting.getNodeName()) {
                     case "playerOneMoves":
                         text = setting.getTextContent();
                         playerMoves = c.convert(text);
@@ -146,6 +158,7 @@ public class Db {
             }
         }
     }
+
     private void setGame(NodeList gameSettings, BattleshipGame battleshipGame) {
         for (int i = 0; i < gameSettings.getLength(); i++) {
             Node setting = gameSettings.item(i);
@@ -186,7 +199,8 @@ public class Db {
                     case "map":
                         // TODO create a function setMap()
                         String mapToString = setting.getTextContent();
-                        int[][] map = Board.Stringto2DArray(mapToString);
+                        StringTo2DArrayConverter c= new StringTo2DArrayConverter();
+                        int[][] map = c.convert(mapToString);
                         if (player.name.equals("player1")) {
                             battleshipGame.playerOne.playerBoard.map = battleshipGame.playerTwo.ennemyBoard.map = map;
                         } else {
@@ -200,8 +214,8 @@ public class Db {
                     case "recorder":
                         // TODO create a function setRecorder();
                         String recorderToString = setting.getTextContent();
-                        StringToArrayListConverter c = new StringToArrayListConverter();
-                        ArrayList<Map<String, Integer>> playerMoves = c.convert(recorderToString);
+                        StringToArrayListConverter converter = new StringToArrayListConverter();
+                        ArrayList<Map<String, Integer>> playerMoves = converter.convert(recorderToString);
                         if (player.name.equals("player1")) {
                             battleshipGame.recorder.playerOneMoves = playerMoves;
                         } else {
@@ -273,10 +287,7 @@ public class Db {
 
     private void savePlayerMap(Element playerElement, int[][] map) {
         Element mapElement = document.createElement("map");
-//        String text = String.valueOf(map);
-        String text = Arrays.deepToString(map);
-        text = text.replaceAll("\\[|\\]", "");
-        text = text.replaceAll(" ", "");
+        String text = toStringConverters.mapToString(map);
         mapElement.appendChild(document.createTextNode(text));
         playerElement.appendChild(mapElement);
     }
@@ -319,7 +330,6 @@ public class Db {
             case "submarine":
                 saveShipPosition(shipElement, player.submarine);
                 break;
-
         }
     }
 
@@ -373,7 +383,7 @@ public class Db {
         aiElement.appendChild(startPosition);
     }
 
-    private void saveRecorder(Element recorderElement, Recorder recorder){
+    private void saveRecorder(Element recorderElement, Recorder recorder) {
         Element playerOneMoves = document.createElement("playerOneMoves");
         String playerOneMovesValue = recorder.playerOneMoves.toString();
         playerOneMoves.appendChild(document.createTextNode(playerOneMovesValue));
@@ -391,6 +401,7 @@ public class Db {
         recorderElement.appendChild(playerTwoMoves);
 
     }
+
     private void saveGame(BattleshipGame battleshipGame) throws Exception {
         Element games = document.getDocumentElement();
         Element game = document.createElement("game");
@@ -424,23 +435,6 @@ public class Db {
         transformer.transform(source, result);
     }
 
-    public NodeList getRootNodeList() {
-        NodeList nodeList = null;
-        try {
-//            File file = new File(dbLocation);
-            File file = new File(path);
-            DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = dBuilder.parse(file);
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-            if (doc.hasChildNodes()) {
-                nodeList = doc.getChildNodes();
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return nodeList;
-    }
-
     public void printXML(NodeList nodeList) {
         for (int count = 0; count < nodeList.getLength(); count++) {
             Node tempNode = nodeList.item(count);
@@ -465,5 +459,101 @@ public class Db {
                 System.out.println("Node Name =" + tempNode.getNodeName() + " [CLOSE]");
             }
         }
+    }
+
+    public void updateGame(NodeList gameSettings, BattleshipGame battleshipGame) {
+        for (int i = 0; i < gameSettings.getLength(); ++i) {
+            Node setting = gameSettings.item(i);
+            switch (setting.getNodeName()) {
+                case "player1":
+                    updatePlayer(setting.getChildNodes(), battleshipGame.playerOne);
+                    break;
+                case "player2":
+                    updatePlayer(setting.getChildNodes(), battleshipGame.playerTwo);
+                    break;
+                default:
+                    break;
+
+            }
+        }
+    }
+    private void updateRecorder(NodeList recorderSettings, BattleshipGame battleshipGame){
+        for(int i = 0 ; i < recorderSettings.getLength(); ++i){
+            Node setting = recorderSettings.item(i);
+        }
+    }
+
+    private void updatePlayer(NodeList playerSettings, Player player) {
+        for(int i = 0; i < playerSettings.getLength(); ++i){
+            Node setting = playerSettings.item(i);
+            switch (setting.getNodeName()) {
+                case "shipsRemaining":
+                    setting.setTextContent(String.valueOf(player.shipsRemaining));
+                    break;
+                case "map":
+                    String map = toStringConverters.mapToString(player.playerBoard.map);
+                    setting.setTextContent(map);
+                    break;
+                case "fleet":
+                    NodeList fleetNodeList = setting.getChildNodes();
+                    updateFleet(fleetNodeList, player);
+                    break;
+            }
+        }
+    }
+
+    private void updateFleet(NodeList fleet, Player player){
+        for(int i =0 ; i < fleet.getLength(); ++i){
+            Node setting = fleet.item(i);
+            switch (setting.getNodeName()){
+                case "carrier":
+                    updateShipPosition(setting.getChildNodes(), player.carrier);
+                    break;
+                case "battleship":
+                    updateShipPosition(setting.getChildNodes(), player.battleship);
+                    break;
+                case "cruiser":
+                    updateShipPosition(setting.getChildNodes(), player.cruiser);
+                    break;
+                case "destroyer":
+                    updateShipPosition(setting.getChildNodes(), player.destroyer);
+                    break;
+                case "submarine":
+                    updateShipPosition(setting.getChildNodes(), player.submarine);
+                    break;
+            }
+        }
+    }
+
+    private void updateShipPosition(NodeList shipSettings, Ship ship) {
+        for(int i = 0 ; i < shipSettings.getLength(); ++i){
+            Node setting = shipSettings.item(i);
+            String value;
+            switch (setting.getNodeName()){
+                case "stemX":
+                    value = String.valueOf(ship.stemX);
+                    setting.setTextContent(value);
+                    break;
+                case "stemY":
+                    value = String.valueOf(ship.stemY);
+                    setting.setTextContent(value);
+                    break;
+                case "bowX":
+                    value = String.valueOf(ship.bowX);
+                    setting.setTextContent(value);
+                    break;
+                case "bowY":
+                    value = String.valueOf(ship.bowY);
+                    setting.setTextContent(value);
+                    break;
+            }
+        }
+    }
+
+    public int getMaxID(){
+        if(document == null) return 1;
+        NodeList n = document.getElementsByTagName("game");
+        int maxID = n.getLength() + 1;
+        return maxID;
     }
 }

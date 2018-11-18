@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{base}">
-<head> 
+<head>
     <title>Getting Started</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <!--<link rel="stylesheet" type="text/css" href="../static/css/main.css"/>-->
@@ -11,7 +11,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-	<h1>Start Game</h1>
+    <h1>Start Game</h1>
     <!--TODO add rules battleshipGame-->
     <div class="fleet-container" ondrop="drop(event)" ondragover="allowDrop(event)">
         <div id="submarine" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">1</div>
@@ -33,28 +33,13 @@
         </table>
     </div>
 
-    <div class="start-form-container">
-        <form action="#" th:action="@{/start}" th:object="${formController}" method="post">
-            <p>data: <input id="fleet-data-input" type="text" th:field="*{data}" /></p>
-            <p><input id="submit-fleet-button" type="submit" value="Submit" /></p>
-        </form>
-    </div>
-
-    <div class="start-form-options-container">
-        <div>select difficulty</div>
-        <div>
-            <select onchange="setDifficulty(event)">
-                <option>easy</option>
-                <option>hard</option>
-            </select>
-        </div>
-    </div>
-    <div><button onclick="startGame()">Start</button></div>
+    <div><button onclick="startGameVsHuman()">Start</button></div>
 </div>
 
 <th:block layout:fragment="scripts">
-    <script type="text/javascript" th:src="@{/js/main.js}"></script>
     <script type="text/javascript" th:src="@{/js/lib/jquery-1.9.0.js}"></script>
+    <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>>
+    <script type="text/javascript" th:src="@{/js/socket.js}"></script>
 </th:block>
 </body>
 </html>

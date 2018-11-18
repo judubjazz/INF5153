@@ -83,8 +83,8 @@ public class BattleShipGameController implements GameController {
         boolean difficulty = p1Settings.getBoolean("difficulty");
         Ai ai = new Ai(Ai.State.START,difficulty, null);
 
-        // TODO get maxid from db and add it to the game
-        BattleshipGame battleshipGame = new BattleshipGame(1, player, cpu, recorder, ai);
+        int id = Db.getDb().getMaxID();
+        BattleshipGame battleshipGame = new BattleshipGame(id, player, cpu, recorder, ai);
         return  battleshipGame;
     }
 

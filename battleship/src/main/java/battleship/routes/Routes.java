@@ -1,5 +1,6 @@
 package battleship.routes;
 
+import battleship.Application;
 import battleship.controllers.*;
 import battleship.entities.BattleshipGame;
 import org.springframework.stereotype.Controller;
@@ -42,11 +43,6 @@ public class Routes {
         return "play";
     }
 
-    @PostMapping("/play-vs-human")
-    public String postPlayHuman(@ModelAttribute BattleshipGame battleshipGame, Model model){
-        return "home";
-    }
-
     @PostMapping("/save")
     public String postSave(@ModelAttribute BattleshipGame battleshipGame, Model model){
         GameController controller = new BattleShipGameController();
@@ -57,19 +53,11 @@ public class Routes {
 
     @GetMapping("/load")
     public String getLoad(Model model){
-//        // TODO add battleshipGame id to request params to load battleshipGame
-//
-//        GameController controller = new BattleShipGameController();
-//        BattleshipGame battleshipGame = controller.load();
-//        model.addAttribute("battleshipGame", battleshipGame);
-//        return "play";
         return "load-game-id";
     }
 
     @RequestMapping(value="/load/{gameID}", method = RequestMethod.GET)
     public String getLoadGameID(@PathVariable("gameID") int gameID, Model model){
-        // TODO add battleshipGame id to request params to load battleshipGame
-
         GameController controller = new BattleShipGameController();
         BattleshipGame battleshipGame = controller.load(gameID);
         model.addAttribute("battleshipGame", battleshipGame);
@@ -94,14 +82,29 @@ public class Routes {
         return "replay";
     }
 
+    @GetMapping("/join")
+    public String join(Model model){
+        System.out.println(Application.gameList);
+        model.addAttribute("gameList", Application.gameList);
+        return "join-game";
+    }
+
     @GetMapping("/play-vs-human")
-    public String test(){
+    public String test(Model model){
         try {
+
             SocketCS.startServer();
 
         }catch (Exception e){
             System.out.println(e);
         }
+        FormController form = new FormController();
+        model.addAttribute("formController", form);
+        return "play-vs-human-start";
+    }
+
+    @PostMapping("/play-vs-human")
+    public String postPlayHuman(@ModelAttribute BattleshipGame battleshipGame, Model model){
         return "home";
     }
 }
