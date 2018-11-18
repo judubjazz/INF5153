@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<head>
+    <title>Battleship</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mainMenu.css}"/>
+</head>
+<body>
+<div layout:fragment="content">
+    <table>
+	  	<tr>
+	    	<td><a th:href="@{'/home'}">START GAME</a></td>
+		</tr>
+		<tr>
+	    	<td><a th:href="@{'/loadFiles'}">LOAD GAME</a></td>
+		</tr>
+	</table>
+</div>
+
+<th:block layout:fragment="scripts">
+
+</th:block>
+</body>
+</html>
