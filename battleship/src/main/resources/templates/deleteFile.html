@@ -13,8 +13,8 @@
 			<table>
 				<tr th:each="file : ${listOfFiles}">
 					<td>
-		     			<a th:href="@{load/{file}(file=${file})}">
-						   	<img src="https://img.icons8.com/wired/50/000000/xml-file.png">
+		     			<a th:href="@{deleteFile/{file}(file=${file})}">
+						   	<img src="https://img.icons8.com/wired/50/000000/delete-file.png">
 						    <span th:text="BattleShip_Save + ${file}"></span>
 						</a> 
 					</td>
@@ -25,8 +25,7 @@
 		<br/><br/>
 		<br/><br/>
 		<div id="middle">
-			<a id="style-2" th:href="@{'/'}"> &nbsp BACK &nbsp</a>
-			<a id="style-2" th:href="@{'/deleteFile'}">DELETE</a>
+			<a id="style-2" th:href="@{'/loadFiles'}"> &nbsp BACK &nbsp</a>
 		</div>		
 	</div>
 <th:block layout:fragment="scripts">

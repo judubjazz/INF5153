@@ -14,6 +14,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 //import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 //import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -581,6 +582,23 @@ public class Db {
     	}
    	 	return files;
    } 
+    
+    public void deleteNode(String id) throws TransformerException{
+    	NodeList nodes = Db.getDb().document.getElementsByTagName("game");
+    	for (int i = 0; i < nodes.getLength(); i++) {
+    		Element eElement = (Element) nodes.item(i);
+    		Element gameId = (Element)eElement.getElementsByTagName("id").item(0);
+    		String gId = gameId.getTextContent();
+    		if(gId.equals(id)) {
+    			eElement.getParentNode().removeChild(eElement);
+    	        DOMSource source = new DOMSource(document);
+    	        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    	        Transformer transformer = transformerFactory.newTransformer();
+    	        StreamResult result = new StreamResult(path);
+    	        transformer.transform(source, result);
+    			break;
+    		}
+    	}
+   } 
 }
-
 
