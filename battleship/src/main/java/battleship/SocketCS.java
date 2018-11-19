@@ -22,6 +22,7 @@ public class SocketCS {
     static private Socket socket;
     static final int PORT = 9291;
     public static SocketIOServer server;
+    private enum PlayerID {P1, P2}
 
     public static void startServer() throws InterruptedException {
         Thread ts = new Thread(new Runnable() {
@@ -49,41 +50,63 @@ public class SocketCS {
         config.setSocketConfig(sockConfig);
         server = new SocketIOServer(config);
 
-        server.addEventListener("createGame", String.class, new DataListener<String>() {
+        server.addEventListener("creatingGame", String.class, new DataListener<String>() {
             @Override
             public void onData(SocketIOClient client, String data, AckRequest ackRequest) {
                 int id = Db.getDb().getMaxID();
                 JSONObject json = JSONObject.fromObject(data);
+                JSONObject p1FleetJSON = json.getJSONObject("fleet");
                 Player player = new Player("player1");
+
+
+                Map<String, Ship> playerOneFleet = Ship.buildFleet(p1FleetJSON);
+                Board p1Board = new Board();
+                p1Board.locateFleet(playerOneFleet);
+                player.playerBoard = p1Board;
+
                 BattleshipGame game = new BattleshipGame(id, player, null, null);
-                game.p1Socket = client;
-                Application.gameList.add(game);
                 json.put("id", game.id);
+                json.put("map", p1Board.map);
+                game.p1Socket = client;
+
+                Application.gameList.add(game);
                 System.out.println(json.toString());
-                client.sendEvent("toClient", json.toString());
+
+                client.sendEvent("gameCreated", json.toString());
             }
         });
-//        server.addEventListener("join-game", String.class, new DataListener<String>() {
-//            @Override
-//            public void onData(SocketIOClient client, String data, AckRequest ackRequest) {
-//                JSONObject json = JSONObject.fromObject(data);
-//                BattleshipGame game = Application.gameList.get(0);
-//                game.p2Socket = client;
-//                client.sendEvent("toClient", "message from server " + data);
-//                client.sendEvent("toPlayer1", "message from server " + data);
-//                client.sendEvent("toPlayer2", "message from server " + data);
-//            }
-//        });
 
-        // TODO make the events Listen to gameIDs
-        server.addEventListener("player1-turn", String.class, new DataListener<String>() {
+        server.addEventListener("joiningGame", String.class, new DataListener<String>() {
             @Override
             public void onData(SocketIOClient client, String data, AckRequest ackRequest) {
-                client.sendEvent("toPlayer1", data);
-                client.sendEvent("toPlayer2", data);
+                // TODO refactor this in one function and add validation
+                BattleshipGame game = Application.gameList.get(0);
+                JSONObject json = JSONObject.fromObject(data);
+                Player player = new Player("player2");
+                JSONObject p2FleetJSON = json.getJSONObject("fleet");
+                Map<String, Ship> p2Fleet = Ship.buildFleet(p2FleetJSON);
+                Board p2Board = new Board();
+                p2Board.locateFleet(p2Fleet);
+
+                json.put("map", p2Board.map);
+                player.playerBoard = p2Board;
+                game.playerTwo = player;
+                game.p2Socket = client;
+
+                game.p1Socket.sendEvent("hasJoinedGame", json.toString());
             }
         });
-        server.addEventListener("player2-turn", String.class, new DataListener<String>() {
+
+        // TODO make the events Listen to gameIDs
+        server.addEventListener("playerOneIsPlaying", String.class, new DataListener<String>() {
+            @Override
+            public void onData(SocketIOClient client, String data, AckRequest ackRequest) {
+                BattleshipGame game = Application.gameList.get(0);
+                client.sendEvent("toPlayer1", data);
+                game.p2Socket.sendEvent("toPlayer2", data);
+            }
+        });
+        server.addEventListener("playerTwoIsPlaying", String.class, new DataListener<String>() {
             @Override
             public void onData(SocketIOClient client, String data, AckRequest ackRequest) {
                 BattleshipGame game = Application.gameList.get(0);
@@ -95,6 +118,13 @@ public class SocketCS {
 //        Thread.sleep(10000);
 //        server.stop();
     }
+
+    private static SocketIOClient getPlayerSocket(int gameID, PlayerID playerID){
+        BattleshipGame game = Application.gameList.get(0);
+        if(playerID.equals(PlayerID.P1)) return  game.p1Socket;
+        return  game.p2Socket;
+    };
+
     public static void client() throws URISyntaxException, InterruptedException {
         socket = IO.socket("http://localhost:" + PORT);
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
