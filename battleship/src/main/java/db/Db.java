@@ -6,21 +6,23 @@ import battleship.middlewares.converters.StringToArrayListConverter;
 import battleship.entities.ships.Ship;
 import battleship.middlewares.converters.StringToMapStringIntegerConverter;
 import battleship.middlewares.converters.toStringConverters;
+
+//import org.springframework.ui.Model;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+//import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
+//import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
+//import java.io.File;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
+//import java.util.Arrays;
 import java.util.Map;
 
 // TODO in the db.xml file, set an attribute to game instead of an inner element
@@ -111,7 +113,7 @@ public class Db {
         for (int i = 0; i < aiSettings.getLength(); i++) {
             Node setting = aiSettings.item(i);
             if (setting.getNodeType() == Node.ELEMENT_NODE) {
-                NodeList caseSettings = setting.getChildNodes();
+                //NodeList caseSettings = setting.getChildNodes();
                 String text;
                 switch (setting.getNodeName()) {
                     case "difficulty":
@@ -403,11 +405,13 @@ public class Db {
     }
 
     private void saveGame(BattleshipGame battleshipGame) throws Exception {
-        Element games = document.getDocumentElement();
+
+    	Element games = document.getDocumentElement();
         Element game = document.createElement("game");
         Element id = document.createElement("id");
-//        newGame.setIdAttribute(String.valueOf(battleshipGame.id),true);
-        saveId(id, battleshipGame.id);
+        //newGame.setIdAttribute(String.valueOf(battleshipGame.id),true);
+
+		saveId(id, nextID());
 
         Element player1 = document.createElement("player1");
         Element player2 = document.createElement("player2");
@@ -419,7 +423,6 @@ public class Db {
 
         Element recorder = document.createElement("recorder");
         saveRecorder(recorder, battleshipGame.recorder);
-
 
         game.appendChild(id);
         game.appendChild(player1);
@@ -477,7 +480,9 @@ public class Db {
             }
         }
     }
-    private void updateRecorder(NodeList recorderSettings, BattleshipGame battleshipGame){
+    
+    @SuppressWarnings("unused")
+	private void updateRecorder(NodeList recorderSettings, BattleshipGame battleshipGame){
         for(int i = 0 ; i < recorderSettings.getLength(); ++i){
             Node setting = recorderSettings.item(i);
         }
@@ -556,4 +561,26 @@ public class Db {
         int maxID = n.getLength() + 1;
         return maxID;
     }
+    
+    public int nextID(){
+        String lastID = "";
+        NodeList nodes = document.getElementsByTagName("game");
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Element eElement = (Element) nodes.item(i);
+            lastID = eElement.getElementsByTagName("id").item(0).getTextContent();
+        }
+   	 	return Integer.parseInt(lastID) + 1;
+   } 
+    
+    public String[] getIDs(){
+    	NodeList nodes = Db.getDb().document.getElementsByTagName("game");
+    	String[] files = new String[nodes.getLength()];
+    	for (int i = 0; i < nodes.getLength(); i++) {
+    		Element eElement = (Element) nodes.item(i);
+    		files[i] = eElement.getElementsByTagName("id").item(0).getTextContent();
+    	}
+   	 	return files;
+   } 
 }
+
+

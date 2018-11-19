@@ -7,12 +7,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import battleship.SocketCS;
-
+import db.Db;
 
 @Controller
 public class Routes {
 
     @GetMapping("/")
+    public String main() {
+        return "mainMenu";
+    }
+    
+    @GetMapping("/home")
     public String home() {
         return "home";
     }
@@ -50,7 +55,22 @@ public class Routes {
         model.addAttribute("game", battleshipGame);
         return "save";
     }
+    
+    @GetMapping("/loadFiles")
+    public String getLoadTest(Model model){
+    	model.addAttribute("listOfFiles", Db.getDb().getIDs());
+        return "loadFiles";
+    } 
+    
+    @RequestMapping(value="/load/{file}", method = RequestMethod.GET)
+    public String getLoad(@PathVariable("file") String file, Model model){
+        GameController controller = new BattleShipGameController();
+        BattleshipGame battleshipGame = controller.load(Integer.parseInt(file));
+        model.addAttribute("battleshipGame", battleshipGame);
+        return "play";
+    }
 
+    /*
     @GetMapping("/load")
     public String getLoad(Model model){
         // TODO could simple be in the same template as load
@@ -64,7 +84,7 @@ public class Routes {
         model.addAttribute("battleshipGame", battleshipGame);
         return "play";
     }
-
+     */
     @PostMapping("/replay")
     public String replayGame(@ModelAttribute BattleshipGame battleshipGame, Model model){
         GameController controller = new BattleShipGameController();
