@@ -59,7 +59,6 @@ function torpedo(event, x, y){
 }
 
 function triggerHiddenSubmit(){
-  const fleetStringified = JSON.stringify(fleet);
   gameSettings.fleet = fleet;
   const data = JSON.stringify(gameSettings);
   $("#fleet-data-input").val(data);

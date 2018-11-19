@@ -34,19 +34,28 @@
         <div class="map-container">
             <div class="x-axis">A B C D E F G H I J</div>
             <div class="y-axis">1 2 3 4 5 6 7 8 9 10</div>
-            <table class="player-one-map test">
+            <table class="player-one-map">
                 <tr th:each="i: ${#numbers.sequence(0,9)}">
                     <td th:each="j: ${#numbers.sequence(0,9)}">
-                        <div th:id="${i + ',' + j}" class="tiles" name="0" ondrop="drop(event)"
-                             ondragover="allowDrop(event)"></div>
+                        <div th:id="${i + ',' + j}" class="tiles" name="0" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                    </td>
+                </tr>
+            </table>
+
+            <table id="dinamic-player-map">
+
+            </table>
+
+            <table id="player-two-socket-map" class="player-two-map">
+                <tr th:each="i: ${#numbers.sequence(0,9)}">
+                    <td th:each="j: ${#numbers.sequence(0,9)}">
+                        <div th:id="${i + ',' + j}" class="tiles" name="0" th:onclick="|torpedo(event, ${i}, ${j})|"></div>
                     </td>
                 </tr>
             </table>
         </div>
 
-        <div>
-            <button onclick="playTurn()">Start</button>
-        </div>
+        <div><button onclick="joinGame()">join game</button></div>
     </div>
 </div>
 
