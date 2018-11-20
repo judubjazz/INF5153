@@ -14,13 +14,12 @@
 <div layout:fragment="content">
 
     <div class="loader-container">
-        <div><h2>Waiting for a player to connect</h2></div>
         <div id="loader" class="loader"></div>
     </div>
 
 
     <div class="main-wrapper">
-        <h1>Start Game</h1>
+        <h1 id="message-header">Join Game</h1>
 
         <!--TODO add rules battleshipGame-->
         <div class="fleet-container" ondrop="drop(event)" ondragover="allowDrop(event)">
@@ -34,6 +33,7 @@
         <div class="map-container">
             <div class="x-axis">A B C D E F G H I J</div>
             <div class="y-axis">1 2 3 4 5 6 7 8 9 10</div>
+
             <table class="player-one-map">
                 <tr th:each="i: ${#numbers.sequence(0,9)}">
                     <td th:each="j: ${#numbers.sequence(0,9)}">
@@ -44,14 +44,6 @@
 
             <div id="dinamic-player-map"></div>
             <div id="dinamic-player-targets"></div>
-
-            <!--<table id="player-two-socket-map" class="player-two-map">-->
-                <!--<tr th:each="i: ${#numbers.sequence(0,9)}">-->
-                    <!--<td th:each="j: ${#numbers.sequence(0,9)}">-->
-                        <!--<div th:id="${i + ',' + j}" class="tiles" name="0" th:onclick="|torpedo(event, ${i}, ${j})|"></div>-->
-                    <!--</td>-->
-                <!--</tr>-->
-            <!--</table>-->
         </div>
 
         <div class="options-container"><button onclick="joinGame()">join game</button></div>
@@ -62,6 +54,7 @@
     <script type="text/javascript" th:src="@{/js/lib/jquery-1.9.0.js}"></script>
     <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
     <script type="text/javascript" th:src="@{/js/player2-socket.js}"></script>
+    <script type="text/javascript" th:src="@{/js/multiplayers.js}"></script>
 </th:block>
 </body>
 </html>

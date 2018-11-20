@@ -1,4 +1,19 @@
 'use strict';
+// import constants from './constants/constants';
+// console.log(constants);
+
+const constants = {
+  WAITING_OPP_TURN: 'waiting for opponent to play turn',
+  TARGET_OPP_SHIP: 'target an opponent ship',
+  WAITING_GAME_CONNECTION: 'waiting for a player to connect game with id',
+  SHIP_LOCATION_ERR: 'ships locations invalid',
+  HOME_URL: 'http://localhost:8090',
+  START_GAME: 'Start Game',
+  CREATE_GAME: 'Create Game',
+  JOIN_GAME: 'Join Game',
+};
+const {WAITING_OPP_TURN, SHIP_LOCATION_ERR, WAITING_GAME_CONNECTION, TARGET_OPP_SHIP} = constants;
+
 
 const socket = io(window.location.protocol + '//localhost:9291');
 var game = {
@@ -43,13 +58,10 @@ var game = {
 
 const createGame = () => {
   if (isValidGame()) socket.emit('playerWillCreateGame', JSON.stringify(game));
-  else alert('ships emplacement invalid');
+  else alert(SHIP_LOCATION_ERR);
 };
 
-// TODO validate game
-const isValidGame = () => {
-  return true;
-};
+
 
 const torpedo = (event, x, y) => {
   event.preventDefault();
@@ -62,11 +74,11 @@ const torpedo = (event, x, y) => {
 };
 
 socket.on('playerDidCreateGame', (res) => {
-  const json = JSON.parse(res);
-  game.id = json.id;
-  game.map = json.map;
+  const data = JSON.parse(res);
+  game.id = data.id;
+  game.map = data.map;
   hideDraggableMap();
-  showLoader();
+  showLoader(WAITING_GAME_CONNECTION);
 });
 
 socket.on('playerDidJoinGame', (res) => {
@@ -74,7 +86,7 @@ socket.on('playerDidJoinGame', (res) => {
   const json = JSON.parse(res);
   renderTargetsMap();
   renderPlayerMap();
-  hideLoader();
+  hideLoader('target an opponnent ship');
   $('#dinamic-player-map').css('display','block');
   $('#dinamic-player-targets').css('display', 'block');
 
@@ -82,86 +94,31 @@ socket.on('playerDidJoinGame', (res) => {
 
 socket.on('playerOneDidPlay', (res) => {
   console.log(res);
-  const json = JSON.parse(res);
-  const x = json.x;
-  const y = json.y;
+  const data = JSON.parse(res);
+  const x = data.x;
+  const y = data.y;
   game.targets[x][y] = -1;
   $('#targets-table').remove();
   renderTargetsMap();
-  hideLoader();
+  showLoader(WAITING_OPP_TURN);
 });
 
 socket.on('playerTwoDidPlay', (res) => {
   console.log(res);
-  const json= JSON.parse(res);
-  const x = json.x;
-  const y = json.y;
+  const data= JSON.parse(res);
+  const x = data.x;
+  const y = data.y;
   if(game.map[x][y]){
     game.shipsRemaining--;
   }
   game.map[x][y] = -1;
   $('#player-map-table').remove();
   renderPlayerMap();
-  console.log('playerone did play', json);
-  hideLoader();
+  hideLoader(TARGET_OPP_SHIP);
+  console.log('player two did play', data);
 });
 
-const hideDraggableMap = () => {
-  $('.fleet-container').css('display', 'none');
-  $('.player-one-map').css('display', 'none');
-};
 
-const renderPlayerMap = () => {
-  let table = $('<table/>');
-  table.attr({'id': 'player-map-table'});
-  for (let i = 0; i < 9; ++i) {
-    let tr = $('<tr/>');
-    table.append(tr);
-    for (let j = 0; j < 9; ++j) {
-      let td = $('<td/>');
-      let div = $('<div/>');
-      const shipID = game.map[i][j];
-      div.html(shipID);
-      div.attr({'name': shipID});
-      td.append(div);
-      tr.append(td);
-    }
-  }
-  $('#dinamic-player-map').append(table);
-};
-
-const renderTargetsMap = () => {
-  let table = $('<table/>');
-  table.attr({'id': 'targets-table'});
-  for (let i = 0; i < 9; ++i) {
-    let tr = $('<tr/>');
-    table.append(tr);
-    for (let j = 0; j < 9; ++j) {
-      let td = $('<td/>');
-      let div = $('<div/>');
-      const shipID = game.targets[i][j];
-      div.html(shipID);
-      div.attr({'name': shipID});
-      div.attr({'id': `${i}, ${j}`});
-      div.attr({'onclick': `torpedo(event, ${i}, ${j})`});
-      td.append(div);
-      tr.append(td);
-    }
-  }
-  $('#dinamic-player-targets').append(table);
-};
-
-const hideLoader = () => {
-  $('.loader-container').css('display', 'none');
-  $('.map-container').css('filter', 'blur(0px)');
-  $('.fleet-container').css('filter', 'blur(0px)');
-};
-
-const showLoader = () => {
-  $('.loader-container').css('display', 'block');
-  $('.map-container').css('filter', 'blur(13px)');
-  $('.fleet-container').css('filter', 'blur(13px)');
-};
 
 socket.on('connect_failed', function (data) {
   console.log('connect_failed');

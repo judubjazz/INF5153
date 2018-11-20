@@ -50,13 +50,14 @@ const torpedo = (event, x, y) => {
 };
 
 socket.on('playerTwoDidPlay', (res) =>{
-  const json= JSON.parse(res);
-  const x = json.x;
-  const y = json.y;
+  const data= JSON.parse(res);
+  const x = data.x;
+  const y = data.y;
   game.targets[x][y] = -1;
   $('#targets-table').remove();
   renderTargetsMap();
-  console.log('playero two did play', json);
+  showLoader('waiting for opponent to play turn');
+  console.log('player two did play', data);
 });
 
 socket.on('playerOneDidPlay', (res) =>{
@@ -68,17 +69,19 @@ socket.on('playerOneDidPlay', (res) =>{
   }
   game.map[x][y] = -1;
   $('#player-map-table').remove();
+  hideLoader('target an opponent ship');
   renderPlayerMap();
-  console.log('playerone did play', json);
+  console.log('player one did play', json);
 });
 
 socket.on('playerDidJoinGame', (res)=>{
-  const json= JSON.parse(res);
-  game.map = json.map;
+  const data= JSON.parse(res);
+  game.map = data.map;
   renderTargetsMap();
   renderPlayerMap();
   console.log('player did join game', res);
   hideOptions();
+  showLoader('waiting for opponent to play turn')
 });
 
 
@@ -87,54 +90,7 @@ const joinGame = () =>{
   else alert('ship emplacement invalid');
 };
 
-const isValidGame = () =>{
-  return true;
-};
 
-const hideOptions = () =>{
-  $('.options-container').remove();
-  $('.player-one-map').remove()
-};
-
-const renderPlayerMap = () => {
-  let table = $('<table/>');
-  table.attr({'id': 'player-map-table'});
-  for (let i = 0; i < 9; ++i) {
-    let tr = $('<tr/>');
-    table.append(tr);
-    for (let j = 0; j < 9; ++j) {
-      let td = $('<td/>');
-      let div = $('<div/>');
-      const shipID = game.map[i][j];
-      div.html(shipID);
-      div.attr({'name': shipID});
-      td.append(div);
-      tr.append(td);
-    }
-  }
-  $('#dinamic-player-map').append(table);
-};
-
-const renderTargetsMap = () => {
-  let table = $('<table/>');
-  table.attr({'id': 'targets-table'});
-  for (let i = 0; i < 9; ++i) {
-    let tr = $('<tr/>');
-    table.append(tr);
-    for (let j = 0; j < 9; ++j) {
-      let td = $('<td/>');
-      let div = $('<div/>');
-      const shipID = game.targets[i][j];
-      div.html(shipID);
-      div.attr({'name': shipID});
-      div.attr({'id': `${i}, ${j}`});
-      div.attr({'onclick': `torpedo(event, ${i}, ${j})`});
-      td.append(div);
-      tr.append(td);
-    }
-  }
-  $('#dinamic-player-targets').append(table);
-};
 
 
 socket.on('connect_failed', function(data)
