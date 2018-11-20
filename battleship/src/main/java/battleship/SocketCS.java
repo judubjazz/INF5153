@@ -50,7 +50,7 @@ public class SocketCS {
         config.setSocketConfig(sockConfig);
         server = new SocketIOServer(config);
 
-        server.addEventListener("creatingGame", String.class, new DataListener<String>() {
+        server.addEventListener("playerWillCreateGame", String.class, new DataListener<String>() {
             @Override
             public void onData(SocketIOClient client, String data, AckRequest ackRequest) {
                 int id = Db.getDb().getMaxID();
@@ -72,11 +72,11 @@ public class SocketCS {
                 Application.gameList.add(game);
                 System.out.println(json.toString());
 
-                client.sendEvent("gameCreated", json.toString());
+                client.sendEvent("playerDidCreateGame", json.toString());
             }
         });
 
-        server.addEventListener("joiningGame", String.class, new DataListener<String>() {
+        server.addEventListener("playerWillJoinGame", String.class, new DataListener<String>() {
             @Override
             public void onData(SocketIOClient client, String data, AckRequest ackRequest) {
                 // TODO refactor this in one function and add validation
@@ -93,25 +93,27 @@ public class SocketCS {
                 game.playerTwo = player;
                 game.p2Socket = client;
 
-                game.p1Socket.sendEvent("hasJoinedGame", json.toString());
+                client.sendEvent("playerDidJoinGame", json.toString());
+                game.p1Socket.sendEvent("playerDidJoinGame", json.toString());
             }
         });
 
-        // TODO make the events Listen to gameIDs
-        server.addEventListener("playerOneIsPlaying", String.class, new DataListener<String>() {
+        // TODO load gameIDs with the the data sent
+        // TODO possible to refactor next 2 functions in one
+        server.addEventListener("playerOneWillPlayTurn", String.class, new DataListener<String>() {
             @Override
             public void onData(SocketIOClient client, String data, AckRequest ackRequest) {
                 BattleshipGame game = Application.gameList.get(0);
-                client.sendEvent("toPlayer1", data);
-                game.p2Socket.sendEvent("toPlayer2", data);
+                client.sendEvent("playerOneDidPlay", data);
+                game.p2Socket.sendEvent("playerOneDidPlay", data);
             }
         });
-        server.addEventListener("playerTwoIsPlaying", String.class, new DataListener<String>() {
+        server.addEventListener("playerTwoWillPlayTurn", String.class, new DataListener<String>() {
             @Override
             public void onData(SocketIOClient client, String data, AckRequest ackRequest) {
                 BattleshipGame game = Application.gameList.get(0);
-                game.p1Socket.sendEvent("toPlayer1", data);
-                client.sendEvent("toPlayer2", data);
+                game.p1Socket.sendEvent("playerTwoDidPlay", data);
+                client.sendEvent("playerTwoDidPlay", data);
             }
         });
         server.start();

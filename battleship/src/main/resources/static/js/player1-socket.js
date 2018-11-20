@@ -23,13 +23,26 @@ var game = {
     cruiser: {stem: {x: 3, y: 0}, bow: {x: 3, y: 2}, size: 3},
     submarine: {stem: {x: 4, y: 0}, bow: {x: 4, y: 3}, size: 4}
   },
-
+  targets: [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  ],
+  shipsRemaining: 17,
+  winner:false
 };
 
 // TODO make constants for socket events name
 
 const createGame = () => {
-  if (isValidGame()) socket.emit('creatingGame', JSON.stringify(game));
+  if (isValidGame()) socket.emit('playerWillCreateGame', JSON.stringify(game));
   else alert('ships emplacement invalid');
 };
 
@@ -44,10 +57,11 @@ const torpedo = (event, x, y) => {
     x,
     y,
   };
-  socket.emit('playerOneIsPlaying', JSON.stringify(target));
+  game.targets[x][y] = -1;
+  socket.emit('playerOneWillPlayTurn', JSON.stringify(target));
 };
 
-socket.on('gameCreated', (res) => {
+socket.on('playerDidCreateGame', (res) => {
   const json = JSON.parse(res);
   game.id = json.id;
   game.map = json.map;
@@ -55,22 +69,51 @@ socket.on('gameCreated', (res) => {
   showLoader();
 });
 
-socket.on('hasJoinedGame', (res) => {
+socket.on('playerDidJoinGame', (res) => {
   console.log(res);
+  const json = JSON.parse(res);
+  renderTargetsMap();
+  renderPlayerMap();
   hideLoader();
-  $('#player-two-socket-map').css('display', 'flex');
-  buildDinamicMap();
+  $('#dinamic-player-map').css('display','block');
+  $('#dinamic-player-targets').css('display', 'block');
+
+});
+
+socket.on('playerOneDidPlay', (res) => {
+  console.log(res);
+  const json = JSON.parse(res);
+  const x = json.x;
+  const y = json.y;
+  game.targets[x][y] = -1;
+  $('#targets-table').remove();
+  renderTargetsMap();
+  hideLoader();
+});
+
+socket.on('playerTwoDidPlay', (res) => {
+  console.log(res);
+  const json= JSON.parse(res);
+  const x = json.x;
+  const y = json.y;
+  if(game.map[x][y]){
+    game.shipsRemaining--;
+  }
+  game.map[x][y] = -1;
+  $('#player-map-table').remove();
+  renderPlayerMap();
+  console.log('playerone did play', json);
+  hideLoader();
 });
 
 const hideDraggableMap = () => {
   $('.fleet-container').css('display', 'none');
-  $('#dinamic-player-map').css('display','block');
   $('.player-one-map').css('display', 'none');
 };
 
-const buildDinamicMap = () => {
-  var table = $('<table/>');
-  table.addClass('player-one-map')
+const renderPlayerMap = () => {
+  let table = $('<table/>');
+  table.attr({'id': 'player-map-table'});
   for (let i = 0; i < 9; ++i) {
     let tr = $('<tr/>');
     table.append(tr);
@@ -85,26 +128,40 @@ const buildDinamicMap = () => {
     }
   }
   $('#dinamic-player-map').append(table);
-  console.log(table);
 };
 
-socket.on('toPlayer1', (res) => {
-  console.log(res);
-  hideLoader();
-});
-
+const renderTargetsMap = () => {
+  let table = $('<table/>');
+  table.attr({'id': 'targets-table'});
+  for (let i = 0; i < 9; ++i) {
+    let tr = $('<tr/>');
+    table.append(tr);
+    for (let j = 0; j < 9; ++j) {
+      let td = $('<td/>');
+      let div = $('<div/>');
+      const shipID = game.targets[i][j];
+      div.html(shipID);
+      div.attr({'name': shipID});
+      div.attr({'id': `${i}, ${j}`});
+      div.attr({'onclick': `torpedo(event, ${i}, ${j})`});
+      td.append(div);
+      tr.append(td);
+    }
+  }
+  $('#dinamic-player-targets').append(table);
+};
 
 const hideLoader = () => {
   $('.loader-container').css('display', 'none');
   $('.map-container').css('filter', 'blur(0px)');
   $('.fleet-container').css('filter', 'blur(0px)');
-}
+};
 
 const showLoader = () => {
   $('.loader-container').css('display', 'block');
   $('.map-container').css('filter', 'blur(13px)');
   $('.fleet-container').css('filter', 'blur(13px)');
-}
+};
 
 socket.on('connect_failed', function (data) {
   console.log('connect_failed');

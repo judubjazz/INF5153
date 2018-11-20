@@ -63,7 +63,7 @@ th {
     justify-content: center;
 
 }
-.start-form-options-container{
+.options-container{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -98,14 +98,17 @@ th {
     position: absolute;
 }
 
-#player-two-socket-map {
-    display: none;
-}
+/*#player-two-socket-map {*/
+    /*!*display: none;*!*/
+/*}*/
 
 #dinamic-player-map{
-    display: none;
+    /*display: none;*/
 }
 
+#dinamic-player-targets{
+    /*display: none;*/
+}
 
 /* SHIPS*/
 #submarine {
