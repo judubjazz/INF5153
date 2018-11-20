@@ -3,9 +3,14 @@ package battleship.routes;
 import battleship.Application;
 import battleship.controllers.*;
 import battleship.entities.BattleshipGame;
+
+import javax.xml.transform.TransformerException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
+
 import battleship.SocketCS;
 import db.Db;
 
@@ -57,7 +62,7 @@ public class Routes {
     }
     
     @GetMapping("/loadFiles")
-    public String getLoadTest(Model model){
+    public String getLoadFiles(Model model){
     	model.addAttribute("listOfFiles", Db.getDb().getIDs());
         return "loadFiles";
     } 
@@ -68,6 +73,19 @@ public class Routes {
         BattleshipGame battleshipGame = controller.load(Integer.parseInt(file));
         model.addAttribute("battleshipGame", battleshipGame);
         return "play";
+    }
+    /*
+    @GetMapping("/deleteFile")
+    public String getDeleteFiles(Model model){
+    	model.addAttribute("listOfFiles", Db.getDb().getIDs());
+        return "deleteFile";
+    } 
+    */
+    @RequestMapping(value="/{file}", method = RequestMethod.GET)
+    public RedirectView getDelete(@PathVariable("file") String file, Model model) throws TransformerException{
+    	Db.getDb().deleteNode(file);
+    	model.addAttribute("listOfFiles", Db.getDb().getIDs());
+    	return new RedirectView("loadFiles");
     }
 
     /*
