@@ -139,6 +139,7 @@ public class Routes {
         return "create-online-games";
     }
 
+    // TODO render other page if gameid is not in gamelist
     @RequestMapping(value="/join/{gameID}", method = RequestMethod.GET)
     public String joinGame(@PathVariable("gameID") int gameID, Model model){
         return "join-this-game";

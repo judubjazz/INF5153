@@ -34,18 +34,26 @@
     <div class="map-container">
         <div class="x-axis">A B C D E F G H I J</div>
         <div class="y-axis">1 2 3 4 5 6 7 8 9 10</div>
-        <table class="player-one-map test">
+
+        <table class="player-one-map">
             <tr th:each="i: ${#numbers.sequence(0,9)}">
                 <td th:each="j: ${#numbers.sequence(0,9)}">
-                    <div th:id="${i + ',' + j}" class="tiles" name="0" ondrop="drop(event)"
-                         ondragover="allowDrop(event)"></div>
+                    <div th:id="${i + ',' + j}" class="tiles" name="0" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                 </td>
             </tr>
         </table>
+
+        <div id="dinamic-player-map"></div>
+
+        <div id="dinamic-player-targets"></div>
+
     </div>
 
-    <div>
+    <div id="create-game-container">
         <button onclick="createGame()">create a game</button>
+        <button id="play-turn-buttton" onclick="playTurn()">play Turn</button>
+        <div id="targetX"></div>
+        <div id="targetY"></div>
     </div>
     </div>
 </div>
