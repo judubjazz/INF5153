@@ -1,9 +1,22 @@
 'use strict';
+const constants = {
+  WAITING_OPP_TURN: 'waiting for opponent to play turn',
+  TARGET_OPP_SHIP: 'target an opponent ship',
+  WAITING_GAME_CONNECTION: 'waiting for a player to connect game with id',
+  SHIP_LOCATION_ERR: 'ships locations invalid',
+  HOME_URL: 'http://localhost:8090',
+  START_GAME: 'Start Game',
+  CREATE_GAME: 'Create Game',
+  JOIN_GAME: 'Join Game',
+  YOU_LOST: 'You Lost',
+  YOU_WON: 'You Won'
+};
+const {WAITING_OPP_TURN, SHIP_LOCATION_ERR, WAITING_GAME_CONNECTION, TARGET_OPP_SHIP, YOU_WON, YOU_LOST} = constants;
 
 const socket = io(window.location.protocol + '//localhost:9291');
 var game = {
   id: null,
-  playerID:1,
+  playerID:2,
   map: [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -35,59 +48,65 @@ var game = {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   ],
-  shipsRemaining: 17
 };
 
 
 const torpedo = (event, x, y) => {
   event.preventDefault();
+  const id = game.id;
   const target = {
+    id,
     x,
     y,
   };
-  game.targets[x][y] = -1;
   socket.emit('playerTwoWillPlayTurn', JSON.stringify(target));
 };
 
 socket.on('playerTwoDidPlay', (res) =>{
-  const data= JSON.parse(res);
-  const x = data.x;
-  const y = data.y;
+  const {x, y, winner} = res;
   game.targets[x][y] = -1;
-  $('#targets-table').remove();
-  renderTargetsMap();
-  showLoader('waiting for opponent to play turn');
-  console.log('player two did play', data);
+  if(winner){
+    showLoader(YOU_WON);
+  } else {
+    $('#targets-table').remove();
+    renderTargetsMap();
+    showLoader(WAITING_OPP_TURN);
+    console.log('player two did play', res);
+  }
 });
 
 socket.on('playerOneDidPlay', (res) =>{
-  const json= JSON.parse(res);
-  const x = json.x;
-  const y = json.y;
-  if(game.map[x][y]){
-    game.shipsRemaining--;
-  }
+  const {x, y, winner} = res;
   game.map[x][y] = -1;
-  $('#player-map-table').remove();
-  hideLoader('target an opponent ship');
-  renderPlayerMap();
-  console.log('player one did play', json);
+
+  if(winner){
+    showLoader(YOU_LOST);
+  } else {
+    $('#player-map-table').remove();
+    hideLoader(TARGET_OPP_SHIP);
+    renderPlayerMap();
+    console.log('player one did play', res);
+  }
+
 });
 
 socket.on('playerDidJoinGame', (res)=>{
-  const data= JSON.parse(res);
-  game.map = data.map;
+  const {map} = res;
+  game.map = map;
   renderTargetsMap();
   renderPlayerMap();
   console.log('player did join game', res);
   hideOptions();
-  showLoader('waiting for opponent to play turn')
+  hideDraggableMap();
+  showLoader(WAITING_OPP_TURN);
 });
 
 
 const joinGame = () =>{
+  const id = location.href.substr(location.href.lastIndexOf('/') + 1);
+  game.id = Number(id);
   if(isValidGame())socket.emit('playerWillJoinGame', JSON.stringify(game));
-  else alert('ship emplacement invalid');
+  else alert(SHIP_LOCATION_ERR);
 };
 
 

@@ -11,8 +11,10 @@ const constants = {
   START_GAME: 'Start Game',
   CREATE_GAME: 'Create Game',
   JOIN_GAME: 'Join Game',
+  YOU_LOST: 'You Lost',
+  YOU_WON: 'You Won'
 };
-const {WAITING_OPP_TURN, SHIP_LOCATION_ERR, WAITING_GAME_CONNECTION, TARGET_OPP_SHIP} = constants;
+const {WAITING_OPP_TURN, SHIP_LOCATION_ERR, WAITING_GAME_CONNECTION, TARGET_OPP_SHIP, YOU_WON, YOU_LOST} = constants;
 
 
 const socket = io(window.location.protocol + '//localhost:9291');
@@ -50,8 +52,6 @@ var game = {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   ],
-  shipsRemaining: 17,
-  winner:false
 };
 
 // TODO make constants for socket events name
@@ -65,25 +65,25 @@ const createGame = () => {
 
 const torpedo = (event, x, y) => {
   event.preventDefault();
+  const {id} = game;
   const target = {
+    id,
     x,
     y,
   };
-  game.targets[x][y] = -1;
   socket.emit('playerOneWillPlayTurn', JSON.stringify(target));
 };
 
 socket.on('playerDidCreateGame', (res) => {
-  const data = JSON.parse(res);
-  game.id = data.id;
-  game.map = data.map;
+  const {id, map} = res;
+  game.id = id;
+  game.map = map;
   hideDraggableMap();
   showLoader(WAITING_GAME_CONNECTION);
 });
 
 socket.on('playerDidJoinGame', (res) => {
   console.log(res);
-  const json = JSON.parse(res);
   renderTargetsMap();
   renderPlayerMap();
   hideLoader('target an opponnent ship');
@@ -93,29 +93,33 @@ socket.on('playerDidJoinGame', (res) => {
 });
 
 socket.on('playerOneDidPlay', (res) => {
-  console.log(res);
-  const data = JSON.parse(res);
-  const x = data.x;
-  const y = data.y;
+  console.log('player one did play', res);
+  const {x, y, winner} = res;
   game.targets[x][y] = -1;
-  $('#targets-table').remove();
-  renderTargetsMap();
-  showLoader(WAITING_OPP_TURN);
+  if(winner){
+    showLoader(YOU_WON);
+  } else {
+    $('#targets-table').remove();
+    renderTargetsMap();
+    showLoader(WAITING_OPP_TURN);
+  }
 });
 
 socket.on('playerTwoDidPlay', (res) => {
-  console.log(res);
-  const data= JSON.parse(res);
-  const x = data.x;
-  const y = data.y;
-  if(game.map[x][y]){
-    game.shipsRemaining--;
-  }
+  console.log('player two did play', res);
+  const {x, y, winner} = res;
+
   game.map[x][y] = -1;
-  $('#player-map-table').remove();
-  renderPlayerMap();
-  hideLoader(TARGET_OPP_SHIP);
-  console.log('player two did play', data);
+
+  if(winner){
+    showLoader(YOU_LOST)
+  } else {
+    $('#player-map-table').remove();
+    renderPlayerMap();
+    hideLoader(TARGET_OPP_SHIP);
+    console.log('player two did play', res);
+  }
+
 });
 
 

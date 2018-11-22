@@ -2,7 +2,7 @@ package battleship.entities;
 
 import com.corundumstudio.socketio.SocketIOClient;
 
-public class BattleshipGame {
+public class BattleshipGame extends Game {
     public int id;
     public Player playerOne;
     public Player playerTwo;
@@ -14,15 +14,17 @@ public class BattleshipGame {
     public SocketIOClient p2Socket;
 
     public BattleshipGame(){
-
+        super();
     }
 
     public BattleshipGame(Player playerOne, Player playerTwo) {
+        super();
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
     }
 
     public BattleshipGame(int id, Player playerOne, Player playerTwo, Recorder recorder, Ai ai) {
+        super();
         this.id = id;
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
@@ -31,6 +33,7 @@ public class BattleshipGame {
     }
 
     public BattleshipGame(int id, Player playerOne, Player playerTwo, Ai ai) {
+        super();
         this.id = id;
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;

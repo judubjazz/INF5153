@@ -1,7 +1,9 @@
 package battleship.controllers;
 
+import battleship.Application;
 import battleship.entities.*;
 import battleship.entities.ships.Ship;
+import com.corundumstudio.socketio.SocketIOClient;
 import db.Db;
 import net.sf.json.JSONObject;
 import java.util.ArrayList;
@@ -9,6 +11,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BattleShipGameController implements GameController {
+
+    @Override
+    public JSONObject playTurn(Player actor, Player ennemy, String req){
+        JSONObject res = JSONObject.fromObject(req);
+
+        int targetX = res.getInt("x");
+        int targetY = res.getInt("y");
+
+        int targetedArea = actor.ennemyBoard.map[targetX][targetY];
+        if(targetedArea > 0){ennemy.shipsRemaining--;}
+        res.put("hit", targetedArea);
+
+        actor.ennemyBoard.map[targetX][targetY] = -1;
+        ennemy.playerBoard.map[targetX][targetY] = -1;
+
+        if(ennemy.shipsRemaining == 0){
+            actor.winner = true;
+            res.put("winner", true);
+        }
+
+        return res;
+    }
+
     private void playTurn(Player actor, Player ennemy, Map<String,Integer> target, Recorder recorder){
         int targetX = target.get("x");
         int targetY = target.get("y");
@@ -17,11 +42,14 @@ public class BattleShipGameController implements GameController {
         if(targetedArea > 0){ennemy.shipsRemaining--;}
         target.put("hit", targetedArea);
 
-        if(actor.name.equals("player1")){
-            recorder.playerOneMoves.add(target);
-        } else {
-            recorder.playerTwoMoves.add(target);
+        if(recorder != null){
+            if(actor.name.equals("player1")){
+                recorder.playerOneMoves.add(target);
+            } else {
+                recorder.playerTwoMoves.add(target);
+            }
         }
+
 
         actor.ennemyBoard.map[targetX][targetY] = -1;
         ennemy.playerBoard.map[targetX][targetY] = -1;
@@ -130,5 +158,43 @@ public class BattleShipGameController implements GameController {
 
         p1.shipsRemaining = p2.shipsRemaining = 17;
         return battleshipGame;
+    }
+
+    @Override
+    public JSONObject createOnlineGame(SocketIOClient client, String req){
+        int id = Db.getDb().nextID();
+        JSONObject res = JSONObject.fromObject(req);
+        JSONObject p1FleetJSON = res.getJSONObject("fleet");
+        Player player = new Player("player1");
+
+        Map<String, Ship> playerOneFleet = Ship.buildFleet(p1FleetJSON);
+        Board p1Board = new Board();
+        p1Board.locateFleet(playerOneFleet);
+        player.playerBoard = p1Board;
+
+        BattleshipGame game = new BattleshipGame(id, player, null, null);
+        res.put("id", game.id);
+        res.put("map", p1Board.map);
+        game.p1Socket = client;
+
+        Application.gameList.add(game);
+        return res;
+    }
+
+    @Override
+    public JSONObject joinOnlineGame(BattleshipGame game, SocketIOClient client, String req){
+        JSONObject res = JSONObject.fromObject(req);
+        Player player = new Player("player2");
+        JSONObject p2FleetJSON = res.getJSONObject("fleet");
+        Map<String, Ship> p2Fleet = Ship.buildFleet(p2FleetJSON);
+        Board p2Board = new Board();
+        p2Board.locateFleet(p2Fleet);
+
+        res.put("map", p2Board.map);
+        player.ennemyBoard = game.playerOne.playerBoard;
+        player.playerBoard = game.playerOne.ennemyBoard = p2Board;
+        game.playerTwo = player;
+        game.p2Socket = client;
+        return res;
     }
 }
