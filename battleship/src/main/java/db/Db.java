@@ -572,7 +572,13 @@ public class Db {
         }
    	 	return Integer.parseInt(lastID) + 1;
    } 
-    
+
+    public String[] getIDsList(String[] list){
+     	String[] files = new String[list.length-1];
+     	System.arraycopy(list,1,files,0,list.length-1);
+    	return files;
+    }
+
     public String[] getIDs(){
     	NodeList nodes = Db.getDb().document.getElementsByTagName("game");
     	String[] files = new String[nodes.getLength()];
@@ -580,9 +586,10 @@ public class Db {
     		Element eElement = (Element) nodes.item(i);
     		files[i] = eElement.getElementsByTagName("id").item(0).getTextContent();
     	}
+    	files = getIDsList(files);
    	 	return files;
    } 
-    
+
     public void deleteNode(String id) throws TransformerException{
     	NodeList nodes = Db.getDb().document.getElementsByTagName("game");
     	for (int i = 0; i < nodes.getLength(); i++) {

@@ -6,55 +6,131 @@
 <head> 
     <title>Getting Started</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <!--<link rel="stylesheet" type="text/css" href="../static/css/main.css"/>-->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/startUp.css}"/>
 </head>
 <body>
 <div layout:fragment="content">
-	<h1>Start Game</h1>
-    <!--TODO add rules battleshipGame-->
-    <div class="fleet-container" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <div id="submarine" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">1</div>
-        <div id="destroyer" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">2</div>
-        <div id="cruiser" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">3</div>
-        <div id="battleship" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">4</div>
-        <div id="carrier" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">5</div>
-    </div>
-
-    <div class="map-container">
-        <div class="x-axis">A B C D E F G H I J</div>
-        <div class="y-axis">1 2 3 4 5 6 7 8 9 10</div>
-        <table class="player-one-map test">
+ 	<p class="standard">WELCOME</p>
+ 	<p class="red" th:text="${message}"></p>
+ 	<p>Starting a New Game <span class="red">!!!</span> <br>
+	Each player places the <span class="red">5 ships</span> somewhere on their board.  
+	The ships can only be placed <span class="red">vertically</span> or <span class="red">horizontally</span>. 
+	Diagonal placement is <span class="red">not allowed</span>. 
+	No part of a ship may hang off the edge of the board.  Ships may not overlap each other.  
+	No ships may be placed on another ship. Once the guessing begins, the players may not move the ships.
+	The 5 ships are:  <span class="red">Carrier</span> (occupies 5 spaces), 
+	                  <span class="red">Battleship</span> (4), 
+	                  <span class="red">Cruiser</span> (3), 
+	                  <span class="red">Submarine</span> (3), and 
+	                  <span class="red">Destroyer</span> (2).  
+	</p>
+    <div>
+        <table>
             <tr th:each="i: ${#numbers.sequence(0,9)}">
-                <td th:each="j: ${#numbers.sequence(0,9)}">
-                    <div th:id="${i + ',' + j}" class="tiles" name="0" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <td th:each="j: ${#numbers.sequence(0,9)}" th:id="${i + ',' + j}" onclick="myFunction(this)">
+
                 </td>
             </tr>
         </table>
     </div>
 
-    <div class="start-form-container">
+	<br/>
+    <div class="custom-select center" style="width:200px;">
+	    <select id="ddlViewBy" onchange="run()">
+	        <option value="false" selected="selected">easy</option>
+	         <option value="true" >hard</option>
+	    </select>
+    </div>
+    <div>
         <form action="#" th:action="@{/start}" th:object="${formController}" method="post">
-            <p>data: <input id="fleet-data-input" type="text" th:field="*{data}" /></p>
-            <p><input id="submit-fleet-button" type="submit" value="Submit" /></p>
+            <p><input style="display: none" id="data" type="text" th:field="*{data}" /></p>
+            <p><input id="submit-fleet-button" type="submit" value="START" /></p>
         </form>
     </div>
-
-    <div class="start-form-options-container">
-        <div>select difficulty</div>
-        <div>
-            <select onchange="setDifficulty(event)">
-                <option>easy</option>
-                <option>hard</option>
-            </select>
-        </div>
-    </div>
-    <div><button onclick="startGame()">Start</button></div>
+    <div class="center">
+        <a class="button button3" th:href="@{'/'}">EXIT</a>
+	</div>
 </div>
 
 <th:block layout:fragment="scripts">
-    <script type="text/javascript" th:src="@{/js/main.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ship.js}"></script>
     <script type="text/javascript" th:src="@{/js/lib/jquery-1.9.0.js}"></script>
+
+    <script>
+	    var x, i, j, selElmnt, a, b, c;
+	    /*look for any elements with the class "custom-select":*/
+	    x = document.getElementsByClassName("custom-select");
+	    for (i = 0; i < x.length; i++) {
+	      selElmnt = x[i].getElementsByTagName("select")[0];
+	      /*for each element, create a new DIV that will act as the selected item:*/
+	      a = document.createElement("DIV");
+	      a.setAttribute("class", "select-selected");
+	      a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+	      x[i].appendChild(a);
+	      /*for each element, create a new DIV that will contain the option list:*/
+	      b = document.createElement("DIV");
+	      b.setAttribute("class", "select-items select-hide");
+	      for (j = 0; j < selElmnt.length; j++) {
+	        /*for each option in the original select element,
+	        create a new DIV that will act as an option item:*/
+	        c = document.createElement("DIV");
+	        c.innerHTML = selElmnt.options[j].innerHTML;
+	        c.addEventListener("click", function(e) {
+	            /*when an item is clicked, update the original select box,
+	            and the selected item:*/
+	            var y, i, k, s, h;
+	            s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+	            h = this.parentNode.previousSibling;
+	            for (i = 0; i < s.length; i++) {
+	              if (s.options[i].innerHTML == this.innerHTML) {
+	                s.selectedIndex = i;
+	                h.innerHTML = this.innerHTML;
+	                y = this.parentNode.getElementsByClassName("same-as-selected");
+	                for (k = 0; k < y.length; k++) {
+	                  y[k].removeAttribute("class");
+	                }
+	                this.setAttribute("class", "same-as-selected");
+	                break;
+	              }
+	            }
+	            h.click();
+	        });
+	        b.appendChild(c);
+	      }
+	      x[i].appendChild(b);
+	      a.addEventListener("click", function(e) {
+	          /*when the select box is clicked, close any other select boxes,
+	          and open/close the current select box:*/
+	          e.stopPropagation();
+	          closeAllSelect(this);
+	          this.nextSibling.classList.toggle("select-hide");
+	          this.classList.toggle("select-arrow-active");
+	        });
+	    }
+	    function closeAllSelect(elmnt) {
+	      /*a function that will close all select boxes in the document,
+	      except the current select box:*/
+	      var x, y, i, arrNo = [];
+	      x = document.getElementsByClassName("select-items");
+	      y = document.getElementsByClassName("select-selected");
+	      for (i = 0; i < y.length; i++) {
+	        if (elmnt == y[i]) {
+	          arrNo.push(i)
+	        } else {
+	          y[i].classList.remove("select-arrow-active");
+	        }
+	      }
+	      for (i = 0; i < x.length; i++) {
+	        if (arrNo.indexOf(i)) {
+	          x[i].classList.add("select-hide");
+	        }
+	      }
+	    }
+	    /*if the user clicks anywhere outside the select box,
+	    then close all select boxes:*/
+	    document.addEventListener("click", closeAllSelect);
+    </script>
+    
 </th:block>
 </body>
 </html>

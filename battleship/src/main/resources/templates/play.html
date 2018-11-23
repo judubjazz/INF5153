@@ -11,7 +11,10 @@
 
 <body>
 <div layout:fragment="content">
-<h1>Result</h1>
+
+	<h1><span>B</span>ATTLE<span>S</span>HIP</h1>
+	<img src="https://img.icons8.com/dotty/50/000000/battleship.png">
+
     <div class="map-container">
         <table class="player-one-map test">
             <tr th:each="col: ${battleshipGame.playerOne.playerBoard.map}">
@@ -32,9 +35,13 @@
 
 
     <div class="form-container">
-        <form id='form-save' class='torpedo-form' action="#" th:action="@{/save}" th:object="${battleshipGame}" method="post">
-            <p><input id="savegame-form-input" class='torpedo-form-submit' type="submit" value="Save battleshipGame" /></p>
-
+        <form id='form-save' action="#" th:action="@{/save}" th:object="${battleshipGame}" method="post">
+        
+        	<div>
+	            <input class="button button3" id="savegame-form-input" type="submit" value="SAVE" />
+	            <a class="button button3" th:href="@{'/'}">EXIT</a>
+			</div>
+			
             <p>playerOne name: <input class='torpedo-form' type="text" th:field="*{playerOne.name}" /></p>
             <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerBoard.map}" /></p>
             <p>PlayerOne enemy map: <input class='torpedo-form' type="text" th:field="*{playerOne.ennemyBoard.map}"/></p>

@@ -4,7 +4,9 @@ body {
   	align-items: center;
   	height: 100vh;
 }
-
+p { 
+	text-align: center 
+}
 table{
     width: 250px; 
 }
@@ -32,4 +34,8 @@ a:link, a:visited {
 
 a:hover, a:active {
     color: white;
+}
+
+span{
+    color: #f44336;
 }

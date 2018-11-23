@@ -1,10 +1,7 @@
 package battleship.entities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Recorder {
     public ArrayList<Map<String, Integer>> playerOneMoves;

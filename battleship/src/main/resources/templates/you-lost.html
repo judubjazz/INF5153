@@ -4,15 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/won-lost.css}"/>
 </head>
 <body>
-<h1>You lost</h1>
 <div class="home-options-container">
-    <div><a th:href="@{'/start'}">play vs computer</a></div>
-    <div><a th:href="@{'/start'}">play vs human</a></div>
-    <div><a th:href="@{'/load'}">load a saved battleshipGame</a></div>
+  	<h1>You Lost</h1>
     <form class='torpedo-form' action="#" th:action="@{/restart}" th:object="${battleshipGame}" method="post">
-        <p><input id="replay-form-submit" class='torpedo-form-submit' type="submit" value="replay last battleshipGame" /></p>
+        
+        <table>
+		  	<tr>
+		    	<td><a class="button button3" th:href="@{'/home'}">MAIN MENU</a></td>
+			</tr>
+			<tr>
+		    	<td><a class="button button3" th:href="@{'/loadFiles'}">LOAD GAME</a></td>
+			</tr>
+			<tr>
+		    	<td><input class="button button3" id="replay-form-submit" type="submit" value="REPLAY" /></td>
+			</tr>
+			<tr>
+		    	<td><a class="button button3 size" th:href="@{'/'}">EXIT</a></td>
+			</tr>
+		</table>
+        
         <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerBoard.map}" /></p>
         <p>PlayerOne enemy map: <input class='torpedo-form' type="text" th:field="*{playerOne.ennemyBoard.map}"/></p>
         <p>PlayerOne ships remaining: <input class='torpedo-form' type="text" th:field="*{playerOne.shipsRemaining}"/></p>

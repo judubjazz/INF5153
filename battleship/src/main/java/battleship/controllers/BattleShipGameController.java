@@ -13,8 +13,11 @@ public class BattleShipGameController implements GameController {
         int targetX = target.get("x");
         int targetY = target.get("y");
 
+        //targetedArea >= 0 et non targetedArea > 0    :D
         int targetedArea = actor.ennemyBoard.map[targetX][targetY];
-        if(targetedArea > 0){ennemy.shipsRemaining--;}
+        
+        if(targetedArea > 0 && !(targetedArea <= 0)){ennemy.shipsRemaining--;}
+
         target.put("hit", targetedArea);
 
         if(actor.name.equals("player1")){
@@ -29,30 +32,32 @@ public class BattleShipGameController implements GameController {
         if(ennemy.shipsRemaining == 0){ actor.winner = true; }
     }
 
-
     @Override
     public BattleshipGame replay(BattleshipGame battleshipGame){
-        Player p1 = battleshipGame.playerOne;
+    	
+    	Player p1 = battleshipGame.playerOne;
         Player p2 = battleshipGame.playerTwo;
         ArrayList<Map<String,Integer>> p1Moves = battleshipGame.recorder.playerOneMoves;
         ArrayList<Map<String,Integer>> p2Moves = battleshipGame.recorder.playerTwoMoves;
 
-        // playerOne turn
-        Map<String,Integer> target = p1Moves.get(battleshipGame.recorder.index);
-        playTurn(p1,p2,target,battleshipGame.recorder);
+        // playerOne turn 
+        Map<String,Integer> target1 = p1Moves.get(battleshipGame.recorder.index);
+        playTurn(p1,p2,target1,battleshipGame.recorder);
 
         // playerTwo turn
-        target = p2Moves.get(battleshipGame.recorder.index);
-        playTurn(p2,p1,target,battleshipGame.recorder);
+        Map<String,Integer> target2 = p2Moves.get(battleshipGame.recorder.index);
+        playTurn(p2,p1,target2,battleshipGame.recorder);
 
         battleshipGame.recorder.index++;
         return battleshipGame;
     }
+    
     @Override
     public BattleshipGame save(BattleshipGame battleshipGame){
         Db.getDb().save(battleshipGame);
         return null;
     }
+    
     @Override
     public BattleshipGame load(int gameID){
         Recorder r = new Recorder();
