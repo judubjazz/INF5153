@@ -1,95 +1,147 @@
 'use strict';
+// import constants from './constants/constants';
+// console.log(constants);
+
+const constants = {
+  WAITING_OPP_TURN: 'waiting for opponent to play turn',
+  TARGET_OPP_SHIP: 'target an opponent ship',
+  WAITING_GAME_CONNECTION: 'waiting for a player to connect game with id',
+  SHIP_LOCATION_ERR: 'ships locations invalid',
+  HOME_URL: 'http://localhost:8090',
+  START_GAME: 'Start Game',
+  CREATE_GAME: 'Create Game',
+  JOIN_GAME: 'Join Game',
+  YOU_LOST: 'You Lost',
+  YOU_WON: 'You Won'
+};
+const {WAITING_OPP_TURN, SHIP_LOCATION_ERR, WAITING_GAME_CONNECTION, TARGET_OPP_SHIP, YOU_WON, YOU_LOST} = constants;
+
 
 const socket = io(window.location.protocol + '//localhost:9291');
-const game = {
+var game = {
   id: null,
-  player:{
-    isWaiting: false,
+  playerID:1,
+  map: [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  ],
+  fleet: {
+    carrier: {stem: {x: 0, y: 0}, bow: {x: 0, y: 4}, size: 5},
+    destroyer: {stem: {x: 1, y: 0}, bow: {x: 1, y: 1}, size: 2},
+    battleship: {stem: {x: 2, y: 0}, bow: {x: 2, y: 3}, size: 3},
+    cruiser: {stem: {x: 3, y: 0}, bow: {x: 3, y: 2}, size: 3},
+    submarine: {stem: {x: 4, y: 0}, bow: {x: 4, y: 3}, size: 4}
   },
-  fleet:{
-    "carrier":   {"stem":{"x":0,"y":0},"bow":{"x":0,"y":4}},
-    "destroyer": {"stem":{"x":1,"y":0},"bow":{"x":1,"y":1}},
-    "battleship":{"stem":{"x":2,"y":0},"bow":{"x":2,"y":3}},
-    "cruiser":   {"stem":{"x":3,"y":0},"bow":{"x":3,"y":2}},
-    "submarine": {"stem":{"x":4,"y":0},"bow":{"x":4,"y":3}}
-  },
-};
-const fleet = {
-  "carrier":   {"stem":{"x":0,"y":0},"bow":{"x":0,"y":4}},
-  "destroyer": {"stem":{"x":1,"y":0},"bow":{"x":1,"y":1}},
-  "battleship":{"stem":{"x":2,"y":0},"bow":{"x":2,"y":3}},
-  "cruiser":   {"stem":{"x":3,"y":0},"bow":{"x":3,"y":2}},
-  "submarine": {"stem":{"x":4,"y":0},"bow":{"x":4,"y":3}}
+  targets: [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  ],
 };
 
-function createGame(){
-  socket.emit('createGame', JSON.stringify(game));
-  socket.on('toClient', (res) =>{
-    const json= JSON.parse(res);
-    game.id = json.id;
-    game.player.isWaiting = true;
-    $('.loader-container').css('display', 'block');
-    $('.map-container').css('filter', 'blur(13px)');
-    $('.fleet-container').css('filter', 'blur(13px)');
-    console.log(game);
-  });
+// TODO make constants for socket events name
 
-  // socket.on('toPlayer1', (res) =>{
-  //   console.log(res);
-  //   // const json= JSON.parse(res);
-  //   // console.log(json);
-  // });
-}
+const createGame = () => {
+  if (isValidGame()) socket.emit('playerWillCreateGame', JSON.stringify(game));
+  else alert(SHIP_LOCATION_ERR);
+};
 
-socket.on('toPlayer1', (res) =>{
-  console.log(res);
-  // const json= JSON.parse(res);
-  // console.log(json);
+
+
+const torpedo = (event, x, y) => {
+  event.preventDefault();
+  const {id} = game;
+  const target = {
+    id,
+    x,
+    y,
+  };
+  socket.emit('playerOneWillPlayTurn', JSON.stringify(target));
+};
+
+socket.on('playerDidCreateGame', (res) => {
+  const {id, map} = res;
+  game.id = id;
+  game.map = map;
+  hideDraggableMap();
+  showLoader(WAITING_GAME_CONNECTION);
 });
-// $(document).ready(()=>{
-//   if(game.player.isWaiting){
-//     $('#loader').css('display', 'block')
-//   }
-// });
+
+socket.on('playerDidJoinGame', (res) => {
+  console.log(res);
+  renderTargetsMap();
+  renderPlayerMap();
+  hideLoader('target an opponnent ship');
+  $('#dinamic-player-map').css('display','block');
+  $('#dinamic-player-targets').css('display', 'block');
+
+});
+
+socket.on('playerOneDidPlay', (res) => {
+  console.log('player one did play', res);
+  const {x, y, winner} = res;
+  game.targets[x][y] = -1;
+  if(winner){
+    showLoader(YOU_WON);
+  } else {
+    $('#targets-table').remove();
+    renderTargetsMap();
+    showLoader(WAITING_OPP_TURN);
+  }
+});
+
+socket.on('playerTwoDidPlay', (res) => {
+  console.log('player two did play', res);
+  const {x, y, winner} = res;
+
+  game.map[x][y] = -1;
+
+  if(winner){
+    showLoader(YOU_LOST)
+  } else {
+    $('#player-map-table').remove();
+    renderPlayerMap();
+    hideLoader(TARGET_OPP_SHIP);
+    console.log('player two did play', res);
+  }
+
+});
 
 
-socket.on('connect_failed', function(data)
-{
+
+socket.on('connect_failed', function (data) {
   console.log('connect_failed');
 });
-socket.on('connecting', function(data)
-{
+socket.on('connecting', function (data) {
   console.log('connecting');
 });
-socket.on('disconnect', function(data)
-{
+socket.on('disconnect', function (data) {
   console.log('disconnect');
 });
-socket.on('error', function(reason)
-{
+socket.on('error', function (reason) {
   console.log('error');
 });
-socket.on('reconnect_failed', function(data)
-{
+socket.on('reconnect_failed', function (data) {
   console.log('reconnect_failed');
 });
-socket.on('reconnect', function(data)
-{
+socket.on('reconnect', function (data) {
   console.log('reconnect');
 });
-socket.on('reconnecting', function(data)
-{
+socket.on('reconnecting', function (data) {
   console.log('reconnecting');
 });
-
-// $(function () {
-//   var socket = io();
-//   $('form').submit(function(){
-//     socket.emit('chat message', $('#m').val());
-//     $('#m').val('');
-//     return false;
-//   });
-//   socket.on('chat message', function(msg){
-//     $('#messages').append($('<li>').text(msg));
-//   });
-// });
