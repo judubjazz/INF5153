@@ -1,21 +1,13 @@
 package battleship;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
-
 import battleship.controllers.BattleShipGameController;
 import battleship.controllers.GameController;
 import battleship.entities.BattleshipGame;
-import battleship.entities.Player;
-import battleship.entities.ships.Ship;
 import com.corundumstudio.socketio.*;
 import com.corundumstudio.socketio.listener.DataListener;
-import db.Db;
 import io.socket.client.Socket;
-import net.sf.json.JSON;
 import net.sf.json.JSONObject;
-import battleship.entities.*;
 
 
 public class SocketCS {
@@ -77,7 +69,7 @@ public class SocketCS {
                 int gameID = res.getInt("id");
 
                 // TODO check for game ids has to be in gamelist
-                BattleshipGame game = Application.gameList.get(0);
+                BattleshipGame game = Application.gameList.get(gameID - 1);
                 res = controller.joinOnlineGame(game, client, req);
 
                 client.sendEvent("playerDidJoinGame", res);
@@ -92,7 +84,7 @@ public class SocketCS {
             public void onData(SocketIOClient client, String req, AckRequest ackRequest) {
                 JSONObject res = JSONObject.fromObject(req);
                 int gameID = res.getInt("id");
-                BattleshipGame game = Application.gameList.get(0);
+                BattleshipGame game = Application.gameList.get(gameID - 1);
                 res = controller.playTurn(game.playerOne, game.playerTwo, req);
 
                 client.sendEvent("playerOneDidPlay", res);
@@ -104,7 +96,7 @@ public class SocketCS {
             public void onData(SocketIOClient client, String req, AckRequest ackRequest) {
                 JSONObject res = JSONObject.fromObject(req);
                 int gameID = res.getInt("id");
-                BattleshipGame game = Application.gameList.get(0);
+                BattleshipGame game = Application.gameList.get(gameID - 1);
                 res = controller.playTurn(game.playerTwo, game.playerOne, req);
 
                 game.p1Socket.sendEvent("playerTwoDidPlay", res);

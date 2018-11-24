@@ -82,7 +82,7 @@ public class Routes {
     	}
     }
 
-    // TODO si qq un entre un bash url sur la route du home ex : localhost:8090/oaihsdoiahsdoihas cette route la est généré au lieu d'une page 404
+    // TODO si qq un entre un bash url sur la route du home ex : localhost:8090/oaihsdoiahsdoihas la route du file est générée au lieu d'une page 404
     @RequestMapping(value="/{file}", method = RequestMethod.GET)
     public RedirectView getDelete(@PathVariable("file") String file, Model model) throws TransformerException{
     	Db.getDb().deleteNode(file);
@@ -118,7 +118,7 @@ public class Routes {
     }
 
     @GetMapping("/create-online-game")
-    public String test(Model model){
+    public String createOnlineGame(Model model){
         try {
             SocketCS.startServer();
         }catch (Exception e){

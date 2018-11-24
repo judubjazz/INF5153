@@ -54,7 +54,7 @@ const hideLoader = (msg) => {
 
 const showLoader = (msg) => {
   $('#message-header').html(msg);
-  $('.loader-container').css('display', 'block');
+  $('.loader-container').css('display', 'flex');
   $('.map-container').css('filter', 'blur(13px)');
   $('.fleet-container').css('filter', 'blur(13px)');
 };

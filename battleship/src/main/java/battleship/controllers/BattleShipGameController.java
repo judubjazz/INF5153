@@ -167,7 +167,7 @@ public class BattleShipGameController implements GameController {
 
     @Override
     public JSONObject createOnlineGame(SocketIOClient client, String req){
-        int id = Db.getDb().nextID();
+        int id = Application.gameList.size() + 1;
         JSONObject res = JSONObject.fromObject(req);
         JSONObject p1FleetJSON = res.getJSONObject("fleet");
         Player player = new Player("player1");

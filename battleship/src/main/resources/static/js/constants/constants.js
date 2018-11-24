@@ -9,4 +9,6 @@ const constants = {
   START_GAME: 'Start Game',
   CREATE_GAME: 'Create Game',
   JOIN_GAME: 'Join Game',
+  YOU_LOST: 'You lost',
+  YOU_WON: 'You won'
 };

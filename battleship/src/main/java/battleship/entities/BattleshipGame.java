@@ -9,7 +9,7 @@ public class BattleshipGame extends Game {
     public Recorder recorder;
     public Ai ai;
 
-    // TODO make a battleshipGame extends Game and a online game extends Game
+    // TODO make a battleshipGame extends Game
     public SocketIOClient p1Socket;
     public SocketIOClient p2Socket;
 

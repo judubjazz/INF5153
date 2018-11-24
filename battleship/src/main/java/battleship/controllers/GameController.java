@@ -7,14 +7,21 @@ import net.sf.json.JSONObject;
 
 
 public interface GameController {
-    public BattleshipGame load(int gameID);
-    public BattleshipGame save(BattleshipGame battleshipGame);
-    public BattleshipGame play(BattleshipGame battleshipGame);
-//    public BattleshipGame playTurn(BattleshipGame battleshipGame);
-    public BattleshipGame replay(BattleshipGame battleshipGame);
-    public BattleshipGame start(String data);
-    public BattleshipGame restart(BattleshipGame battleshipGame);
-    public JSONObject createOnlineGame(SocketIOClient client, String req);
-    public JSONObject joinOnlineGame(BattleshipGame battleshipGame, SocketIOClient client, String req);
-    public JSONObject playTurn(Player p1, Player p2, String req);
+    BattleshipGame load(int gameID);
+
+    BattleshipGame save(BattleshipGame battleshipGame);
+
+    BattleshipGame play(BattleshipGame battleshipGame);
+
+    BattleshipGame replay(BattleshipGame battleshipGame);
+
+    BattleshipGame start(String data);
+
+    BattleshipGame restart(BattleshipGame battleshipGame);
+
+    JSONObject createOnlineGame(SocketIOClient client, String req);
+
+    JSONObject joinOnlineGame(BattleshipGame battleshipGame, SocketIOClient client, String req);
+
+    JSONObject playTurn(Player p1, Player p2, String req);
 }

@@ -11,7 +11,9 @@
     <p class="home-options-container">
         <table >
             <tr th:each="game: ${gameList}">
-                <p th:text="${game}"></p>
+                <div>
+                    <a th:href="@{'/join/' + ${game.id}}" >test</a>
+                </div>
             </tr>
         </table>
     </div>
