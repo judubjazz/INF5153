@@ -6,9 +6,11 @@ import battleship.entities.BattleshipGame;
 
 import javax.xml.transform.TransformerException;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
 
 import battleship.SocketCS;
@@ -69,11 +71,17 @@ public class Routes {
     
     @RequestMapping(value="/load/{file}", method = RequestMethod.GET)
     public String getLoad(@PathVariable("file") String file, Model model){
-        GameController controller = new BattleShipGameController();
-        BattleshipGame battleshipGame = controller.load(Integer.parseInt(file));
-        model.addAttribute("battleshipGame", battleshipGame);
-        return "play";
+    	try {
+	        GameController controller = new BattleShipGameController();
+	        BattleshipGame battleshipGame = controller.load(Integer.parseInt(file));
+	        model.addAttribute("battleshipGame", battleshipGame);
+	        return "play";
+    	}catch (Exception ex) {
+        	model.addAttribute("listOfFiles", Db.getDb().getIDs());
+            return "mainMenu";
+    	}
     }
+    
     /*
     @GetMapping("/deleteFile")
     public String getDeleteFiles(Model model){
@@ -81,6 +89,7 @@ public class Routes {
         return "deleteFile";
     } 
     */
+    
     @RequestMapping(value="/{file}", method = RequestMethod.GET)
     public RedirectView getDelete(@PathVariable("file") String file, Model model) throws TransformerException{
     	Db.getDb().deleteNode(file);
@@ -103,6 +112,7 @@ public class Routes {
         return "play";
     }
      */
+    
     @PostMapping("/replay")
     public String replayGame(@ModelAttribute BattleshipGame battleshipGame, Model model){
         GameController controller = new BattleShipGameController();
