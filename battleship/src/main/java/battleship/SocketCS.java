@@ -72,14 +72,13 @@ public class SocketCS {
         server.addEventListener("playerWillJoinGame", String.class, new DataListener<String>() {
             @Override
             public void onData(SocketIOClient client, String req, AckRequest ackRequest) {
-                // TODO check for  game ids has to be sent from html
+
                 JSONObject res = JSONObject.fromObject(req);
                 int gameID = res.getInt("id");
 
-
+                // TODO check for game ids has to be in gamelist
                 BattleshipGame game = Application.gameList.get(0);
                 res = controller.joinOnlineGame(game, client, req);
-
 
                 client.sendEvent("playerDidJoinGame", res);
                 game.p1Socket.sendEvent("playerDidJoinGame");

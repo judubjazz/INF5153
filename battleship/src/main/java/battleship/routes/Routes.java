@@ -81,15 +81,8 @@ public class Routes {
             return "mainMenu";
     	}
     }
-    
-    /*
-    @GetMapping("/deleteFile")
-    public String getDeleteFiles(Model model){
-    	model.addAttribute("listOfFiles", Db.getDb().getIDs());
-        return "deleteFile";
-    } 
-    */
-    
+
+    // TODO si qq un entre un bash url sur la route du home ex : localhost:8090/oaihsdoiahsdoihas cette route la est généré au lieu d'une page 404
     @RequestMapping(value="/{file}", method = RequestMethod.GET)
     public RedirectView getDelete(@PathVariable("file") String file, Model model) throws TransformerException{
     	Db.getDb().deleteNode(file);
@@ -97,22 +90,7 @@ public class Routes {
     	return new RedirectView("loadFiles");
     }
 
-    /*
-    @GetMapping("/load")
-    public String getLoad(Model model){
-        // TODO could simple be in the same template as load
-        return "load-game-id";
-    }
 
-    @RequestMapping(value="/load/{gameID}", method = RequestMethod.GET)
-    public String getLoadGameID(@PathVariable("gameID") int gameID, Model model){
-        GameController controller = new BattleShipGameController();
-        BattleshipGame battleshipGame = controller.load(gameID);
-        model.addAttribute("battleshipGame", battleshipGame);
-        return "play";
-    }
-     */
-    
     @PostMapping("/replay")
     public String replayGame(@ModelAttribute BattleshipGame battleshipGame, Model model){
         GameController controller = new BattleShipGameController();
@@ -154,5 +132,6 @@ public class Routes {
     public String joinGame(@PathVariable("gameID") int gameID, Model model){
         return "join-this-game";
     }
+
 }
 

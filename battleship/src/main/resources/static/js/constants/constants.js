@@ -10,4 +10,3 @@ const constants = {
   CREATE_GAME: 'Create Game',
   JOIN_GAME: 'Join Game',
 };
- export default constants

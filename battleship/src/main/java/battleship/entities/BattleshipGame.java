@@ -67,4 +67,24 @@ public class BattleshipGame extends Game {
     }
     public Ai getAi() {return ai; }
     public void setAi(Ai ai) {this.ai = ai; }
+
+    @Override
+    public SocketIOClient getP1Socket() {
+        return p1Socket;
+    }
+
+    @Override
+    public void setP1Socket(SocketIOClient p1Socket) {
+        this.p1Socket = p1Socket;
+    }
+
+    @Override
+    public SocketIOClient getP2Socket() {
+        return p2Socket;
+    }
+
+    @Override
+    public void setP2Socket(SocketIOClient p2Socket) {
+        this.p2Socket = p2Socket;
+    }
 }

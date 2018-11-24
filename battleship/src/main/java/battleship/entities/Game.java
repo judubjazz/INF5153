@@ -1,11 +1,15 @@
 package battleship.entities;
 
+import com.corundumstudio.socketio.SocketIOClient;
+
 public class Game {
     public int id;
     public Recorder recorder;
     public Ai ai;
     public Player playerOne;
     public Player playerTwo;
+    public SocketIOClient p1Socket;
+    public SocketIOClient p2Socket;
 
     public Game(){}
 
@@ -48,5 +52,21 @@ public class Game {
 
     public void setAi(Ai ai) {
         this.ai = ai;
+    }
+
+    public SocketIOClient getP1Socket() {
+        return p1Socket;
+    }
+
+    public void setP1Socket(SocketIOClient p1Socket) {
+        this.p1Socket = p1Socket;
+    }
+
+    public SocketIOClient getP2Socket() {
+        return p2Socket;
+    }
+
+    public void setP2Socket(SocketIOClient p2Socket) {
+        this.p2Socket = p2Socket;
     }
 }
