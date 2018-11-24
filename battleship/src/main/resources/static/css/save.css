@@ -2,9 +2,11 @@ body {
   	display: flex;
   	justify-content: center;
   	align-items: center;
-  	height: 80vh;
+  	height: 100vh;
 }
-
+p { 
+	text-align: center 
+}
 table{
     width: 250px; 
 }
@@ -33,8 +35,7 @@ a:link, a:visited {
 a:hover, a:active {
     color: white;
 }
-img {
-	display: block;
-    margin-left: auto;
-    margin-right: auto;
+
+span{
+    color: #f44336;
 }

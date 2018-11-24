@@ -1,24 +1,26 @@
 /*VARIABLES*/
 :root {
-    --submarine-color: aquamarine;
-    --destroyer-color: orange;
-    --battleship-color: yellow;
-    --cruiser-color: greenyellow;
-    --carrier-color: coral;
-    --hit-color: red;
-    --water-color: blue;
-    --tile-size:40px;
+    --submarine-color: #262626;
+    --destroyer-color: #262626;
+    --battleship-color: #262626;
+    --cruiser-color: #262626;
+    --carrier-color: #262626;
+    --hit-color: #f44336;
+    --tile-size:30px;
 }
 
 /*NORMALISATION*/
 div{
     text-align: center;
 }
-html {
-    height: 100%;
+p{
+    display: none;
 }
 body {
-    min-height: 100%;
+    display: flex;
+  	justify-content: center;
+  	align-items: center;
+  	height: 80vh;
 }
 
 table, td, th, tr {
@@ -33,17 +35,47 @@ th {
     text-align: center;
 }
 
+.torpedo-form{
+	display: none;
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 22px 63px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button3 {
+    background-color: white; 
+    color: #f44336; 
+    border: 2px solid #f44336;
+}
+
+.button3:hover {
+    background-color: #f44336;
+    color: white;
+}
+
+h1{
+    font-family: "Times New Roman", Times, serif;
+    font-style: italic;
+}
+
+span{
+    color: #f44336;
+    font-size: 45px;
+    font-style: normal;
+}
 /*CONTAINERS*/
-.fleet-container{
-    display: flex;
-    justify-content: space-between;
-    min-height: 200px;
-}
-.main-container{
-    display: flex;
-    flex-direction:column;
-    justify-content: center;
-}
 
 .main-wrapper{
     background: url('/static/img/transparent-background.png') no-repeat center center fixed;
@@ -55,9 +87,10 @@ th {
 .map-container{
     display: flex;
     justify-content: center;
-
 }
 
+
+=======
 .form-container{
     display: flex;
     justify-content: center;
@@ -74,6 +107,7 @@ th {
     flex-direction: column;
     justify-content: center;
 }
+
 
 /*GRID*/
 .player-one-map {
