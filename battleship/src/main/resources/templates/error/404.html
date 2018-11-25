@@ -3,9 +3,13 @@
 <head>
     <title>404 Not Found</title>
     <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/error.css}"/>
 </head>
-<body>
-<h3>404 Not Found</h3>
-<a href="/" th:href="@{/}">Back to Home Page</a>
-</body>
+	<body>
+		<div > 
+			<p>A problem has occurred</p>
+			<br/>
+			<a class="button button3 size" th:href="@{/}">MAIN MENU</a>
+		</div>
+	</body>
 </html>

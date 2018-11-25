@@ -3,16 +3,11 @@ package battleship.routes;
 import battleship.Application;
 import battleship.controllers.*;
 import battleship.entities.BattleshipGame;
-
 import javax.xml.transform.TransformerException;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
-
 import battleship.SocketCS;
 import db.Db;
 
@@ -20,7 +15,7 @@ import db.Db;
 public class Routes {
 
     @GetMapping("/")
-    public String main() {
+    public String main(){
         return "mainMenu";
     }
     
@@ -133,5 +128,9 @@ public class Routes {
         return "join-this-game";
     }
 
+    @ExceptionHandler({Exception.class})
+    public  String handleException(){
+    	return "mainMenu";
+    }
 }
 

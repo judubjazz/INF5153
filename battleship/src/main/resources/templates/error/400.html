@@ -3,9 +3,13 @@
 <head>
     <title>400 bad request</title>
     <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/error.css}"/>
 </head>
-<body>
-<h1>400 bad request</h1>
-<a href="/" th:href="@{/}">Back to Home Page</a>
-</body>
+	<body>
+		<div > 
+			<p>A problem has occurred</p>
+			<br/>
+			<a class="button button3 size" th:href="@{/}">MAIN MENU</a>
+		</div>
+	</body>
 </html>
