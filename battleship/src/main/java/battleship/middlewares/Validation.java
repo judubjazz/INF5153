@@ -3,8 +3,6 @@ package battleship.middlewares;
 import battleship.Application;
 import battleship.entities.BattleshipGame;
 import battleship.entities.Board;
-import battleship.entities.Game;
-
 import java.util.Map;
 
 public class Validation {

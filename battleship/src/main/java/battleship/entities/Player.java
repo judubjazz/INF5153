@@ -34,7 +34,7 @@ public class Player {
         this.winner = false;
     }
 
-    public Player(Map fleet, Board playerBoard, Board ennemyBoard, String name) {
+    public Player(Map<String,Ship> fleet, Board playerBoard, Board ennemyBoard, String name) {
         this.carrier = (Ship) fleet.get("carrier");
         this.submarine = (Ship) fleet.get("submarine");
         this.destroyer = (Ship) fleet.get("destroyer");

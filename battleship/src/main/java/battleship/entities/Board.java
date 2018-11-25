@@ -3,7 +3,6 @@ package battleship.entities;
 
 import battleship.entities.ships.Ship;
 
-import java.util.Arrays;
 import java.util.Map;
 
 public class Board {
@@ -53,7 +52,6 @@ public class Board {
         int stemX = ship.stemX;
         int stemY = ship.stemY;
         int bowX = ship.bowX;
-        int bowY = ship.bowY;
         int shipID = ship.id;
         int shipSize = ship.size;
 

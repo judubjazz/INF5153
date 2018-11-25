@@ -5,8 +5,6 @@ import battleship.entities.Player;
 import com.corundumstudio.socketio.SocketIOClient;
 import net.sf.json.JSONObject;
 
-import javax.xml.transform.TransformerException;
-
 
 public interface GameController {
     BattleshipGame load(int gameID);

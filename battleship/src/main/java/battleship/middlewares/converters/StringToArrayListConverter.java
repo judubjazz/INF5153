@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StringToArrayListConverter implements Converter<String, ArrayList> {
+public class StringToArrayListConverter implements Converter<String, ArrayList<Map<String, Integer>>> {
 
     @Override
     public ArrayList<Map<String, Integer>> convert(String source) {

@@ -41,9 +41,9 @@ public class Ship {
 
     public static Map<String, Ship> buildFleet(JSONObject options){
         Map<String, Ship> fleet = new HashMap<>();
-        Iterator<String> keys = options.keys();
+        Iterator<?> keys = options.keys();
         while(keys.hasNext()) {
-            String key = keys.next();
+            String key = (String) keys.next();
             Ship buildedShip = buildShipFromJSON(options, key);
             fleet.put(key, buildedShip);
         }

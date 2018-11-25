@@ -3,7 +3,6 @@ package battleship.routes;
 import battleship.Application;
 import battleship.controllers.*;
 import battleship.entities.BattleshipGame;
-
 import battleship.middlewares.Validation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -133,11 +132,12 @@ public class Routes {
 
     @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "game not found")
     private class GameNotFoundException extends RuntimeException {
-        int test = 0;
+        private static final long serialVersionUID = 41L;
     }
 
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, reason = "socket server error")
     private class ServerErrorException extends RuntimeException {
+        private static final long serialVersionUID = 42L;
     }
 
     @ExceptionHandler({Exception.class})

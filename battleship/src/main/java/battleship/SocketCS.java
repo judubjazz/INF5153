@@ -1,17 +1,13 @@
 package battleship;
 
-import java.io.UnsupportedEncodingException;
 import battleship.controllers.BattleShipGameController;
 import battleship.controllers.GameController;
 import battleship.entities.BattleshipGame;
 import com.corundumstudio.socketio.*;
-import com.corundumstudio.socketio.listener.DataListener;
-import io.socket.client.Socket;
 import net.sf.json.JSONObject;
 
 
 public class SocketCS {
-    static private Socket socket;
     private static final int PORT = 9291;
     private static SocketIOServer server = null;
     private static Thread thread = null;

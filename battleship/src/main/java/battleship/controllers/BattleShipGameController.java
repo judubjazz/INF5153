@@ -6,8 +6,6 @@ import battleship.entities.ships.Ship;
 import com.corundumstudio.socketio.SocketIOClient;
 import db.Db;
 import net.sf.json.JSONObject;
-
-import javax.xml.transform.TransformerException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
