@@ -3,11 +3,13 @@ package battleship.routes;
 import battleship.Application;
 import battleship.controllers.*;
 import battleship.entities.BattleshipGame;
-import javax.xml.transform.TransformerException;
+
+import battleship.middlewares.Validation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.http.HttpStatus;
 import battleship.SocketCS;
 import db.Db;
 
@@ -77,12 +79,14 @@ public class Routes {
     	}
     }
 
-    // TODO si qq un entre un bash url sur la route du home ex : localhost:8090/oaihsdoiahsdoihas la route du file est générée au lieu d'une page 404
-    @RequestMapping(value="/{file}", method = RequestMethod.GET)
-    public RedirectView getDelete(@PathVariable("file") String file, Model model) throws TransformerException{
-    	Db.getDb().deleteNode(file);
-    	model.addAttribute("listOfFiles", Db.getDb().getIDs());
-    	return new RedirectView("loadFiles");
+    @RequestMapping(value= "/delete/{gameID}", method = RequestMethod.GET)
+    public String getDelete(@PathVariable("gameID") int gameID, Model model){
+        GameController controller = new BattleShipGameController();
+        if(!controller.delete(gameID)){
+            throw new GameNotFoundException();
+        }
+        model.addAttribute("listOfFiles", Db.getDb().getIDs());
+        return "loadFiles";
     }
 
 
@@ -124,13 +128,18 @@ public class Routes {
 
     // TODO render other page if gameid is not in gamelist
     @RequestMapping(value="/join/{gameID}", method = RequestMethod.GET)
-    public String joinGame(@PathVariable("gameID") int gameID, Model model){
-        return "join-this-game";
+    public String joinGame(@PathVariable("gameID") int gameID){
+        if (Validation.gameIDisInTheList(gameID)) return "join-this-game";
+        throw new GameNotFoundException();
     }
 
     @ExceptionHandler({Exception.class})
     public  String handleException(){
-    	return "error";
+        return "error";
+    }
+
+    @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "game not found")
+    private class GameNotFoundException extends RuntimeException {
     }
 }
 

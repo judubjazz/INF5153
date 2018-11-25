@@ -6,6 +6,8 @@ import battleship.entities.ships.Ship;
 import com.corundumstudio.socketio.SocketIOClient;
 import db.Db;
 import net.sf.json.JSONObject;
+
+import javax.xml.transform.TransformerException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +15,7 @@ import java.util.Map;
 public class BattleShipGameController implements GameController {
 
     @Override
-    public JSONObject playTurn(Player actor, Player ennemy, String req){
+    public JSONObject playTurnOnline(Player actor, Player ennemy, String req){
         JSONObject res = JSONObject.fromObject(req);
 
         int targetX = res.getInt("x");
@@ -96,6 +98,19 @@ public class BattleShipGameController implements GameController {
         Db.getDb().load(battleshipGame);
         return battleshipGame;
     }
+
+
+    @Override
+    public boolean delete(int gameID){
+        String id = String.valueOf(gameID);
+        try {
+            Db.getDb().deleteNode(id);
+        } catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
 
     @Override
     public BattleshipGame start(String gameSettings) {

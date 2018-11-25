@@ -5,11 +5,15 @@ import battleship.entities.Player;
 import com.corundumstudio.socketio.SocketIOClient;
 import net.sf.json.JSONObject;
 
+import javax.xml.transform.TransformerException;
+
 
 public interface GameController {
     BattleshipGame load(int gameID);
 
     BattleshipGame save(BattleshipGame battleshipGame);
+
+    boolean delete(int gameID);
 
     BattleshipGame play(BattleshipGame battleshipGame);
 
@@ -23,5 +27,5 @@ public interface GameController {
 
     JSONObject joinOnlineGame(BattleshipGame battleshipGame, SocketIOClient client, String req);
 
-    JSONObject playTurn(Player p1, Player p2, String req);
+    JSONObject playTurnOnline(Player p1, Player p2, String req);
 }

@@ -77,15 +77,13 @@ public class SocketCS {
             }
         });
 
-        // TODO load gameIDs with the the data sent
-        // TODO possible to refactor next 2 functions in one
         server.addEventListener("playerOneWillPlayTurn", String.class, new DataListener<String>() {
             @Override
             public void onData(SocketIOClient client, String req, AckRequest ackRequest) {
                 JSONObject res = JSONObject.fromObject(req);
                 int gameID = res.getInt("id");
                 BattleshipGame game = Application.gameList.get(gameID - 1);
-                res = controller.playTurn(game.playerOne, game.playerTwo, req);
+                res = controller.playTurnOnline(game.playerOne, game.playerTwo, req);
 
                 client.sendEvent("playerOneDidPlay", res);
                 game.p2Socket.sendEvent("playerOneDidPlay", res);
@@ -97,7 +95,7 @@ public class SocketCS {
                 JSONObject res = JSONObject.fromObject(req);
                 int gameID = res.getInt("id");
                 BattleshipGame game = Application.gameList.get(gameID - 1);
-                res = controller.playTurn(game.playerTwo, game.playerOne, req);
+                res = controller.playTurnOnline(game.playerTwo, game.playerOne, req);
 
                 game.p1Socket.sendEvent("playerTwoDidPlay", res);
                 client.sendEvent("playerTwoDidPlay", res);

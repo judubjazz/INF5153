@@ -13,7 +13,7 @@
 			<table>
 				<tr th:each="file : ${listOfFiles}">
 				 	<td class="delete">
-		     			<a th:href="@{{file}(file=${file})}">
+		     			<a th:href="@{'/delete/'+${file}}">
 						   	<img src="https://img.icons8.com/ios-glyphs/50/000000/delete-forever.png">
 						</a> 
 					</td>
