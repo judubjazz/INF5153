@@ -130,7 +130,7 @@ public class Routes {
 
     @ExceptionHandler({Exception.class})
     public  String handleException(){
-    	return "mainMenu";
+    	return "error";
     }
 }
 

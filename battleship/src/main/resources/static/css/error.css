@@ -2,7 +2,7 @@ body {
     display: flex;
   	justify-content: center;
   	align-items: center;
-  	height: 100vh;
+  	height: 80vh;
 }
 
 .button {
@@ -31,9 +31,14 @@ body {
 }
 
 .size {
-    width: 95.56px;
+    width: 100px;
 }
 
 p { 
 	text-align: center 
 }
+
+img {
+	display: block;
+    margin-left: auto;
+ 
