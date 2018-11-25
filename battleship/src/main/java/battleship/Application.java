@@ -11,7 +11,6 @@ import java.util.List;
 @SpringBootApplication
 public class Application {
 
-    // TODO use a Set instead an arrayList
     public static List<BattleshipGame> gameList;
     public static void main(String[] args) throws Exception {
         gameList = new ArrayList<>();
