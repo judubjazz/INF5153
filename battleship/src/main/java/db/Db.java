@@ -339,7 +339,7 @@ public class Db {
     private void savePlayerFleet(Element playerElement, Player player) {
         Element fleet = document.createElement("fleet");
         Element carrier = document.createElement("carrier");
-        Element battleship = document.createElement("batlleship");
+        Element battleship = document.createElement("battleship");
         Element cruiser = document.createElement("cruiser");
         Element destroyer = document.createElement("destroyer");
         Element submarine = document.createElement("submarine");
