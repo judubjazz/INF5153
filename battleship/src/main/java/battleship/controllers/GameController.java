@@ -1,29 +1,29 @@
 package battleship.controllers;
 
-import battleship.entities.BattleshipGame;
-import battleship.entities.Player;
+import battleship.entities.games.Game;
+import battleship.entities.players.Player;
 import com.corundumstudio.socketio.SocketIOClient;
 import net.sf.json.JSONObject;
 
 
-public interface GameController {
-    BattleshipGame load(int gameID);
+public interface GameController<P extends Player, G extends Game> {
+    Game load(int gameID);
 
-    BattleshipGame save(BattleshipGame battleshipGame);
+    Game save(G game);
 
     boolean delete(int gameID);
 
-    BattleshipGame play(BattleshipGame battleshipGame);
+    Game play(G game);
 
-    BattleshipGame replay(BattleshipGame battleshipGame);
+    Game replay(G game);
 
-    BattleshipGame start(String data);
+    Game start(String data);
 
-    BattleshipGame restart(BattleshipGame battleshipGame);
+    Game restart(G game);
 
     JSONObject createOnlineGame(SocketIOClient client, String req);
 
-    JSONObject joinOnlineGame(BattleshipGame battleshipGame, SocketIOClient client, String req);
+    JSONObject joinOnlineGame(G game, SocketIOClient client, String req);
 
-    JSONObject playTurnOnline(Player p1, Player p2, String req);
+    JSONObject playTurnOnline(P p1, P p2, String req);
 }
