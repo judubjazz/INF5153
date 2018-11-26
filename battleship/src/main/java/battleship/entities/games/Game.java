@@ -1,89 +1,83 @@
-package battleship.entities;
+package battleship.entities.games;
 
+import battleship.entities.Ais.Ai;
+import battleship.entities.players.BattleshipPlayer;
+import battleship.entities.players.Player;
+import battleship.entities.Recorder;
 import com.corundumstudio.socketio.SocketIOClient;
 
-public class BattleshipGame extends Game {
+public class Game<P extends Player> {
     public int id;
-    public Player playerOne;
-    public Player playerTwo;
     public Recorder recorder;
-    public Ai ai;
-
-    // TODO make a battleshipGame extends Game
+    public P playerOne;
+    public P playerTwo;
     public SocketIOClient p1Socket;
     public SocketIOClient p2Socket;
 
-    public BattleshipGame(){
-        super();
-    }
+    public Game(){}
 
-    public BattleshipGame(Player playerOne, Player playerTwo) {
-        super();
+    public Game(P playerOne, P playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
     }
 
-    public BattleshipGame(int id, Player playerOne, Player playerTwo, Recorder recorder, Ai ai) {
-        super();
+    public Game(int id, P playerOne, P playerTwo, Recorder recorder) {
         this.id = id;
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.recorder = recorder;
-        this.ai = ai;
     }
 
-    public BattleshipGame(int id, Player playerOne, Player playerTwo, Ai ai) {
-        super();
+    public Game(int id, P playerOne, P playerTwo) {
         this.id = id;
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
-        this.ai = ai;
     }
 
-
-    public Player getPlayerOne() {
-        return playerOne;
-    }
-    public void setPlayerOne(Player playerOne) {
-        this.playerOne = playerOne;
-    }
-    public Player getPlayerTwo() {
-        return playerTwo;
-    }
-    public void setPlayerTwo(Player playerTwo) {
-        this.playerTwo = playerTwo;
-    }
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public Recorder getRecorder() {
         return recorder;
     }
+
     public void setRecorder(Recorder recorder) {
         this.recorder = recorder;
     }
-    public Ai getAi() {return ai; }
-    public void setAi(Ai ai) {this.ai = ai; }
 
-    @Override
+    public P getPlayerOne() {
+        return playerOne;
+    }
+
+    public void setPlayerOne(P playerOne) {
+        this.playerOne = playerOne;
+    }
+
+    public P getPlayerTwo() {
+        return playerTwo;
+    }
+
+    public void setPlayerTwo(P playerTwo) {
+        this.playerTwo = playerTwo;
+    }
+
     public SocketIOClient getP1Socket() {
         return p1Socket;
     }
 
-    @Override
     public void setP1Socket(SocketIOClient p1Socket) {
         this.p1Socket = p1Socket;
     }
 
-    @Override
     public SocketIOClient getP2Socket() {
         return p2Socket;
     }
 
-    @Override
     public void setP2Socket(SocketIOClient p2Socket) {
         this.p2Socket = p2Socket;
     }

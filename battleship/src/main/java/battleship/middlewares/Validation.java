@@ -1,8 +1,8 @@
 package battleship.middlewares;
 
 import battleship.Application;
-import battleship.entities.BattleshipGame;
-import battleship.entities.Board;
+import battleship.entities.games.Game;
+import battleship.entities.boards.Board;
 import java.util.Map;
 
 public class Validation {
@@ -14,7 +14,7 @@ public class Validation {
     }
 
     public static boolean gameIDisInTheList(int id){
-        for (BattleshipGame game: Application.gameList){
+        for (Game game: Application.gameList){
             System.out.println(game.id);
             if (game.id == id) return true;
         }

@@ -1,18 +1,13 @@
-package battleship.entities;
-
+package battleship.entities.boards;
 
 import battleship.entities.ships.Ship;
-
 import java.util.Map;
 
-public class Board {
-    public int height = 10;
-    public int width = 10;
+public class BattleshipBoard extends Board {
     public boolean hidden;
-    public int[][] map;
 
-    public Board() {
-        this.map = new int[][]{
+    public BattleshipBoard() {
+        super(10, 10, new int[][]{
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -23,28 +18,18 @@ public class Board {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        };
+        });
         this.hidden = false;
     }
-    public Board(boolean hidden) {
-        this.map = new int[][]{
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        };
-        this.hidden = hidden;
+
+    public BattleshipBoard(int height, int width, int[][] map) {
+        super(height, width, map);
+        this.hidden = false;
     }
 
     public void locateFleet(Map<String, Ship> fleet) {
         for (Ship ship : fleet.values()) {
-           locateShip(ship);
+            locateShip(ship);
         }
     }
 
@@ -55,17 +40,17 @@ public class Board {
         int shipID = ship.id;
         int shipSize = ship.size;
 
-            for(int i = 0; i < shipSize; ++i) {
-                if(stemX != bowX) {
-                    // horizontal
-                    this.map[stemX][stemY] = shipID;
-                    ++stemX;
-                } else {
-                    // vertical
-                    this.map[stemX][stemY] = shipID;
-                    ++stemY;
-                }
+        for(int i = 0; i < shipSize; ++i) {
+            if(stemX != bowX) {
+                // horizontal
+                this.map[stemX][stemY] = shipID;
+                ++stemX;
+            } else {
+                // vertical
+                this.map[stemX][stemY] = shipID;
+                ++stemY;
             }
+        }
     }
 
     public boolean validateRow(Ship ship){
@@ -93,29 +78,14 @@ public class Board {
     }
 
     // Getters & Setters
-    public int getHeight() {
-        return height;
-    }
-    public void setHeight(int height) {
-        this.height = height;
-    }
-    public int getWidth() {
-        return width;
-    }
-    public void setWidth(int width) {
-        this.width = width;
-    }
+
+
     public boolean isHidden() {
         return hidden;
     }
+
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
-    }
-    public int[][] getMap() {
-        return map;
-    }
-    public void setMap(int[][] map) {
-        this.map = map;
     }
 
     @Override

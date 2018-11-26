@@ -2,7 +2,9 @@ package battleship.routes;
 
 import battleship.Application;
 import battleship.controllers.*;
-import battleship.entities.BattleshipGame;
+import battleship.entities.games.BattleshipGame;
+import battleship.entities.games.Game;
+import battleship.entities.ships.Battleship;
 import battleship.middlewares.Validation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +37,7 @@ public class Routes {
     public String postStart(@ModelAttribute FormController formController, Model model) {
         String data = formController.data;
         GameController controller = new BattleShipGameController();
-        BattleshipGame battleshipGame = controller.start(data);
+        Game battleshipGame = controller.start(data);
         model.addAttribute("battleshipGame", battleshipGame);
         return "game/play";
     }
@@ -43,8 +45,8 @@ public class Routes {
     @PostMapping("/play")
     public String postPlay(@ModelAttribute BattleshipGame battleshipGame, Model model){
         GameController controller = new BattleShipGameController();
-        battleshipGame = controller.play(battleshipGame);
-        model.addAttribute("battleshipGame", battleshipGame);
+        Game game = controller.play(battleshipGame);
+        model.addAttribute("battleshipGame", game);
         if(battleshipGame.playerOne.winner) return "game/you-won";
         if(battleshipGame.playerTwo.winner) return "game/you-lost";
         return "game/play";
@@ -53,8 +55,8 @@ public class Routes {
     @PostMapping("/save")
     public String postSave(@ModelAttribute BattleshipGame battleshipGame, Model model){
         GameController controller = new BattleShipGameController();
-        battleshipGame = controller.save(battleshipGame);
-        model.addAttribute("game", battleshipGame);
+        Game game = controller.save(battleshipGame);
+        model.addAttribute("battleshipGame", game);
         return "menu/save";
     }
     
@@ -68,7 +70,7 @@ public class Routes {
     public String getLoad(@PathVariable("file") String file, Model model){
     	try {
 	        GameController controller = new BattleShipGameController();
-	        BattleshipGame battleshipGame = controller.load(Integer.parseInt(file));
+	        Game battleshipGame = controller.load(Integer.parseInt(file));
 	        model.addAttribute("battleshipGame", battleshipGame);
 	        return "game/play";
     	}catch (Exception ex) {
@@ -91,8 +93,8 @@ public class Routes {
     @PostMapping("/replay")
     public String replayGame(@ModelAttribute BattleshipGame battleshipGame, Model model){
         GameController controller = new BattleShipGameController();
-        battleshipGame = controller.replay(battleshipGame);
-        model.addAttribute("game", battleshipGame);
+        Game game = controller.replay(battleshipGame);
+        model.addAttribute("battleshipGame", game);
         if(battleshipGame.playerOne.winner) return "game/you-won";
         if(battleshipGame.playerTwo.winner) return "game/you-lost";
         return "game/replay";
@@ -101,8 +103,8 @@ public class Routes {
     @PostMapping("/restart")
     public String postRestartGame(@ModelAttribute BattleshipGame battleshipGame, Model model){
         GameController controller = new BattleShipGameController();
-        battleshipGame = controller.restart(battleshipGame);
-        model.addAttribute("game", battleshipGame);
+        Game game = controller.restart(battleshipGame);
+        model.addAttribute("battleshipGame", game);
         return "game/replay";
     }
 

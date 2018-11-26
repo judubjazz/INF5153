@@ -1,5 +1,6 @@
 package battleship.entities.ships;
-import battleship.entities.Board;
+import battleship.entities.boards.BattleshipBoard;
+import battleship.entities.boards.Board;
 import net.sf.json.JSONObject;
 import java.util.*;
 
@@ -75,7 +76,7 @@ public class Ship {
         }
     }
 
-    public Ship locateToRandomPosition(Board board) {
+    public Ship locateToRandomPosition(BattleshipBoard board) {
         Random random = new Random();
         this.stemX = random.nextInt(board.getWidth());
         this.stemY = random.nextInt(board.getHeight());

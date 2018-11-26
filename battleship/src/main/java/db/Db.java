@@ -1,6 +1,9 @@
 package db;
 
 import battleship.entities.*;
+import battleship.entities.Ais.BattleshipAi;
+import battleship.entities.games.BattleshipGame;
+import battleship.entities.players.BattleshipPlayer;
 import battleship.middlewares.converters.StringTo2DArrayConverter;
 import battleship.middlewares.converters.StringToArrayListConverter;
 import battleship.entities.ships.Ship;
@@ -110,7 +113,7 @@ public class Db {
         updateGame(gameSettings, battleshipGame);
     }
 
-    private void setAi(NodeList aiSettings, Ai ai) {
+    private void setAi(NodeList aiSettings, BattleshipAi ai) {
         for (int i = 0; i < aiSettings.getLength(); i++) {
             Node setting = aiSettings.item(i);
             if (setting.getNodeType() == Node.ELEMENT_NODE) {
@@ -172,10 +175,10 @@ public class Db {
                         battleshipGame.id = Integer.parseInt(setting.getTextContent());
                         break;
                     case "player1":
-                        setPlayer(caseSettings, battleshipGame.playerOne, battleshipGame);
+                        setPlayer(caseSettings, (BattleshipPlayer)battleshipGame.playerOne, battleshipGame);
                         break;
                     case "player2":
-                        setPlayer(caseSettings, battleshipGame.playerTwo, battleshipGame);
+                        setPlayer(caseSettings, (BattleshipPlayer)battleshipGame.playerTwo, battleshipGame);
                         break;
                     case "ai":
                         setAi(caseSettings, battleshipGame.ai);
@@ -190,7 +193,7 @@ public class Db {
         }
     }
 
-    private void setPlayer(NodeList playerSettings, Player player, BattleshipGame battleshipGame) {
+    private void setPlayer(NodeList playerSettings, BattleshipPlayer player, BattleshipGame battleshipGame) {
         for (int j = 0; j < playerSettings.getLength(); ++j) {
             Node setting = playerSettings.item(j);
             if (setting.getNodeType() == Node.ELEMENT_NODE) {
@@ -231,7 +234,7 @@ public class Db {
         }
     }
 
-    private void setFleet(NodeList nodeList, Player player) {
+    private void setFleet(NodeList nodeList, BattleshipPlayer player) {
         for (int i = 0; i < nodeList.getLength(); ++i) {
             Node shipNode = nodeList.item(i);
             if (shipNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -316,7 +319,7 @@ public class Db {
 
     }
 
-    private void savePlayerShip(Element shipElement, Player player) {
+    private void savePlayerShip(Element shipElement, BattleshipPlayer player) {
         switch (shipElement.getTagName()) {
             case "carrier":
                 saveShipPosition(shipElement, player.carrier);
@@ -336,7 +339,7 @@ public class Db {
         }
     }
 
-    private void savePlayerFleet(Element playerElement, Player player) {
+    private void savePlayerFleet(Element playerElement, BattleshipPlayer player) {
         Element fleet = document.createElement("fleet");
         Element carrier = document.createElement("carrier");
         Element battleship = document.createElement("battleship");
@@ -358,7 +361,7 @@ public class Db {
         playerElement.appendChild(fleet);
     }
 
-    private void savePlayer(Element playerElement, Player player) {
+    private void savePlayer(Element playerElement, BattleshipPlayer player) {
         savePlayerShipsRemaining(playerElement, player.shipsRemaining);
         savePlayerMap(playerElement, player.playerBoard.map);
         savePlayerFleet(playerElement, player);
@@ -368,7 +371,7 @@ public class Db {
         idElement.appendChild(document.createTextNode(String.valueOf(id)));
     }
 
-    private void saveAi(Element aiElement, Ai ai) {
+    private void saveAi(Element aiElement, BattleshipAi ai) {
         Element difficulty = document.createElement("difficulty");
         String difficultyValue = String.valueOf(ai.difficulty);
         difficulty.appendChild(document.createTextNode(difficultyValue));
@@ -416,8 +419,8 @@ public class Db {
 
         Element player1 = document.createElement("player1");
         Element player2 = document.createElement("player2");
-        savePlayer(player1, battleshipGame.playerOne);
-        savePlayer(player2, battleshipGame.playerTwo);
+        savePlayer(player1, (BattleshipPlayer)battleshipGame.playerOne);
+        savePlayer(player2, (BattleshipPlayer)battleshipGame.playerTwo);
 
         Element ai = document.createElement("ai");
         saveAi(ai, battleshipGame.ai);
@@ -470,10 +473,10 @@ public class Db {
             Node setting = gameSettings.item(i);
             switch (setting.getNodeName()) {
                 case "player1":
-                    updatePlayer(setting.getChildNodes(), battleshipGame.playerOne);
+                    updatePlayer(setting.getChildNodes(), (BattleshipPlayer)battleshipGame.playerOne);
                     break;
                 case "player2":
-                    updatePlayer(setting.getChildNodes(), battleshipGame.playerTwo);
+                    updatePlayer(setting.getChildNodes(), (BattleshipPlayer)battleshipGame.playerTwo);
                     break;
                 default:
                     break;
@@ -481,7 +484,7 @@ public class Db {
             }
         }
     }
-    
+
     @SuppressWarnings("unused")
 	private void updateRecorder(NodeList recorderSettings, BattleshipGame battleshipGame){
         for(int i = 0 ; i < recorderSettings.getLength(); ++i){
@@ -489,7 +492,7 @@ public class Db {
         }
     }
 
-    private void updatePlayer(NodeList playerSettings, Player player) {
+    private void updatePlayer(NodeList playerSettings, BattleshipPlayer player) {
         for(int i = 0; i < playerSettings.getLength(); ++i){
             Node setting = playerSettings.item(i);
             switch (setting.getNodeName()) {
@@ -508,7 +511,7 @@ public class Db {
         }
     }
 
-    private void updateFleet(NodeList fleet, Player player){
+    private void updateFleet(NodeList fleet, BattleshipPlayer player){
         for(int i =0 ; i < fleet.getLength(); ++i){
             Node setting = fleet.item(i);
             switch (setting.getNodeName()){

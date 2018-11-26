@@ -1,5 +1,9 @@
-package battleship.entities;
+package battleship.entities.Ais;
 
+import battleship.entities.boards.BattleshipBoard;
+import battleship.entities.boards.Board;
+import battleship.entities.games.BattleshipGame;
+import battleship.entities.games.Game;
 import battleship.entities.ships.*;
 import battleship.middlewares.Validation;
 
@@ -7,15 +11,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class Ai {
+public class BattleshipAi extends Ai {
     public enum State {UP, DOWN, LEFT, RIGHT, START}
     public boolean difficulty;
     public State state;
     public Map<String, Integer> startPosition;
 
-    public Ai() {}
+    public BattleshipAi() {super();}
 
-    public Ai(State state, boolean difficulty, Map<String, Integer> startPosition) {
+    public BattleshipAi(State state, boolean difficulty, Map<String, Integer> startPosition) {
+        super();
         this.state = state;
         this.difficulty = difficulty;
         this.startPosition = startPosition;
@@ -23,7 +28,7 @@ public class Ai {
 
 
     // TODO refactor this in two or three different functions
-    public static Map<String, Ship> generateFleet(Board board) {
+    public static Map<String, Ship> generateFleet(BattleshipBoard board) {
         Map<String, Ship> fleet = new HashMap<>();
         Ship carrier = new Carrier();
         Ship battleship = new Battleship();
@@ -141,7 +146,7 @@ public class Ai {
         else if(this.state.equals(State.RIGHT)) this.state = State.START;
     }
 
-    public boolean targetHasBeenUsed(Map<String, Integer> target, BattleshipGame battleshipGame) {
+    public boolean targetHasBeenUsed(Map<String, Integer> target, Game battleshipGame) {
         int targetX = target.get("x");
         int targetY = target.get("y");
         for (Map<String,Integer> t: battleshipGame.recorder.playerTwoMoves) {
@@ -153,22 +158,31 @@ public class Ai {
     }
 
     public State stringToState(String s){
-        if(s.equals("START")) return State.START;
-        else if(s.equals("UP")) return State.UP;
-        else if(s.equals("DOWN")) return State.DOWN;
-        else if(s.equals("LEFT")) return State.LEFT;
-        else if(s.equals("RIGHT")) return State.RIGHT;
-        else return State.START;
+        switch (s) {
+            case "START":
+                return State.START;
+            case "UP":
+                return State.UP;
+            case "DOWN":
+                return State.DOWN;
+            case "LEFT":
+                return State.LEFT;
+            case "RIGHT":
+                return State.RIGHT;
+            default:
+                return State.START;
+        }
     }
 
     //GETTERS & SETTERS //
-//    public ArrayList<State> getStatusList() {return statusList;}
-//    public void setStatusList(ArrayList<State> statusList) {this.statusList = statusList;}
-//    public void setStatusList(Stack<State> state) {this.state = state;}
+
+
+    @Override
     public boolean isDifficulty() {
         return difficulty;
     }
 
+    @Override
     public void setDifficulty(boolean difficulty) {
         this.difficulty = difficulty;
     }
@@ -181,12 +195,13 @@ public class Ai {
         this.state = state;
     }
 
+    @Override
     public Map<String, Integer> getStartPosition() {
         return startPosition;
     }
 
+    @Override
     public void setStartPosition(Map<String, Integer> startPosition) {
         this.startPosition = startPosition;
     }
-
 }
