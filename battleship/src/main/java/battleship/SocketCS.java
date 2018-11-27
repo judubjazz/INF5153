@@ -14,7 +14,7 @@ public class SocketCS {
 
     private SocketCS(){}
 
-    private static SocketIOServer getServer(){
+    public static SocketIOServer getServer(){
         if (server == null) {
             Configuration config = new Configuration();
             config.setHostname("127.0.0.1");

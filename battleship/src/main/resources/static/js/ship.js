@@ -1,5 +1,5 @@
 	var idShip = 5;
-    var carrier = "";
+	var carrier = "";
 	var battleship = "";
 	var cruiser = "";
 	var submarine = "";

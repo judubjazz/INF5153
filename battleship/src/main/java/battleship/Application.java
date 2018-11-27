@@ -15,7 +15,12 @@ public class Application {
     public static void main(String[] args) throws Exception {
         gameList = new ArrayList<>();
         SpringApplication.run(Application.class, args);
+        try {
+            SocketCS.startServer();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
     }
-
 }
 

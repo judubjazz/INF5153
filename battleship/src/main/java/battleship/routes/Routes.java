@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
-import battleship.SocketCS;
 import db.Db;
 
 @Controller
@@ -123,14 +122,12 @@ public class Routes {
 
     @GetMapping("/create-online-game")
     public String createOnlineGame(Model model){
-        try {
-            SocketCS.startServer();
-        }catch (Exception e){
-            e.printStackTrace();
-            throw new ServerErrorException();
-        }
         return "game/create-online-games";
     }
+
+
+    /* errors handler */
+    // TODO dont send an problem occur, instead mark sorry try again later else if status = 400 send bad request, else if 404 send not found mesage
 
     @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "game not found")
     private class GameNotFoundException extends RuntimeException {
@@ -140,6 +137,11 @@ public class Routes {
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, reason = "socket server error")
     private class ServerErrorException extends RuntimeException {
         private static final long serialVersionUID = 42L;
+    }
+
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "bad request")
+    private class BadRequestException extends RuntimeException {
+        private static final long serialVersionUID = 43L;
     }
 
     @ExceptionHandler({Exception.class})

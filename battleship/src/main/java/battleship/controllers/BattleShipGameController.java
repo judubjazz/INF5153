@@ -61,7 +61,6 @@ public class BattleShipGameController implements GameController<BattleshipPlayer
             }
         }
 
-
         actor.ennemyBoard.map[targetX][targetY] = -1;
         ennemy.playerBoard.map[targetX][targetY] = -1;
 

@@ -1,22 +1,6 @@
 'use strict';
-// import constants from './constants/constants';
-// console.log(constants);
 
-// const constants = {
-//   WAITING_OPP_TURN: 'waiting for opponent to play turn',
-//   TARGET_OPP_SHIP: 'target an opponent ship',
-//   WAITING_GAME_CONNECTION: 'waiting for a player to connect game with id',
-//   SHIP_LOCATION_ERR: 'ships locations invalid',
-//   HOME_URL: 'http://localhost:8090',
-//   START_GAME: 'Start Game',
-//   CREATE_GAME: 'Create Game',
-//   JOIN_GAME: 'Join Game',
-//   YOU_LOST: 'You Lost',
-//   YOU_WON: 'You Won'
-// };
 const {WAITING_OPP_TURN, SHIP_LOCATION_ERR, WAITING_GAME_CONNECTION, TARGET_OPP_SHIP, YOU_WON, YOU_LOST} = constants;
-
-
 const socket = io(window.location.protocol + '//localhost:9291');
 var game = {
   id: null,
@@ -58,7 +42,6 @@ const createGame = () => {
   if (isValidGame()) socket.emit('playerWillCreateGame', JSON.stringify(game));
   else alert(SHIP_LOCATION_ERR);
 };
-
 
 
 const torpedo = (event, x, y) => {
@@ -104,20 +87,19 @@ socket.on('playerOneDidPlay', (res) => {
 });
 
 socket.on('playerTwoDidPlay', (res) => {
-  console.log('player two did play', res);
   const {x, y, winner} = res;
-
   game.map[x][y] = -1;
 
   if(winner){
     showLoader(YOU_LOST)
+    // TODO show end of game
+    // TODO mute function torpedo when waiting
   } else {
     $('#player-map-table').remove();
     renderPlayerMap();
     hideLoader(TARGET_OPP_SHIP);
     console.log('player two did play', res);
   }
-
 });
 
 

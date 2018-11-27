@@ -55,8 +55,8 @@ const hideLoader = (msg) => {
 const showLoader = (msg) => {
   $('#message-header').html(msg);
   $('.loader-container').css('display', 'flex');
-  $('.map-container').css('filter', 'blur(13px)');
-  $('.fleet-container').css('filter', 'blur(13px)');
+  $('.map-container').css('filter', 'blur(2px)');
+  $('.fleet-container').css('filter', 'blur(2px)');
 };
 
 // TODO validate game

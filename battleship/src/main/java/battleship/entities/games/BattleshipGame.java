@@ -43,6 +43,7 @@ public class BattleshipGame extends Game {
     }
 
     public void setPlayerOne(BattleshipPlayer playerOne) {
+        super.playerOne = playerOne;
         this.playerOne = playerOne;
     }
 
