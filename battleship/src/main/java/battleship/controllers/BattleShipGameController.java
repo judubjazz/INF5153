@@ -166,21 +166,9 @@ public class BattleShipGameController implements GameController<BattleshipPlayer
 
     @Override
     public Game restart(BattleshipGame battleshipGame){
-        // TODO add a memento;
-        BattleshipPlayer p1 = (BattleshipPlayer)  battleshipGame.playerOne;
-        BattleshipPlayer p2 = (BattleshipPlayer)  battleshipGame.playerTwo;
-
-        Map<String, Ship> p1Fleet = Ship.buildFleetFromShips(p1.carrier, p1.battleship, p1.cruiser, p1.destroyer, p1.submarine);
-        Map<String, Ship> p2Fleet = Ship.buildFleetFromShips(p2.carrier, p2.battleship, p2.cruiser, p2.destroyer, p2.submarine);
-        BattleshipBoard p1Board = new BattleshipBoard();
-        BattleshipBoard p2Board = new BattleshipBoard();
-
-        p1Board.locateFleet(p1Fleet);
-        p2Board.locateFleet(p2Fleet);
-
-        p1.playerBoard = p2.ennemyBoard = p1Board;
-        p2.playerBoard = p1.ennemyBoard = p2Board;
-        p1.shipsRemaining = p2.shipsRemaining = 17;
+        battleshipGame.memento.memento = battleshipGame.memento;
+        battleshipGame.memento.recorder = battleshipGame.recorder;
+        battleshipGame = battleshipGame.memento;
         return battleshipGame;
     }
 

@@ -14,6 +14,7 @@ public class Game<P extends Player> {
     public SocketIOClient p1Socket;
     public SocketIOClient p2Socket;
 
+
     public Game(){}
 
     public Game(P playerOne, P playerTwo) {
@@ -32,6 +33,12 @@ public class Game<P extends Player> {
         this.id = id;
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
+    }
+
+    public Game(Game game){
+        this.id = game.id;
+        this.playerOne = (P)game.playerOne;
+        this.playerTwo = (P)game.playerTwo;
     }
 
     public int getId() {

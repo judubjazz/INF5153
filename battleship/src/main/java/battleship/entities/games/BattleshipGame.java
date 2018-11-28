@@ -11,6 +11,7 @@ public class BattleshipGame extends Game {
     public BattleshipAi ai;
     public BattleshipPlayer playerOne;
     public BattleshipPlayer playerTwo;
+    public BattleshipGame memento;
 
     public BattleshipGame(){
         super();
@@ -27,8 +28,12 @@ public class BattleshipGame extends Game {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.ai = ai;
+        if (this.memento == null){
+            this.memento = new BattleshipGame(this);
+        }
     }
 
+    // TODO maybe this constructor is redudntant
     public BattleshipGame(int id, BattleshipPlayer playerOne, BattleshipPlayer playerTwo, BattleshipAi ai) {
         super(id, playerOne, playerTwo);
         this.playerOne = playerOne;
@@ -36,6 +41,12 @@ public class BattleshipGame extends Game {
         this.ai = ai;
     }
 
+    public BattleshipGame(BattleshipGame game){
+        this.id = game.id;
+        this.playerOne = game.playerOne;
+        this.playerTwo = game.playerTwo;
+        this.ai = game.ai;
+    }
 
     @Override
     public BattleshipPlayer getPlayerOne() {
@@ -63,5 +74,13 @@ public class BattleshipGame extends Game {
 
     public void setAi(BattleshipAi ai) {
         this.ai = ai;
+    }
+
+    public BattleshipGame getMemento() {
+        return memento;
+    }
+
+    public void setMemento(BattleshipGame memento) {
+        this.memento = memento;
     }
 }
