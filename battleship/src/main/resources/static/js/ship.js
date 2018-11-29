@@ -8,16 +8,46 @@
 	var data = "";
 
 	/*all white background*/
-	for(i = 0; i <= 9; i++){ 
-		for(j = 0; j <= 9; j++){ 
-			document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor = "#ffffff";
+	function whiteBackground() {
+		for(i = 0; i <= 9; i++){ 
+			for(j = 0; j <= 9; j++){ 
+				document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor = "#ffffff";
+			}
+		}
+	}
+	
+	/*grey background except black or red cases*/
+	function greyBackground() {
+		for(i = 0; i <= 9; i++){ 
+			for(j = 0; j <= 9; j++){ 
+				if(document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor != 'rgb(244, 67, 54)'
+				&& document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor != 'rgb(219, 60, 48)'		
+				&& document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor != 'rgb(26, 26, 26)'){
+					document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor = "#f2f2f2";
+				}
+			}
 		}
 	}
 
+	/*grey background except black or red cases*/
+	function shipOnGrid() {
+		for(i = 0; i <= 9; i++){ 
+			for(j = 0; j <= 9; j++){ 
+				if(document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor != 'rgb(26, 26, 26)'){
+					document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor = "#ffffff"; 
+				}
+			}
+		}
+	}
+	
+	/*get difficulty value*/
     function run() {
         return document.getElementById("ddlViewBy").value;
     }
     
+    whiteBackground();
+    
+    /*All ships*/
 	function myFunction(x) {
         var tr = x.parentNode.rowIndex;
         var td = x.cellIndex;  
@@ -45,62 +75,71 @@
 	       '"submarine":{'+submarine+'},'+
 	       '"destroyer":{'+destroyer+'}}}';          
 
-       	//console.log(data);
     	document.getElementById("data").value = data;  
 	}
-
+	
 	function position(shipName,tr, td, size) {
 
 		var stemX, stemY, bowX, bowY;
 	    var trR = 0;
 	    var tdR = 0;
+	    var validate = true;
 
 		if (document.getElementById(tr+"," +td).style.backgroundColor === 'rgb(255, 255, 255)') {
 			document.getElementById(tr+"," +td).style.backgroundColor = "#f44336";
 			if((tr+(size-1))<10){
-				document.getElementById((tr+(size-1))+"," +td).style.backgroundColor = "#DB3C30";
-			}
-			if((td+(size-1))<10){
-				document.getElementById((tr)+"," +(td+(size-1))).style.backgroundColor = "#DB3C30";
-			}
-			if((tr-(size-1))>=0){
-				document.getElementById((tr-(size-1))+"," +(td)).style.backgroundColor = "#DB3C30";
-			}	
-			if((td-(size-1))>=0){
-				document.getElementById((tr)+"," +(td-(size-1))).style.backgroundColor = "#DB3C30";
-			}
-			for(i = 0; i <= 9; i++){ 
-				for(j = 0; j <= 9; j++){ 
-					if(document.getElementById(""+[i]+"," +[j] +"") != document.getElementById(tr+"," +td)
-					&& document.getElementById(""+[i]+"," +[j] +"") != document.getElementById((tr+(size-1))+"," +td)
-					&& document.getElementById(""+[i]+"," +[j] +"") != document.getElementById((tr)+"," +(td+(size-1)))	
-					&& document.getElementById(""+[i]+"," +[j] +"") != document.getElementById((tr-(size-1))+"," +(td))	
-					&& document.getElementById(""+[i]+"," +[j] +"") != document.getElementById((tr)+"," +(td-(size-1)))
-					&& document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor != 'rgb(26, 26, 26)'){
-						document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor = "#f2f2f2";
+				for(i = tr; i <= tr+(size-1); i++){
+					if(document.getElementById(i+"," +td).style.backgroundColor === 'rgb(26, 26, 26)'){
+						validate = false
+						break;
 					}
 				}
+				if(validate==true){
+					document.getElementById((tr+(size-1))+"," +td).style.backgroundColor = "#DB3C30";
+				}
 			}
+			validate = true;
+			if((td+(size-1))<10){
+				for(i = td; i <= td+(size-1); i++){
+					if(document.getElementById(tr+"," +i).style.backgroundColor === 'rgb(26, 26, 26)'){
+						validate = false
+						break;
+					}
+				}
+				if(validate==true){
+					document.getElementById(tr+"," +(td+(size-1))).style.backgroundColor = "#DB3C30";
+				}
+			}
+			validate = true;
+			if((tr-(size-1))>=0){
+				for(i = tr; i >= tr-(size-1); i--){
+					if(document.getElementById(i+"," +td).style.backgroundColor === 'rgb(26, 26, 26)'){
+						validate = false
+						break;
+					}
+				}
+				if(validate==true){
+					document.getElementById((tr-(size-1))+"," +td).style.backgroundColor = "#DB3C30";
+				}
+			}	
+			validate = true;
+			if((td-(size-1))>=0){
+				for(i = td; i >= td-(size-1); i--){
+					if(document.getElementById(tr+"," +i).style.backgroundColor === 'rgb(26, 26, 26)'){
+						validate = false
+						break;
+					}
+				}
+				if(validate==true){
+					document.getElementById(tr+"," +(td-(size-1))).style.backgroundColor = "#DB3C30";
+				}
+			}
+			greyBackground();
+			
 		}
 		else if(document.getElementById(tr+"," +td).style.backgroundColor === 'rgb(244, 67, 54)'){
 			document.getElementById(tr+"," +td).style.backgroundColor = "#ffffff";
-			if((tr+(size-1))<10){
-				document.getElementById((tr+(size-1))+"," +td).style.backgroundColor = "#ffffff";
-			}
-			if((td+(size-1))<10){
-				document.getElementById((tr)+"," +(td+(size-1))).style.backgroundColor = "#ffffff";
-			}
-			if((tr-(size-1))>=0){
-				document.getElementById((tr-(size-1))+"," +(td)).style.backgroundColor = "#ffffff";
-			}	
-			if((td-(size-1))>=0){
-				document.getElementById((tr)+"," +(td-(size-1))).style.backgroundColor = "#ffffff";
-			}
-			for(i = 0; i <= 9; i++){ 
-				for(j = 0; j <= 9; j++){ 
-					document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor = "#ffffff";
-				}
-			}
+			shipOnGrid();
 		}		
 		else if(document.getElementById(tr+"," +td).style.backgroundColor === 'rgb(219, 60, 48)'){
 			document.getElementById(tr+"," +td).style.backgroundColor = "#1a1a1a";
@@ -171,16 +210,9 @@
 					}
 				}
 			}
-			for(i = 0; i <= 9; i++){ 
-				for(j = 0; j <= 9; j++){ 
-					if(document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor != 'rgb(26, 26, 26)'){
-						document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor = "#ffffff"; 
-					}
-				}
-			}	
+			shipOnGrid();
 			idShip = idShip - 1;
 		}
-	
 		return '"stem":{"x":'+stemX+',"y":'+stemY+'},"bow":{"x":'+bowX+',"y":'+bowY+'},"size":'+size;     
 	}
 	
