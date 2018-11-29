@@ -44,6 +44,7 @@ public class Routes {
         Game game = controller.start(data);
         model.addAttribute("formController", formController);
         model.addAttribute("battleshipGame", game);
+
         return "game/play";
     }
 
@@ -145,7 +146,6 @@ public class Routes {
     public String createOnlineGame(Model model){
         return "game/create-online-games";
     }
-
 
     /* errors handler */
     // TODO dont send an problem occur, instead mark sorry try again later,
