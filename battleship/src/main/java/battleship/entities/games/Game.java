@@ -8,6 +8,7 @@ import com.corundumstudio.socketio.SocketIOClient;
 
 public class Game<P extends Player> {
     public int id;
+    public String name;
     public Recorder recorder;
     public P playerOne;
     public P playerTwo;
@@ -22,23 +23,29 @@ public class Game<P extends Player> {
         this.playerTwo = playerTwo;
     }
 
-    public Game(int id, P playerOne, P playerTwo, Recorder recorder) {
+    public Game(int id, String name, P playerOne, P playerTwo, Recorder recorder) {
         this.id = id;
+        this.name = name;
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.recorder = recorder;
     }
 
-    public Game(int id, P playerOne, P playerTwo) {
+    public Game(int id, String name, P playerOne, P playerTwo) {
         this.id = id;
+        this.name = name;
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
     }
 
-    public Game(Game game){
+    public Game(Game<P> game){
         this.id = game.id;
-        this.playerOne = (P)game.playerOne;
-        this.playerTwo = (P)game.playerTwo;
+        this.name = game.name;
+        this.playerOne = game.playerOne;
+        this.playerTwo = game.playerTwo;
+        this.recorder = null;
+        this.p1Socket = null;
+        this.p2Socket = null;
     }
 
     public int getId() {
@@ -87,5 +94,13 @@ public class Game<P extends Player> {
 
     public void setP2Socket(SocketIOClient p2Socket) {
         this.p2Socket = p2Socket;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

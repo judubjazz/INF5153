@@ -2,14 +2,11 @@ package battleship.controllers;
 
 import battleship.Application;
 import battleship.entities.*;
-import battleship.entities.Ais.Ai;
 import battleship.entities.Ais.BattleshipAi;
 import battleship.entities.boards.BattleshipBoard;
-import battleship.entities.boards.Board;
 import battleship.entities.games.BattleshipGame;
 import battleship.entities.games.Game;
 import battleship.entities.players.BattleshipPlayer;
-import battleship.entities.players.Player;
 import battleship.entities.ships.Ship;
 import com.corundumstudio.socketio.SocketIOClient;
 import db.Db;
@@ -18,8 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BattleShipGameController implements GameController<BattleshipPlayer, BattleshipGame> {
-
+public class BattleShipGameController implements GameController<BattleshipGame, BattleshipPlayer> {
 
     @Override
     public JSONObject playTurnOnline(BattleshipPlayer actor, BattleshipPlayer ennemy, String req){
@@ -54,7 +50,7 @@ public class BattleShipGameController implements GameController<BattleshipPlayer
         target.put("hit", targetedArea);
 
         if(recorder != null){
-            if(actor.name.equals("player1")){
+            if(actor.name.equals("playerOne")){
                 recorder.playerOneMoves.add(target);
             } else {
                 recorder.playerTwoMoves.add(target);
@@ -68,7 +64,7 @@ public class BattleShipGameController implements GameController<BattleshipPlayer
     }
 
     @Override
-    public Game replay(BattleshipGame battleshipGame){
+    public Game<BattleshipPlayer> replay(BattleshipGame battleshipGame){
 
     	BattleshipPlayer p1 = (BattleshipPlayer) battleshipGame.playerOne;
         BattleshipPlayer p2 = (BattleshipPlayer) battleshipGame.playerTwo;
@@ -88,18 +84,18 @@ public class BattleShipGameController implements GameController<BattleshipPlayer
     }
 
     @Override
-    public Game save(BattleshipGame battleshipGame){
+    public Game<BattleshipPlayer> save(BattleshipGame battleshipGame){
         Db.getDb().save(battleshipGame);
         return null;
     }
 
     @Override
-    public Game load(int gameID){
+    public Game<BattleshipPlayer> load(int gameID){
         Recorder r = new Recorder();
-        BattleshipPlayer p1 = new BattleshipPlayer("player1");
-        BattleshipPlayer p2 = new BattleshipPlayer("player2");
+        BattleshipPlayer p1 = new BattleshipPlayer("playerOne");
+        BattleshipPlayer p2 = new BattleshipPlayer("playerTwo");
         BattleshipAi ai = new BattleshipAi();
-        BattleshipGame battleshipGame = new BattleshipGame(gameID,p1,p2,r,ai);
+        BattleshipGame battleshipGame = new BattleshipGame(gameID,"battleship", p1,p2,r,ai);
         Db.getDb().load(battleshipGame);
         return battleshipGame;
     }
@@ -118,9 +114,8 @@ public class BattleShipGameController implements GameController<BattleshipPlayer
 
 
     @Override
-    public Game start(String gameSettings) {
+    public Game<BattleshipPlayer> start(JSONObject p1Settings) {
         // TODO validation of the player fleet, some validation methods are available in Board class, maybe add a Validation class
-        JSONObject p1Settings = JSONObject.fromObject(gameSettings);
         JSONObject p1FleetJSON = p1Settings.getJSONObject("fleet");
         Map<String, Ship> playerOneFleet = Ship.buildFleet(p1FleetJSON);
         BattleshipBoard p1Board = new BattleshipBoard();
@@ -130,19 +125,20 @@ public class BattleShipGameController implements GameController<BattleshipPlayer
         BattleshipBoard cpuBoard = new BattleshipBoard();
         Map<String, Ship> cpuFleet = BattleshipAi.generateFleet(cpuBoard);
 
-        BattleshipPlayer cpu = new BattleshipPlayer(cpuFleet, cpuBoard, p1Board, "player2");
-        BattleshipPlayer player = new BattleshipPlayer(playerOneFleet, p1Board, cpuBoard, "player1");
+        BattleshipPlayer cpu = new BattleshipPlayer(cpuFleet, cpuBoard, p1Board, "playerTwo");
+        BattleshipPlayer player = new BattleshipPlayer(playerOneFleet, p1Board, cpuBoard, "playerOne");
         Recorder recorder = new Recorder(new ArrayList<>(), new ArrayList<>());
         boolean difficulty = p1Settings.getBoolean("difficulty");
         BattleshipAi ai = new BattleshipAi(BattleshipAi.State.START,difficulty, null);
 
-        int id = Db.getDb().getMaxID();
-        Game battleshipGame = new BattleshipGame(id, player, cpu, recorder, ai);
+        int id = Application.gameListVsCpu.size()+1;
+        BattleshipGame battleshipGame = new BattleshipGame(id, "battleship", player, cpu, recorder, ai);
+        Application.gameListVsCpu.add(battleshipGame);
         return  battleshipGame;
     }
 
     @Override
-    public Game play(BattleshipGame battleshipGame) {
+    public Game<BattleshipPlayer> play(BattleshipGame battleshipGame) {
         BattleshipPlayer p1 = battleshipGame.playerOne;
         BattleshipPlayer p2 = battleshipGame.playerTwo;
         // player one attacks
@@ -165,38 +161,41 @@ public class BattleShipGameController implements GameController<BattleshipPlayer
     }
 
     @Override
-    public Game restart(BattleshipGame battleshipGame){
+    public Game<BattleshipPlayer> restart(int gameID, Recorder recorder){
+        System.out.println(Application.gameListVsCpu);
+        System.out.println(Application.gameListVsCpu.size());
+        BattleshipGame battleshipGame = Application.gameListVsCpu.get(gameID -1);
         battleshipGame.memento.memento = battleshipGame.memento;
-        battleshipGame.memento.recorder = battleshipGame.recorder;
+        battleshipGame.memento.recorder = recorder;
         battleshipGame = battleshipGame.memento;
         return battleshipGame;
     }
 
     @Override
     public JSONObject createOnlineGame(SocketIOClient client, String req){
-        int id = Application.gameList.size() + 1;
+        int id = Application.gameListVsHuman.size() + 1;
         JSONObject res = JSONObject.fromObject(req);
         JSONObject p1FleetJSON = res.getJSONObject("fleet");
-        BattleshipPlayer player = new BattleshipPlayer("player1");
+        BattleshipPlayer player = new BattleshipPlayer("playerOne");
 
         Map<String, Ship> playerOneFleet = Ship.buildFleet(p1FleetJSON);
         BattleshipBoard p1Board = new BattleshipBoard();
         p1Board.locateFleet(playerOneFleet);
         player.playerBoard = p1Board;
 
-        Game game = new BattleshipGame(id, player, null, null);
+        Game<BattleshipPlayer> game = new BattleshipGame(id, "battleship", player, null, null);
         res.put("id", game.id);
         res.put("map", p1Board.map);
         game.p1Socket = client;
 
-        Application.gameList.add(game);
+        Application.gameListVsHuman.add(game);
         return res;
     }
 
     @Override
     public JSONObject joinOnlineGame(BattleshipGame game, SocketIOClient client, String req){
         JSONObject res = JSONObject.fromObject(req);
-        BattleshipPlayer player = new BattleshipPlayer("player2");
+        BattleshipPlayer player = new BattleshipPlayer("playerTwo");
         JSONObject p2FleetJSON = res.getJSONObject("fleet");
         Map<String, Ship> p2Fleet = Ship.buildFleet(p2FleetJSON);
         BattleshipBoard p2Board = new BattleshipBoard();

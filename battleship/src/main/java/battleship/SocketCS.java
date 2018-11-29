@@ -47,7 +47,7 @@ public class SocketCS {
             JSONObject res = JSONObject.fromObject(req);
             int gameID = res.getInt("id");
 
-            Game game = Application.gameList.get(gameID - 1);
+            Game game = Application.gameListVsHuman.get(gameID - 1);
             res = controller.joinOnlineGame(game, client, req);
 
             client.sendEvent("playerDidJoinGame", res);
@@ -57,7 +57,7 @@ public class SocketCS {
         server.addEventListener("playerOneWillPlayTurn", String.class, (client, req, ackRequest) -> {
             JSONObject res = JSONObject.fromObject(req);
             int gameID = res.getInt("id");
-            Game game = Application.gameList.get(gameID - 1);
+            Game game = Application.gameListVsHuman.get(gameID - 1);
             res = controller.playTurnOnline(game.playerOne, game.playerTwo, req);
 
             client.sendEvent("playerOneDidPlay", res);
@@ -67,7 +67,7 @@ public class SocketCS {
         server.addEventListener("playerTwoWillPlayTurn", String.class, (client, req, ackRequest) -> {
             JSONObject res = JSONObject.fromObject(req);
             int gameID = res.getInt("id");
-            Game game = Application.gameList.get(gameID - 1);
+            Game game = Application.gameListVsHuman.get(gameID - 1);
             res = controller.playTurnOnline(game.playerTwo, game.playerOne, req);
 
             game.p1Socket.sendEvent("playerTwoDidPlay", res);

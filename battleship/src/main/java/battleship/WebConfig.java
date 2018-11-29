@@ -13,5 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addConverter(new StringTo2DArrayConverter());
         registry.addConverter(new StringToArrayListConverter());
         registry.addConverter(new StringToMapStringIntegerConverter());
+        registry.addConverter(new StringToJSONConverter());
     }
 }

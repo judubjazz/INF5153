@@ -8,7 +8,11 @@ public class Recorder {
     public ArrayList<Map<String, Integer>> playerTwoMoves;
     public int index;
 
-    public Recorder() {}
+    public Recorder() {
+        this.playerOneMoves = new ArrayList<>();
+        this.playerTwoMoves = new ArrayList<>();
+        this.index = 0;
+    }
 
     public Recorder(ArrayList<Map<String, Integer>> playerOneMoves, ArrayList<Map<String, Integer>> playerTwoMoves) {
         this.playerOneMoves = playerOneMoves;

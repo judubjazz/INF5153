@@ -2,15 +2,19 @@ package battleship.routes;
 
 import battleship.Application;
 import battleship.controllers.*;
+import battleship.entities.Recorder;
 import battleship.entities.games.BattleshipGame;
 import battleship.entities.games.Game;
-import battleship.entities.ships.Battleship;
+import battleship.factories.GameFactory;
 import battleship.middlewares.Validation;
+import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import db.Db;
+
+import static battleship.controllers.GameController.getController;
 
 @Controller
 public class Routes {
@@ -33,21 +37,32 @@ public class Routes {
     }
 
     @PostMapping("/start")
-    public String postStart(@ModelAttribute FormController formController, Model model) {
-        String data = formController.data;
-        GameController controller = new BattleShipGameController();
-        Game battleshipGame = controller.start(data);
-        model.addAttribute("battleshipGame", battleshipGame);
+    public String postStart(@ModelAttribute JsonRequestController formController, Model model) {
+        JSONObject data = formController.data;
+        String gameName = data.getString("name");
+        GameController controller = getController(gameName);
+        Game game = controller.start(data);
+        model.addAttribute("formController", formController);
+        model.addAttribute("battleshipGame", game);
         return "game/play";
     }
 
     @PostMapping("/play")
-    public String postPlay(@ModelAttribute BattleshipGame battleshipGame, Model model){
-        GameController controller = new BattleShipGameController();
-        Game game = controller.play(battleshipGame);
+    public String postPlay(@ModelAttribute JsonRequestController formController, Model model){
+        JSONObject data = formController.data;
+        String gameName = data.getString("name")
+                ;
+        GameFactory factory = GameFactory.getFactory(gameName);
+        Game game = factory.createGame(data);
+
+        GameController controller = GameController.getController(gameName);
+        game = controller.play(game);
+
+        model.addAttribute("formController", formController);
         model.addAttribute("battleshipGame", game);
-        if(battleshipGame.playerOne.winner) return "game/you-won";
-        if(battleshipGame.playerTwo.winner) return "game/you-lost";
+
+        if(game.playerOne.winner) return "game/you-won";
+        if(game.playerTwo.winner) return "game/you-lost";
         return "game/play";
     }
 
@@ -69,8 +84,9 @@ public class Routes {
     public String getLoad(@PathVariable("file") String file, Model model){
     	try {
 	        GameController controller = new BattleShipGameController();
-	        Game battleshipGame = controller.load(Integer.parseInt(file));
-	        model.addAttribute("battleshipGame", battleshipGame);
+	        Game game = controller.load(Integer.parseInt(file));
+	        model.addAttribute("formController", new JsonRequestController());
+	        model.addAttribute("battleshipGame", game);
 	        return "game/play";
     	}catch (Exception ex) {
         	model.addAttribute("listOfFiles", Db.getDb().getIDs());
@@ -94,23 +110,28 @@ public class Routes {
         GameController controller = new BattleShipGameController();
         Game game = controller.replay(battleshipGame);
         model.addAttribute("battleshipGame", game);
+        model.addAttribute("formController", new JsonRequestController());
         if(battleshipGame.playerOne.winner) return "game/you-won";
         if(battleshipGame.playerTwo.winner) return "game/you-lost";
         return "game/replay";
     }
 
     @PostMapping("/restart")
-    public String postRestartGame(@ModelAttribute BattleshipGame battleshipGame, Model model){
-        GameController controller = new BattleShipGameController();
-        Game game = controller.restart(battleshipGame);
+    public String postRestartGame(@ModelAttribute JsonRequestController formController, Model model){
+        JSONObject data = formController.data;
+        String gameName = data.getString("name");
+        GameFactory factory = GameFactory.getFactory(gameName);
+        GameController controller = GameController.getController(gameName);
+        Recorder r = factory.buildRecorderFromJSONObject(JSONObject.fromObject(data));
+        Game game = controller.restart(1, r);
+        model.addAttribute("formController", formController);
         model.addAttribute("battleshipGame", game);
         return "game/replay";
     }
 
     @GetMapping("/join")
     public String join(Model model){
-        System.out.println(Application.gameList);
-        model.addAttribute("gameList", Application.gameList);
+        model.addAttribute("gameList", Application.gameListVsHuman);
         return "game/join-online-games";
     }
 
@@ -127,7 +148,8 @@ public class Routes {
 
 
     /* errors handler */
-    // TODO dont send an problem occur, instead mark sorry try again later else if status = 400 send bad request, else if 404 send not found mesage
+    // TODO dont send an problem occur, instead mark sorry try again later,
+    // else if status = 400 send bad request, else if 404 send not found mesage
 
     @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "game not found")
     private class GameNotFoundException extends RuntimeException {
@@ -148,5 +170,6 @@ public class Routes {
     public String handleException(){
         return "error/error";
     }
+
 }
 

@@ -1,12 +1,20 @@
 package battleship.controllers;
 
+import battleship.entities.Recorder;
 import battleship.entities.games.Game;
 import battleship.entities.players.Player;
 import com.corundumstudio.socketio.SocketIOClient;
 import net.sf.json.JSONObject;
 
 
-public interface GameController<P extends Player, G extends Game> {
+public interface GameController<G extends Game, P extends Player> {
+
+    static GameController getController(String key){
+        if (key.equals("battleship")) return new BattleShipGameController();
+        else if(key.equals("tictactoe")) return new TicTacToeGameController();
+        return null;
+    }
+
     Game load(int gameID);
 
     Game save(G game);
@@ -17,9 +25,9 @@ public interface GameController<P extends Player, G extends Game> {
 
     Game replay(G game);
 
-    Game start(String data);
+    Game start(JSONObject data);
 
-    Game restart(G game);
+    Game restart(int gameID, Recorder r);
 
     JSONObject createOnlineGame(SocketIOClient client, String req);
 

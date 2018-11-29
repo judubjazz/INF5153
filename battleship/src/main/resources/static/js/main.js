@@ -1,10 +1,78 @@
 /*GLOBAL VARS*/
-var gameSettings = {
-  difficulty:false,
-  fleet:null,
+const {
+  ID,
+  SIZE,
+  NAME,
+  P1,
+  P2,
+  CARRIER,
+  SUBMARINE,
+  DESTROYER,
+  CRUISER,
+  BATTLESHIP,
+  MAP,
+  ENNEMYBOARD,
+  PLAYERBOARD,
+  SHIP_REM,
+  AI,
+  REC,
+  STEMX,
+  STEMY,
+  BOWX,
+  BOWY,
+  WIDTH,
+  HEIGHT,
+  STATE,
+  DIFF,
+  START_POS,
+  HOME_URL
+} = constants;
+
+var game = {
+  id: 1,
+  name:'battleship',
+  playerOne:{
+    name:'playerOne',
+    id:1,
+    fleet: {
+      carrier: {stem: {x: 0, y: 0}, bow: {x: 0, y: 4}, size: 5},
+      destroyer: {stem: {x: 1, y: 0}, bow: {x: 1, y: 1}, size: 2},
+      battleship: {stem: {x: 2, y: 0}, bow: {x: 2, y: 3}, size: 3},
+      cruiser: {stem: {x: 3, y: 0}, bow: {x: 3, y: 2}, size: 3},
+      submarine: {stem: {x: 4, y: 0}, bow: {x: 4, y: 3}, size: 4}
+    },
+    map:null,
+    target:{
+      x:0,
+      y:0,
+    },
+    shipsRemaining:17,
+  },
+  playerTwo:{
+    name:'playerTwo',
+    id:2,
+    fleet: {
+      carrier: {stem: {x: 0, y: 0}, bow: {x: 0, y: 4}, size: 5},
+      destroyer: {stem: {x: 1, y: 0}, bow: {x: 1, y: 1}, size: 2},
+      battleship: {stem: {x: 2, y: 0}, bow: {x: 2, y: 3}, size: 3},
+      cruiser: {stem: {x: 3, y: 0}, bow: {x: 3, y: 2}, size: 3},
+      submarine: {stem: {x: 4, y: 0}, bow: {x: 4, y: 3}, size: 4}
+    },
+    map:null,
+    shipsRemaining:17,
+  },
+  ai:{
+    state:'START',
+    difficulty:false,
+    startPosition:null,
+  },
+  recorder:{
+    playerOneMoves:null,
+    playerTwoMoves:null,
+    index:0,
+  },
 };
 
-const home_url = 'http://localhost:8090';
 var fleet = {
   carrier:   {stem:{x:0,y:0},bow:{x:0,y:4}, size:5, rotated:false},
   destroyer: {stem:{x:1,y:0},bow:{x:1,y:1}, size:3, rotated:false},
@@ -53,11 +121,39 @@ function rotateShip(id){
 
 function torpedo(event, x, y){
   event.preventDefault();
-  $("#targetX").val(x);
-  $("#targetY").val(y);
-  $("#torpedo-form-submit").click();
+
+  const shipNames = [CARRIER, BATTLESHIP, CRUISER, DESTROYER, SUBMARINE];
+  const players = [P1, P2];
+  players.forEach((player)=>{
+    shipNames.forEach((ship)=>{
+      game[player].fleet[ship].bow.x = $(`#${player}-${ship}-${BOWX}`).val();
+      game[player].fleet[ship].bow.y = $(`#${player}-${ship}-${BOWY}`).val();
+      game[player].fleet[ship].stem.x = $(`#${player}-${ship}-${STEMX}`).val();
+      game[player].fleet[ship].stem.y = $(`#${player}-${ship}-${STEMY}`).val();
+    });
+    game[player].map = $(`#${player}-${PLAYERBOARD}-${MAP}`).val();
+    game[player].shipsRemaining = $(`#${player}-${SHIP_REM}`).val();
+  });
+  const playerOneRecorder = $("#recorder-playerOneMoves").val();
+  const playerTwoRecorder = $("#recorder-playerTwoMoves").val();
+  game.recorder.playerOneMoves = playerOneRecorder;
+  game.recorder.playerTwoMoves = playerTwoRecorder;
+  game.ai.state = $("#ai-state").val();
+  game.ai.difficulty = $("#ai-difficulty").val();
+  game.ai.startPosition =$("#ai-startPosition").val();
+  game.playerOne.target.x = x;
+  game.playerOne.target.y = y;
+
+  const json = JSON.stringify(game);
+  console.log(json);
+  $("#data").val(json);
+  $("#submit-play-button").click();
 }
 
+
+const buildFleet = (shipName) =>{
+
+};
 function triggerHiddenSubmit(){
   gameSettings.fleet = fleet;
   const data = JSON.stringify(gameSettings);
@@ -114,7 +210,7 @@ function sendMove(options){
 
 function sendGameID(){
   const id = $('#game-id').val();
-  const url = `${home_url}/load/${id}`;
+  const url = `${HOME_URL}/load/${id}`;
   location.href = url;
 }
 
