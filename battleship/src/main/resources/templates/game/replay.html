@@ -31,7 +31,7 @@
     </div>
 
     <div class="form-container">
-    <form class='torpedo-form' action="#" th:action="@{/replay}" th:object="${battleshipGame}" method="post">
+    <form action="#" th:action="@{/replay}" th:object="${battleshipGame}" method="post">
         <p><input id="replay-form-submit" class='torpedo-form-submit' type="submit" value="replay" /></p>
         <p>playerOne name: <input class='torpedo-form' type="text" th:field="*{playerOne.name}" /></p>
         <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{playerOne.playerBoard.map}" /></p>
@@ -220,6 +220,7 @@
 
 <th:block layout:fragment="scripts">
     <script type="text/javascript" th:src="@{/js/lib/jquery-1.9.0.js}"></script>
+    <script type="text/javascript" th:src="@{/js/constants/constants.js}"></script>
     <script type="text/javascript" th:src="@{/js/main.js}"></script>
     <script type="text/javascript" th:src="@{/js/replay.js}"></script>
 

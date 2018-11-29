@@ -174,10 +174,10 @@ public class Db {
                     case "id":
                         battleshipGame.id = Integer.parseInt(setting.getTextContent());
                         break;
-                    case "player1":
+                    case "playerOne":
                         setPlayer(caseSettings, (BattleshipPlayer)battleshipGame.playerOne, battleshipGame);
                         break;
-                    case "player2":
+                    case "playerTwo":
                         setPlayer(caseSettings, (BattleshipPlayer)battleshipGame.playerTwo, battleshipGame);
                         break;
                     case "ai":
@@ -207,7 +207,7 @@ public class Db {
                         String mapToString = setting.getTextContent();
                         StringTo2DArrayConverter c= new StringTo2DArrayConverter();
                         int[][] map = c.convert(mapToString);
-                        if (player.name.equals("player1")) {
+                        if (player.name.equals("playerOne")) {
                             battleshipGame.playerOne.playerBoard.map = battleshipGame.playerTwo.ennemyBoard.map = map;
                         } else {
                             battleshipGame.playerTwo.playerBoard.map = battleshipGame.playerOne.ennemyBoard.map = map;
@@ -222,7 +222,7 @@ public class Db {
                         String recorderToString = setting.getTextContent();
                         StringToArrayListConverter converter = new StringToArrayListConverter();
                         ArrayList<Map<String, Integer>> playerMoves = converter.convert(recorderToString);
-                        if (player.name.equals("player1")) {
+                        if (player.name.equals("playerOne")) {
                             battleshipGame.recorder.playerOneMoves = playerMoves;
                         } else {
                             battleshipGame.recorder.playerTwoMoves = playerMoves;
@@ -417,8 +417,8 @@ public class Db {
 
 		saveId(id, nextID());
 
-        Element player1 = document.createElement("player1");
-        Element player2 = document.createElement("player2");
+        Element player1 = document.createElement("playerOne");
+        Element player2 = document.createElement("playerTwo");
         savePlayer(player1, (BattleshipPlayer)battleshipGame.playerOne);
         savePlayer(player2, (BattleshipPlayer)battleshipGame.playerTwo);
 
@@ -472,10 +472,10 @@ public class Db {
         for (int i = 0; i < gameSettings.getLength(); ++i) {
             Node setting = gameSettings.item(i);
             switch (setting.getNodeName()) {
-                case "player1":
+                case "playerOne":
                     updatePlayer(setting.getChildNodes(), (BattleshipPlayer)battleshipGame.playerOne);
                     break;
-                case "player2":
+                case "playerTwo":
                     updatePlayer(setting.getChildNodes(), (BattleshipPlayer)battleshipGame.playerTwo);
                     break;
                 default:

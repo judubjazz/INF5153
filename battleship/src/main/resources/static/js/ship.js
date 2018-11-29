@@ -68,7 +68,10 @@
 			 destroyer = position("destroyer", tr, td,2);
 		}
 
+
+
 		data = '{"difficulty":'+ run() +','+
+      '"name":"battleship",'+
 	       '"fleet":{"carrier":{'+carrier+'},'+
 	       '"cruiser":{'+cruiser+'},'+
 	       '"battleship":{'+battleship+'},'+
