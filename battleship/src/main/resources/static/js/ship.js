@@ -8,16 +8,46 @@
 	var data = "";
 
 	/*all white background*/
-	for(i = 0; i <= 9; i++){ 
-		for(j = 0; j <= 9; j++){ 
-			document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor = "#ffffff";
+	function whiteBackground() {
+		for(i = 0; i <= 9; i++){ 
+			for(j = 0; j <= 9; j++){ 
+				document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor = "#ffffff";
+			}
+		}
+	}
+	
+	/*grey background except black or red cases*/
+	function greyBackground() {
+		for(i = 0; i <= 9; i++){ 
+			for(j = 0; j <= 9; j++){ 
+				if(document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor != 'rgb(244, 67, 54)'
+				&& document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor != 'rgb(219, 60, 48)'		
+				&& document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor != 'rgb(26, 26, 26)'){
+					document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor = "#f2f2f2";
+				}
+			}
 		}
 	}
 
+	/*grey background except black or red cases*/
+	function shipOnGrid() {
+		for(i = 0; i <= 9; i++){ 
+			for(j = 0; j <= 9; j++){ 
+				if(document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor != 'rgb(26, 26, 26)'){
+					document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor = "#ffffff"; 
+				}
+			}
+		}
+	}
+	
+	/*get difficulty value*/
     function run() {
         return document.getElementById("ddlViewBy").value;
     }
     
+    whiteBackground();
+    
+    /*All ships*/
 	function myFunction(x) {
         var tr = x.parentNode.rowIndex;
         var td = x.cellIndex;  
@@ -47,9 +77,6 @@
 
     	document.getElementById("data").value = data;  
 	}
-
-    //TODO no collide ships FRONT-END
-    //clean CODE
 	
 	function position(shipName,tr, td, size) {
 
@@ -107,25 +134,12 @@
 					document.getElementById(tr+"," +(td-(size-1))).style.backgroundColor = "#DB3C30";
 				}
 			}
-			for(i = 0; i <= 9; i++){ 
-				for(j = 0; j <= 9; j++){ 
-					if(document.getElementById(""+[i]+"," +[j] +"") != document.getElementById(tr+"," +td)
-					&& document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor != 'rgb(219, 60, 48)'		
-					&& document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor != 'rgb(26, 26, 26)'){
-						document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor = "#f2f2f2";
-					}
-				}
-			}
+			greyBackground();
+			
 		}
 		else if(document.getElementById(tr+"," +td).style.backgroundColor === 'rgb(244, 67, 54)'){
 			document.getElementById(tr+"," +td).style.backgroundColor = "#ffffff";
-			for(i = 0; i <= 9; i++){ 
-				for(j = 0; j <= 9; j++){ 
-					if(document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor != 'rgb(26, 26, 26)'){
-						document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor = "#ffffff";
-					}
-				}
-			}
+			shipOnGrid();
 		}		
 		else if(document.getElementById(tr+"," +td).style.backgroundColor === 'rgb(219, 60, 48)'){
 			document.getElementById(tr+"," +td).style.backgroundColor = "#1a1a1a";
@@ -196,13 +210,7 @@
 					}
 				}
 			}
-			for(i = 0; i <= 9; i++){ 
-				for(j = 0; j <= 9; j++){ 
-					if(document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor != 'rgb(26, 26, 26)'){
-						document.getElementById(""+[i]+"," +[j] +"").style.backgroundColor = "#ffffff"; 
-					}
-				}
-			}	
+			shipOnGrid();
 			idShip = idShip - 1;
 		}
 		return '"stem":{"x":'+stemX+',"y":'+stemY+'},"bow":{"x":'+bowX+',"y":'+bowY+'},"size":'+size;     
