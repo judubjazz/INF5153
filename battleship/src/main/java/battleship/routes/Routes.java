@@ -36,7 +36,8 @@ public class Routes {
     public String postStart(@ModelAttribute FormController formController, Model model) {
         String data = formController.data;
         GameController controller = new BattleShipGameController();
-        Game battleshipGame = controller.start(data);
+        //TODO no collide ships BACK-END  
+        Game battleshipGame = controller.start(data); 
         model.addAttribute("battleshipGame", battleshipGame);
         return "game/play";
     }
@@ -124,7 +125,6 @@ public class Routes {
     public String createOnlineGame(Model model){
         return "game/create-online-games";
     }
-
 
     /* errors handler */
     // TODO dont send an problem occur, instead mark sorry try again later else if status = 400 send bad request, else if 404 send not found mesage
