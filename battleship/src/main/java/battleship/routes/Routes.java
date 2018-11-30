@@ -11,8 +11,10 @@ import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
@@ -161,7 +163,6 @@ public class Routes{
     }
 
     /* errors handler */
-
     @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "game not found")
     private class GameNotFoundException extends RuntimeException {
         private static final long serialVersionUID = 41L;
@@ -175,26 +176,25 @@ public class Routes{
     @ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "bad request")
     private class BadRequestException extends RuntimeException {
         private static final long serialVersionUID = 43L;
-    }
-
+    } 
     
     /* errors handler */
-    // TODO dont send an problem occur, instead mark sorry try again later,
-    // else if status = 400 send bad request, else if 404 send not found mesage
+    //if else
     @ExceptionHandler({Exception.class})
-    public String handleException(){
-        if(HttpStatus.BAD_REQUEST != null){
-            return "error/400";
+    public String handleAnyException(Model model) {
+    	if(HttpStatus.BAD_REQUEST != null){
+        	model.addAttribute("errorType", "Bad request");
+            return "error/error";
         }else if(HttpStatus.NOT_FOUND != null){
-            return "error/404";
+        	model.addAttribute("errorType", "Message not found");
+            return "error/error";
         }else if(HttpStatus.BAD_REQUEST != null){
-            return "error/500";
+        	model.addAttribute("errorType", "A problem has occurred");
+            return "error/error";
         }else{
+        	model.addAttribute("errorType", "A problem has occurred");
             return "error/error";
         }
-    } 
-
-
-
+    }
 }
 
