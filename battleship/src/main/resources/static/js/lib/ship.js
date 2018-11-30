@@ -1,21 +1,11 @@
-	
-	/* Initial values*/
-    var idShip = 5;
+	var idShip = 5;
 	var carrier = '"stem":{"x":0,"y":0},"bow":{"x":4,"y":0},"size":5';
 	var battleship = '"stem":{"x":0,"y":1},"bow":{"x":3,"y":1},"size":4';
 	var cruiser = '"stem":{"x":0,"y":2},"bow":{"x":2,"y":2},"size":3';
 	var submarine = '"stem":{"x":0,"y":3},"bow":{"x":2,"y":3},"size":3';
 	var destroyer = '"stem":{"x":0,"y":4},"bow":{"x":1,"y":4},"size":2';
- 
-	var data = '{"difficulty":'+ run() +','+
-    			 '"name":"battleship",'+
-    			 '"fleet":{"carrier":{'+carrier+'},'+
-    			 '"cruiser":{'+cruiser+'},'+
-    			 '"battleship":{'+battleship+'},'+
-    			 '"submarine":{'+submarine+'},'+
-    			 '"destroyer":{'+destroyer+'}}}';          
-
-	document.getElementById("data").value = data; 
+    
+	var data = "";
 
 	/*all white background*/
 	function whiteBackground() {
@@ -52,54 +42,35 @@
 	
 	/*get difficulty value*/
     function run() {
-        return document.getElementById("difficulty").value;
+        return document.getElementById("ddlViewBy").value;
     }
     
-    /*verified if ships coordinates or not empty or null*/
-    /*if empty, null or undefined. Attribute a new value*/
-    function validateShipsCoord(str, id) {
-    	if(!str || 0 === str.length){
-    		switch (id) {
-	    	    case 5:
-	    	    	carrier = '"stem":{"x":0,"y":0},"bow":{"x":4,"y":0},"size":5';
-	    	        break;
-	    	    case 4:
-	    	    	battleship = '"stem":{"x":0,"y":1},"bow":{"x":3,"y":1},"size":4';
-	    	        break;
-	    	    case 3:
-	    	    	cruiser = '"stem":{"x":0,"y":2},"bow":{"x":2,"y":2},"size":3';
-	    	        break;
-	    	    case 2:
-	    	    	submarine = '"stem":{"x":0,"y":3},"bow":{"x":2,"y":3},"size":3';
-	    	        break;
-	    	    case 1:
-	    	    	destroyer = '"stem":{"x":0,"y":4},"bow":{"x":1,"y":4},"size":2';
-	    	        break;
-	    	}
-	    }
-    }
-    /*clean grid*/
     whiteBackground();
     
     /*All ships*/
-	function shipsChooser(coord) {
-        var tr = coord.parentNode.rowIndex;
-        var td = coord.cellIndex;  
+	function myFunction(x) {
+        var tr = x.parentNode.rowIndex;
+        var td = x.cellIndex;  
 
         if(idShip == 5){
         	carrier = position("carrier", tr, td,5);
+        	console.log(carrier);
         }
         else if(idShip == 4){
         	battleship = position("battleship", tr, td,4);
+        	console.log(battleship);
         }
 		else if(idShip == 3){
 			cruiser = position("cruiser", tr, td,3);
+        	console.log(cruiser);
 		}
 		else if(idShip == 2){
 			submarine = position("submarine", tr, td,3);
+        	console.log(submarine);
 		}
 		 else if(idShip == 1){
-			destroyer = position("destroyer", tr, td,2);
+			 destroyer = position("destroyer", tr, td,2);
+	        	console.log(destroyer);
 		}
 
 		data = '{"difficulty":'+ run() +','+
@@ -170,6 +141,7 @@
 				}
 			}
 			greyBackground();
+			
 		}
 		else if(document.getElementById(tr+"," +td).style.backgroundColor === 'rgb(244, 67, 54)'){
 			document.getElementById(tr+"," +td).style.backgroundColor = "#ffffff";

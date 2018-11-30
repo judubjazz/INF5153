@@ -11,13 +11,26 @@ import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpResponse;
+
 import db.Db;
+import javassist.NotFoundException;
 
 import static battleship.controllers.GameController.getController;
 
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
-public class Routes {
+public class Routes{
 
     @GetMapping("/")
     public String main(){
@@ -151,6 +164,7 @@ public class Routes {
     // TODO dont send an problem occur, instead mark sorry try again later,
     // else if status = 400 send bad request, else if 404 send not found mesage
 
+
     @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "game not found")
     private class GameNotFoundException extends RuntimeException {
         private static final long serialVersionUID = 41L;
@@ -169,7 +183,24 @@ public class Routes {
     @ExceptionHandler({Exception.class})
     public String handleException(){
         return "error/error";
+    } 
+
+    /*
+    @ExceptionHandler({Exception.class})
+    public String handleError(HttpServletRequest request){
+        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+        if(statusCode == 400){
+            return "error/400";
+        }else if(statusCode == 404){
+            return "error/404";
+        }else if(statusCode == 500){
+            return "error/500";
+        }else{
+            return "error/error";
+        }
+
     }
+    */
 
 }
 
