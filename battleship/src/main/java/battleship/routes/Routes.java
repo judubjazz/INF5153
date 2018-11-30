@@ -161,9 +161,6 @@ public class Routes{
     }
 
     /* errors handler */
-    // TODO dont send an problem occur, instead mark sorry try again later,
-    // else if status = 400 send bad request, else if 404 send not found mesage
-
 
     @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "game not found")
     private class GameNotFoundException extends RuntimeException {
@@ -180,27 +177,24 @@ public class Routes{
         private static final long serialVersionUID = 43L;
     }
 
+    
+    /* errors handler */
+    // TODO dont send an problem occur, instead mark sorry try again later,
+    // else if status = 400 send bad request, else if 404 send not found mesage
     @ExceptionHandler({Exception.class})
     public String handleException(){
-        return "error/error";
-    } 
-
-    /*
-    @ExceptionHandler({Exception.class})
-    public String handleError(HttpServletRequest request){
-        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
-        if(statusCode == 400){
+        if(HttpStatus.BAD_REQUEST != null){
             return "error/400";
-        }else if(statusCode == 404){
+        }else if(HttpStatus.NOT_FOUND != null){
             return "error/404";
-        }else if(statusCode == 500){
+        }else if(HttpStatus.BAD_REQUEST != null){
             return "error/500";
         }else{
             return "error/error";
         }
+    } 
 
-    }
-    */
+
 
 }
 
