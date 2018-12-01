@@ -13,7 +13,7 @@
         <table>
             <tr th:each="game : ${gameList}">
                 <td>
-                    <a id="style-1" th:href="@{join/{id}(id=${game.id})}">
+                    <a style="margin-right:auto; margin-left:auto;" id="style-1" th:href="@{join/{id}(id=${game.id})}">
                         <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAANoSURBVGhD7dlZiBRHAIfx9daAimfyEJUQfVARgwoeCIoPQSUhEREPvEDwIoooiS8KKhiNL76IYFDwiEECXiB5NBAPBEUF44MRREl8EMXEIxG8v2/cXmp7q2dnV53t0fnDj52dqa7p6qmurq6uqaaaaqppbrpiWmAkKjJD8CKwHxWZakPyll5YHfgS1ZQ7H+A72I1+yfAjRiPX+QnheZHlET5BbnMLsR2PmY/c5l/EdjpmCXKbakPylpZoyGe1f5uUDugW0RqmXA3xO5fjMqxrMKJphbWYgmSY3IanSO+Q7uILvO2GjMEe/I+wLvctmv4ICz5M/R9zHQ9S7xWzCcMb4XytB5bhEmL1nMVsRDMTsY3ywgPmDGEEimYAVmA3LuIxYhWW2wXYJbugWXHjWMXl4jnxRu4wW7ohDiJvJO9MQ0Zhcwtah/cvn2M7dlSoxSjkPmL9s5IMRW6uFa+jMET/EbxRqbqjMPeJfZgHXtHDOVhsX0+ikA/RlElfOZ1AmNh1bSLqsgrpAnnwBN4qJP5D+PlR1Es7ZE2X88p5WHRpaTyeI7ZRHnkDmBlXCmMb5c2f8PY7Mx/hHmIb58kkNMin8KbeRjjEHUNs47y4hnH4GD3h3WJvRAtXmrGIfpDwql/qAHADt1PvZXFa1JRR0uUfh+LYZ8psyBUsgMtD3pMchCvpWWXXwEcL/tRb8BdiZT3/9mIQrHseTiF2sJ7hd8yAZV1ZcTCKXbwLDbG/zcJ0OKXvgyRtav+aTrA/+qR2DiajL5KEZf1iz72vMBdT4QzV61WSsLxzpQlwFUdeCjxvk4Rl22MYrNP9dsXR74vGR8xe7e/gBziNyYqrjR4A50W/obHFgn7YhZvwV/cAZcVf2fsNH1t4zxQe5Ab5FgvhBhvxK9LdyJVGd9JGLYXlfT64D38jLKurcP1pJSzrQttWnEG6G9ndDmM9LCtfH0G6G9ndTsO6vsEifI+BqFewUhUdtZyg+Qt5dGOfhzxSO3EoeK+Y87DuUmbdrqRsQLFRrtCQf4I3XOs9B1cwvOAY+7BrrP78YTey+7n+allHoSSeIy4u+8XhkOmF7Gd8jWQV33PPc9FuG+6Hr4/DVc/k/GwLT/ADsK6w3rrv74iic5cgVtj51cuS4sCR7Hhj8aC5L6XEkczBgNTUvAROf6HG1unlaQAAAABJRU5ErkJggg==">
                         <span th:text="${'Join Game ' + game.id}"></span>
                     </a>

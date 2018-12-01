@@ -60,7 +60,7 @@ public class BattleshipGameCreator implements GameFactory {
 
                         String stringStartPosition = aiData.getString("startPosition");
                         Map<String, Integer> startPosition = new HashMap<>();
-                        if(stringStartPosition.length() > 0){
+                        if(stringStartPosition.length() > 2){
                             JSONObject startPositionData = JSONObject.fromObject(stringStartPosition);
                             startPosition.put("x", startPositionData.getInt("x"));
                             startPosition.put("y", startPositionData.getInt("y"));
@@ -73,39 +73,11 @@ public class BattleshipGameCreator implements GameFactory {
                     JSONObject recorderData = data.getJSONObject(gameKey);
                     Recorder recorder = buildRecorderFromJSONObject(recorderData);
                     battleshipGame.recorder = recorder;
-//                    try {
-//                        JSONArray p1recorder = recorderData.getJSONArray("playerOneMoves");
-//                        for(int i=0;i<p1recorder.size();i++) {
-//                            JSONObject item = p1recorder.getJSONObject(i);
-//                            Map<String, Integer> map = new HashMap<>();
-//                            int targetArea = item.getInt("hit");
-//                            int targetX = item.getInt("x");
-//                            int targetY = item.getInt("y");
-//                            map.put("hit", targetArea);
-//                            map.put("x", targetX);
-//                            map.put("y", targetY);
-//                            recorder.playerOneMoves.add(map);
-//                        }
-//
-//                        JSONArray p2recorder = recorderData.getJSONArray("playerTwoMoves");
-//                        for(int i=0;i<p2recorder.size();i++) {
-//                            JSONObject item = p2recorder.getJSONObject(i);
-//                            Map<String, Integer> map = new HashMap<>();
-//                            int targetArea = item.getInt("hit");
-//                            int targetX = item.getInt("x");
-//                            int targetY = item.getInt("y");
-//                            map.put("hit", targetArea);
-//                            map.put("x", targetX);
-//                            map.put("y", targetY);
-//                            recorder.playerTwoMoves.add(map);
-//                        }
-//                    } catch (JSONException e){
-//                        System.out.println(e);
-//                        break;
-//                    }
-//                    int index = recorderData.getInt("index");
-//                    recorder.index = index;
                     break;
+                case "memento":
+                    JSONObject memento = data.getJSONObject(gameKey);
+                    BattleshipGame m = createGame(memento);
+                    battleshipGame.memento = m;
             }
         }
 

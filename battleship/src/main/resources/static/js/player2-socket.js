@@ -1,5 +1,5 @@
 'use strict';
-const {WAITING_OPP_TURN, SHIP_LOCATION_ERR, WAITING_GAME_CONNECTION, TARGET_OPP_SHIP, YOU_WON, YOU_LOST} = constants;
+const {WAITING_OPP_TURN, SHIP_LOCATION_ERR, WAITING_GAME_CONNECTION, TARGET_OPP_SHIP, YOU_WON, YOU_LOST, QUIT_GAME_MSG, OPP_DID_QUIT} = constants;
 const socket = io(window.location.protocol + '//localhost:9291');
 var game = {
   id: null,
@@ -87,6 +87,19 @@ socket.on('playerDidJoinGame', (res)=>{
   hideDraggableMap();
   showLoader(WAITING_OPP_TURN);
 });
+
+socket.on('playerOneDidLeave', (res) => {
+  console.log('player did leave', res);
+  showLoader(OPP_DID_QUIT);
+});
+
+$(window).bind('beforeunload', function(){
+  return 'Are you sure you want to leave?';
+});
+
+window.onunload = () => {
+  socket.emit('playerTwoDidLeave', JSON.stringify({id:game.id}));
+};
 
 
 const joinGame = () =>{

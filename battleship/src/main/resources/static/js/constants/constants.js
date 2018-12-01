@@ -36,4 +36,7 @@ const constants = {
   STATE: 'state',
   DIFF: 'difficulty',
   START_POS: 'startPosition',
+  MEMENTO: 'memento',
+  QUIT_GAME_MSG: 'You will loose the game if you leave !',
+  OPP_DID_QUIT: 'Your opponent left the game.'
 };

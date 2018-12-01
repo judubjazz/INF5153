@@ -42,7 +42,7 @@ public class TicTacToeGameController implements GameController<TicTacToeGame, Ti
     }
 
     @Override
-    public Game restart(int gameID, Recorder r) {
+    public Game restart(TicTacToeGame game) {
         return null;
     }
 

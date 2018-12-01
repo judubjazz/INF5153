@@ -1,6 +1,6 @@
 'use strict';
 
-const {WAITING_OPP_TURN, SHIP_LOCATION_ERR, WAITING_GAME_CONNECTION, TARGET_OPP_SHIP, YOU_WON, YOU_LOST} = constants;
+const {WAITING_OPP_TURN, SHIP_LOCATION_ERR, WAITING_GAME_CONNECTION, TARGET_OPP_SHIP, YOU_WON, YOU_LOST, QUIT_GAME_MSG, OPP_DID_QUIT} = constants;
 const socket = io(window.location.protocol + '//localhost:9291');
 var game = {
   id: null,
@@ -60,6 +60,7 @@ socket.on('playerDidCreateGame', (res) => {
   game.id = id;
   game.map = map;
   hideDraggableMap();
+  hideOptions();
   showLoader(WAITING_GAME_CONNECTION);
 });
 
@@ -78,7 +79,8 @@ socket.on('playerOneDidPlay', (res) => {
   const {x, y, winner} = res;
   game.targets[x][y] = -1;
   if(winner){
-    showLoader(YOU_WON);
+    $('#message-header').html(YOU_LOST);
+    // showLoader(YOU_WON);
   } else {
     $('#targets-table').remove();
     renderTargetsMap();
@@ -91,7 +93,8 @@ socket.on('playerTwoDidPlay', (res) => {
   game.map[x][y] = -1;
 
   if(winner){
-    showLoader(YOU_LOST)
+    $('#message-header').html(YOU_LOST);
+    // showLoader(YOU_LOST)
     // TODO show end of game
     // TODO mute function torpedo when waiting
   } else {
@@ -102,7 +105,19 @@ socket.on('playerTwoDidPlay', (res) => {
   }
 });
 
+socket.on('playerTwoDidLeave', (res) => {
+  console.log('player did leave', res);
+  showLoader(OPP_DID_QUIT);
+});
 
+
+$(window).bind('beforeunload', function(){
+  return 'Are you sure you want to leave?';
+});
+
+window.onunload = () => {
+  socket.emit('playerOneDidLeave', JSON.stringify({id:game.id}));
+};
 
 socket.on('connect_failed', function (data) {
   console.log('connect_failed');

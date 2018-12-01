@@ -131,9 +131,8 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
         boolean difficulty = p1Settings.getBoolean("difficulty");
         BattleshipAi ai = new BattleshipAi(BattleshipAi.State.START,difficulty, null);
 
-        int id = Application.gameListVsCpu.size()+1;
+        int id = Db.getDb().nextID();
         BattleshipGame battleshipGame = new BattleshipGame(id, "battleship", player, cpu, recorder, ai);
-        Application.gameListVsCpu.add(battleshipGame);
         return  battleshipGame;
     }
 
@@ -161,12 +160,9 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
     }
 
     @Override
-    public Game<BattleshipPlayer> restart(int gameID, Recorder recorder){
-        System.out.println(Application.gameListVsCpu);
-        System.out.println(Application.gameListVsCpu.size());
-        BattleshipGame battleshipGame = Application.gameListVsCpu.get(gameID -1);
+    public Game<BattleshipPlayer> restart(BattleshipGame battleshipGame){
         battleshipGame.memento.memento = battleshipGame.memento;
-        battleshipGame.memento.recorder = recorder;
+        battleshipGame.memento.recorder = battleshipGame.recorder;
         battleshipGame = battleshipGame.memento;
         return battleshipGame;
     }

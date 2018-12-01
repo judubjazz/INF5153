@@ -27,7 +27,7 @@ public interface GameController<G extends Game, P extends Player> {
 
     Game start(JSONObject data);
 
-    Game restart(int gameID, Recorder r);
+    Game restart(G game);
 
     JSONObject createOnlineGame(SocketIOClient client, String req);
 
