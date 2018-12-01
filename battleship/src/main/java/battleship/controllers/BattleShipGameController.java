@@ -131,7 +131,7 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
         boolean difficulty = p1Settings.getBoolean("difficulty");
         BattleshipAi ai = new BattleshipAi(BattleshipAi.State.START,difficulty, null);
 
-        int id = Db.getDb().nextID();
+        int id = Db.getDb().getMaxID();
         BattleshipGame battleshipGame = new BattleshipGame(id, "battleship", player, cpu, recorder, ai);
         return  battleshipGame;
     }

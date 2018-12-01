@@ -1,7 +1,6 @@
 package battleship.entities.Ais;
 
 import battleship.entities.boards.BattleshipBoard;
-import battleship.entities.boards.Board;
 import battleship.entities.games.BattleshipGame;
 import battleship.entities.games.Game;
 import battleship.entities.ships.*;
@@ -147,7 +146,7 @@ public class BattleshipAi extends Ai {
         else if(this.state.equals(State.RIGHT)) this.state = State.START;
     }
 
-    public boolean targetHasBeenUsed(Map<String, Integer> target, Game battleshipGame) {
+    private boolean targetHasBeenUsed(Map<String, Integer> target, Game battleshipGame) {
         int targetX = target.get("x");
         int targetY = target.get("y");
         for (Map<String,Integer> t: battleshipGame.recorder.playerTwoMoves) {

@@ -4,17 +4,13 @@ import battleship.entities.Ais.BattleshipAi;
 import battleship.entities.Recorder;
 import battleship.entities.boards.BattleshipBoard;
 import battleship.entities.games.BattleshipGame;
-import battleship.entities.games.Game;
 import battleship.entities.players.BattleshipPlayer;
 import battleship.entities.ships.*;
 import battleship.middlewares.converters.StringTo2DArrayConverter;
-import battleship.middlewares.converters.StringToArrayListConverter;
-import battleship.middlewares.converters.StringToMapStringIntegerConverter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -183,7 +179,7 @@ public class BattleshipGameCreator implements GameFactory {
                 recorder.playerTwoMoves.add(map);
             }
         } catch (JSONException e){
-            System.out.println(e);
+            e.printStackTrace();
             return  null;
         }
         int index = recorderData.getInt("index");

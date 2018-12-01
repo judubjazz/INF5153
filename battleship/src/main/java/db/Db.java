@@ -4,9 +4,9 @@ import battleship.entities.*;
 import battleship.entities.Ais.BattleshipAi;
 import battleship.entities.games.BattleshipGame;
 import battleship.entities.players.BattleshipPlayer;
+import battleship.entities.ships.Ship;
 import battleship.middlewares.converters.StringTo2DArrayConverter;
 import battleship.middlewares.converters.StringToArrayListConverter;
-import battleship.entities.ships.Ship;
 import battleship.middlewares.converters.StringToMapStringIntegerConverter;
 import battleship.middlewares.converters.toStringConverters;
 
@@ -57,7 +57,7 @@ public class Db {
             Document document = parser.parse(documentFilePath);
             return document;
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
             return null;
         }
     }
@@ -75,7 +75,7 @@ public class Db {
         try {
             saveGame(battleshipGame);
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
 
     }
@@ -85,7 +85,7 @@ public class Db {
         setGame(gameSettings, battleshipGame);
     }
 
-    public NodeList getGameNodeListById(int id) {
+    private NodeList getGameNodeListById(int id) {
         try {
             NodeList games = document.getElementsByTagName("game");
             for (int j = 0; j < games.getLength(); ++j) {
@@ -102,16 +102,11 @@ public class Db {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e);
-            System.out.println("error get nodelist by id");
+            e.printStackTrace();
         }
         return null;
     }
 
-    public void update(BattleshipGame battleshipGame) {
-        NodeList gameSettings = getGameNodeListById(battleshipGame.id);
-        updateGame(gameSettings, battleshipGame);
-    }
 
     private void setAi(NodeList aiSettings, BattleshipAi ai) {
         for (int i = 0; i < aiSettings.getLength(); i++) {
@@ -175,10 +170,10 @@ public class Db {
                         battleshipGame.id = Integer.parseInt(setting.getTextContent());
                         break;
                     case "playerOne":
-                        setPlayer(caseSettings, (BattleshipPlayer)battleshipGame.playerOne, battleshipGame);
+                        setPlayer(caseSettings, battleshipGame.playerOne, battleshipGame);
                         break;
                     case "playerTwo":
-                        setPlayer(caseSettings, (BattleshipPlayer)battleshipGame.playerTwo, battleshipGame);
+                        setPlayer(caseSettings, battleshipGame.playerTwo, battleshipGame);
                         break;
                     case "ai":
                         setAi(caseSettings, battleshipGame.ai);
@@ -415,12 +410,12 @@ public class Db {
         Element id = document.createElement("id");
         //newGame.setIdAttribute(String.valueOf(battleshipGame.id),true);
 
-		saveId(id, nextID());
+		saveId(id, getMaxID());
 
         Element player1 = document.createElement("playerOne");
         Element player2 = document.createElement("playerTwo");
-        savePlayer(player1, (BattleshipPlayer)battleshipGame.playerOne);
-        savePlayer(player2, (BattleshipPlayer)battleshipGame.playerTwo);
+        savePlayer(player1, battleshipGame.playerOne);
+        savePlayer(player2, battleshipGame.playerTwo);
 
         Element ai = document.createElement("ai");
         saveAi(ai, battleshipGame.ai);
@@ -442,7 +437,8 @@ public class Db {
         transformer.transform(source, result);
     }
 
-    public void printXML(NodeList nodeList) {
+    @SuppressWarnings("unused")
+    private void printXML(NodeList nodeList) {
         for (int count = 0; count < nodeList.getLength(); count++) {
             Node tempNode = nodeList.item(count);
             // make sure it's element node.
@@ -468,15 +464,21 @@ public class Db {
         }
     }
 
-    public void updateGame(NodeList gameSettings, BattleshipGame battleshipGame) {
+    @SuppressWarnings("unused")
+    public void update(BattleshipGame battleshipGame) {
+        NodeList gameSettings = getGameNodeListById(battleshipGame.id);
+        updateGame(gameSettings, battleshipGame);
+    }
+
+    private void updateGame(NodeList gameSettings, BattleshipGame battleshipGame) {
         for (int i = 0; i < gameSettings.getLength(); ++i) {
             Node setting = gameSettings.item(i);
             switch (setting.getNodeName()) {
                 case "playerOne":
-                    updatePlayer(setting.getChildNodes(), (BattleshipPlayer)battleshipGame.playerOne);
+                    updatePlayer(setting.getChildNodes(), battleshipGame.playerOne);
                     break;
                 case "playerTwo":
-                    updatePlayer(setting.getChildNodes(), (BattleshipPlayer)battleshipGame.playerTwo);
+                    updatePlayer(setting.getChildNodes(), battleshipGame.playerTwo);
                     break;
                 default:
                     break;
@@ -559,14 +561,8 @@ public class Db {
         }
     }
 
+
     public int getMaxID(){
-        if(document == null) return 1;
-        NodeList n = document.getElementsByTagName("game");
-        int maxID = n.getLength() + 1;
-        return maxID;
-    }
-    
-    public int nextID(){
         String lastID = "";
         NodeList nodes = document.getElementsByTagName("game");
         for (int i = 0; i < nodes.getLength(); i++) {
@@ -576,7 +572,7 @@ public class Db {
    	 	return Integer.parseInt(lastID) + 1;
    } 
 
-    public String[] getIDsList(String[] list){
+    private String[] getIDsList(String[] list){
      	String[] files = new String[list.length-1];
      	System.arraycopy(list,1,files,0,list.length-1);
     	return files;
