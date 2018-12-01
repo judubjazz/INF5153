@@ -66,7 +66,8 @@ const isValidGame = () => {
 
 const hideOptions = () =>{
   $('.options-container').remove();
-  $('.player-one-map').remove()
+  $('.player-one-map').remove();
+  $('.rules-container').remove();
 };
 
 

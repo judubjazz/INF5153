@@ -10,19 +10,22 @@
 </head>
 <body>
 <div layout:fragment="content">
- 	<p class="standard">WELCOME</p>
- 	<p>Starting a New Game <span class="red">!!!</span> <br>
-	Each player places the <span class="red">5 ships</span> somewhere on their board.  
-	The ships can only be placed <span class="red">vertically</span> or <span class="red">horizontally</span>. 
-	Diagonal placement is <span class="red">not allowed</span>. 
-	No part of a ship may hang off the edge of the board.  Ships may not overlap each other.  
-	No ships may be placed on another ship. Once the guessing begins, the players may not move the ships.
-	The 5 ships are:  <span class="red">Carrier</span> (occupies 5 spaces), 
-	                  <span class="red">Battleship</span> (4), 
-	                  <span class="red">Cruiser</span> (3), 
-	                  <span class="red">Submarine</span> (3), and 
-	                  <span class="red">Destroyer</span> (2).  
-	</p>
+
+    <div class="rules-container">
+        <p>Starting a New Game <span class="red">!!!</span> <br>
+            Each player places the <span class="red">5 ships</span> somewhere on their board.
+            The ships can only be placed <span class="red">vertically</span> or <span class="red">horizontally</span>.
+            Diagonal placement is <span class="red">not allowed</span>.
+            No part of a ship may hang off the edge of the board.  Ships may not overlap each other.
+            No ships may be placed on another ship. Once the guessing begins, the players may not move the ships.
+            The 5 ships are:  <span class="red">Carrier</span> (occupies 5 spaces),
+            <span class="red">Battleship</span> (4),
+            <span class="red">Cruiser</span> (3),
+            <span class="red">Submarine</span> (3), and
+            <span class="red">Destroyer</span> (2).
+        </p>
+    </div>
+
     <div>
         <table>
             <tr th:each="i: ${#numbers.sequence(0,9)}">
@@ -44,11 +47,11 @@
         <form action="#" th:action="@{/start}" th:object="${formController}" method="post">
             <p><input style="display: none" id="data" type="text" th:field="*{data}" /></p>
             <p><input id="submit-fleet-button" type="submit" value="START" /></p>
-            <p><input id="hidden-button" onclick="start()" value="START" /></p>
         </form>
     </div>
 
     <div class="center">
+        <p><input id="hidden-button" class="button button3" onclick="start()" value="START" /></p>
         <a class="button button3" th:href="@{'/'}">EXIT</a>
 	</div>
 

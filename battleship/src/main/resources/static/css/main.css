@@ -35,12 +35,14 @@ th {
     text-align: center;
 }
 
-form{
-
+form p{
+    display: none;
 }
 
 p{
-    display: none;
+    width: 600px;
+    text-align: center;
+    text-justify: inter-word;
 }
 
 .torpedo-form{
@@ -83,7 +85,7 @@ h1{
 
 span{
     color: #f44336;
-    font-size: 45px;
+    font-size: 140%;
     font-style: normal;
 }
 /*CONTAINERS*/
@@ -100,6 +102,13 @@ span{
     justify-content: center;
 }
 
+
+
+.rules-container p{
+    display: block;
+    width: 600px;
+    text-align: center;
+}
 /*.form-container{*/
     /*display: none;*/
     /*justify-content: center;*/
@@ -251,5 +260,8 @@ div[name="5"] {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+
+
 
 

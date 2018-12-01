@@ -15,11 +15,11 @@ form {
   	text-align: center;
 }
 
-input[type=text] {
-    text-align: center;
-    height: 60px;
-    width: 33.33%; 
-}
+/*input[type=text] {*/
+    /*text-align: center;*/
+    /*height: 60px;*/
+    /*width: 33.33%; */
+/*}*/
 
 input{
     background-color: white;
