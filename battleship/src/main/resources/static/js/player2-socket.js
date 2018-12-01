@@ -35,18 +35,21 @@ var game = {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   ],
+  isWaiting: true,
 };
 
 
 const torpedo = (event, x, y) => {
   event.preventDefault();
-  const id = game.id;
-  const target = {
-    id,
-    x,
-    y,
-  };
-  socket.emit('playerTwoWillPlayTurn', JSON.stringify(target));
+  const {id, isWaiting} = game;
+  if(!isWaiting){
+    const target = {
+      id,
+      x,
+      y,
+    };
+    socket.emit('playerTwoWillPlayTurn', JSON.stringify(target));
+  }
 };
 
 socket.on('playerTwoDidPlay', (res) =>{
@@ -59,12 +62,14 @@ socket.on('playerTwoDidPlay', (res) =>{
     renderTargetsMap();
     showLoader(WAITING_OPP_TURN);
     console.log('player two did play', res);
+    game.isWaiting = true;
   }
 });
 
 socket.on('playerOneDidPlay', (res) =>{
   const {x, y, winner} = res;
   game.map[x][y] = -1;
+  game.isWaiting = false;
 
   if(winner){
     showLoader(YOU_LOST);
@@ -78,11 +83,11 @@ socket.on('playerOneDidPlay', (res) =>{
 });
 
 socket.on('playerDidJoinGame', (res)=>{
+  console.log('player did join game', res);
   const {map} = res;
   game.map = map;
   renderTargetsMap();
   renderPlayerMap();
-  console.log('player did join game', res);
   hideOptions();
   hideDraggableMap();
   showLoader(WAITING_OPP_TURN);
@@ -98,7 +103,7 @@ $(window).bind('beforeunload', function(){
 });
 
 window.onunload = () => {
-  socket.emit('playerTwoDidLeave', JSON.stringify({id:game.id}));
+  socket.emit('playerTwoDidLeave', JSON.stringify({id:Number(game.id)}));
 };
 
 

@@ -36,6 +36,7 @@ var game = {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   ],
+  isWaiting: false,
 };
 
 const createGame = () => {
@@ -46,13 +47,15 @@ const createGame = () => {
 
 const torpedo = (event, x, y) => {
   event.preventDefault();
-  const {id} = game;
-  const target = {
-    id,
-    x,
-    y,
-  };
-  socket.emit('playerOneWillPlayTurn', JSON.stringify(target));
+  const {isWaiting, id} = game;
+  if(!isWaiting){
+    const target = {
+      id,
+      x,
+      y,
+    };
+    socket.emit('playerOneWillPlayTurn', JSON.stringify(target));
+  }
 };
 
 socket.on('playerDidCreateGame', (res) => {
@@ -79,24 +82,25 @@ socket.on('playerOneDidPlay', (res) => {
   const {x, y, winner} = res;
   game.targets[x][y] = -1;
   if(winner){
-    $('#message-header').html(YOU_LOST);
+    $('#message-header').html(YOU_WON);
     // showLoader(YOU_WON);
   } else {
     $('#targets-table').remove();
     renderTargetsMap();
     showLoader(WAITING_OPP_TURN);
+    game.isWaiting = true;
   }
 });
 
 socket.on('playerTwoDidPlay', (res) => {
   const {x, y, winner} = res;
   game.map[x][y] = -1;
+  game.isWaiting = false;
 
   if(winner){
     $('#message-header').html(YOU_LOST);
     // showLoader(YOU_LOST)
     // TODO show end of game
-    // TODO mute function torpedo when waiting
   } else {
     $('#player-map-table').remove();
     renderPlayerMap();
@@ -112,11 +116,11 @@ socket.on('playerTwoDidLeave', (res) => {
 
 
 $(window).bind('beforeunload', function(){
-  return 'Are you sure you want to leave?';
+  return QUIT_GAME_MSG;
 });
 
 window.onunload = () => {
-  socket.emit('playerOneDidLeave', JSON.stringify({id:game.id}));
+  socket.emit('playerOneDidLeave', JSON.stringify({id:Number(game.id)}));
 };
 
 socket.on('connect_failed', function (data) {
