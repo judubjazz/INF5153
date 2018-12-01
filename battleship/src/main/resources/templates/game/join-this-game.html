@@ -4,9 +4,8 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{base}">
 <head>
-    <title>Getting Started</title>
+    <title>Joinin a game</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <!--<link rel="stylesheet" type="text/css" href="../static/css/main.css"/>-->
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
 </head>
 <body>
@@ -21,14 +20,29 @@
     <div class="main-wrapper">
         <h1 id="message-header">Join Game</h1>
 
-        <!--TODO start rules battleshipGame-->
-        <div class="fleet-container" ondrop="drop(event)" ondragover="allowDrop(event)">
-            <div id="submarine" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">1</div>
-            <div id="destroyer" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">2</div>
-            <div id="cruiser" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">3</div>
-            <div id="battleship" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">4</div>
-            <div id="carrier" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">5</div>
+        <div class="rules-container">
+            <p class="standard">WELCOME</p>
+            <p>Joining a game <span class="red">!!!</span> <br>
+                Each player places the <span class="red">5 ships</span> somewhere on their board.
+                The ships can only be placed <span class="red">vertically</span> or <span class="red">horizontally</span>.
+                Diagonal placement is <span class="red">not allowed</span>.
+                No part of a ship may hang off the edge of the board.  Ships may not overlap each other.
+                No ships may be placed on another ship. Once the guessing begins, the players may not move the ships.
+                The 5 ships are:  <span class="red">Carrier</span> (occupies 5 spaces),
+                <span class="red">Battleship</span> (4),
+                <span class="red">Cruiser</span> (3),
+                <span class="red">Submarine</span> (3), and
+                <span class="red">Destroyer</span> (2).
+            </p>
         </div>
+
+        <!--<div class="fleet-container" ondrop="drop(event)" ondragover="allowDrop(event)">-->
+            <!--<div id="submarine" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">1</div>-->
+            <!--<div id="destroyer" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">2</div>-->
+            <!--<div id="cruiser" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">3</div>-->
+            <!--<div id="battleship" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">4</div>-->
+            <!--<div id="carrier" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">5</div>-->
+        <!--</div>-->
 
         <div class="map-container">
             <table class="player-one-map">
@@ -44,7 +58,8 @@
         </div>
 
         <div class="options-container">
-            <button class="button button3" onclick="joinGame()">join game</button>
+            <button class="button button3" onclick="joinGame()">JOIN</button>
+            <a class="button button3" th:href="@{'/'}">EXIT</a>
         </div>
     </div>
 </div>
