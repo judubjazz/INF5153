@@ -132,6 +132,7 @@ public class BattleshipAi extends Ai {
         }
         if (Validation.targetIsOutOfBound(nextTarget, battleshipGame.playerOne.playerBoard) || targetHasBeenUsed(nextTarget, battleshipGame)) {
             switchToNextState();
+            // TODO when state is forced to switch to next state because of validation, it keeps in mind the last prevTarget and jump a state case (does not enter case else); add a condition so it is forced to do at least one iteration into the else case
             return targetMinMaxPosition(battleshipGame);
         }
         return nextTarget;

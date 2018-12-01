@@ -15,7 +15,6 @@ public class Validation {
 
     public static boolean gameIDisInTheList(int id){
         for (Game game: Application.gameListVsHuman){
-            System.out.println(game.id);
             if (game.id == id) return true;
         }
         return false;

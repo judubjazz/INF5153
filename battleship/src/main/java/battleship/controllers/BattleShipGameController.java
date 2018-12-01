@@ -179,7 +179,7 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
         p1Board.locateFleet(playerOneFleet);
         player.playerBoard = p1Board;
 
-        Game<BattleshipPlayer> game = new BattleshipGame(id, "battleship", player, null, null);
+        Game<BattleshipPlayer> game = new BattleshipGame(id, "battleship", player, null);
         res.put("id", game.id);
         res.put("map", p1Board.map);
         game.p1Socket = client;

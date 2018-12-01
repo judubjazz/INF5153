@@ -34,11 +34,10 @@ public class BattleshipGame extends Game {
     }
 
     // TODO maybe this constructor is redudntant
-    public BattleshipGame(int id, String name, BattleshipPlayer playerOne, BattleshipPlayer playerTwo, BattleshipAi ai) {
+    public BattleshipGame(int id, String name, BattleshipPlayer playerOne, BattleshipPlayer playerTwo) {
         super(id, name, playerOne, playerTwo);
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
-        this.ai = ai;
     }
 
     public BattleshipGame(BattleshipGame game){
