@@ -9,7 +9,7 @@
 <body>
 <!--TODO you-won and you-win could be a single template-->
 <div class="home-options-container">
-	<h1><span>Y</span>ou<span>W</span>on</h1>
+	<h1><span th:text="${winner}"/></h1>
 
 
     <div>
@@ -18,6 +18,7 @@
             <p><input id="restart-form-submit" type="submit" value="START" /></p>
         </form>
     </div>
+
 
 
     <form class='torpedo-form' action="#" th:action="@{/restart}" th:object="${battleshipGame}" method="post">
@@ -37,7 +38,7 @@
 			</tr>
 		</table>
 
-
+        <p>Game id: <input id="game-id" type="text" th:field="*{id}" /></p>
         <p>playerOne name: <input id="playerOne-name"  type="text" th:field="*{playerOne.name}" /></p>
         <p>playerOne map: <input id="playerOne-playerBoard-map"  type="text" th:field="*{playerOne.playerBoard.map}" /></p>
         <p>playerOne map width: <input id="playerOne-playerBoard-width"  type="text" th:field="*{playerOne.playerBoard.width}" /></p>
@@ -146,96 +147,95 @@
 
         <!--memento-->
 
+        <p>playerOne name: <input id="memento-playerOne-name" type="text" th:field="*{memento.playerOne.name}" /></p>
+        <p>playerOne map: <input  id="memento-playerOne-playerBoard-map" type="text" th:field="*{memento.playerOne.playerBoard.map}" /></p>
+        <p>PlayerOne enemy map: <input  id="memento-playerOne-ennemyBoard-map" type="text" th:field="*{memento.playerOne.ennemyBoard.map}"/></p>
+        <p>PlayerOne ships remaining: <input id="memento-playerOne-shipsRemaining" type="text" th:field="*{memento.playerOne.shipsRemaining}"/></p>
+        <!--<p>targetX: <input  type="text" th:field="*{memento.playerOne.targetX}" value=1/></p>-->
+        <!--<p>targetY: <input  type="text" th:field="*{memento.playerOne.targetY}" value=0/></p>-->
+        <p>playerTwo map: <input id="memento-playerTwo-playerBoard-map" type="text" th:field="*{memento.playerTwo.playerBoard.map}" /></p>
+        <p>PlayerT ships remaining: <input id="memento-playerTwo-shipsRemaining" type="text" th:field="*{memento.playerTwo.shipsRemaining}"/></p>
+        <p>playerTwo ennemy map: <input id="memento-playerTwo-ennemyBoard-map" type="text" th:field="*{memento.playerTwo.ennemyBoard.map}"/></p>
+        <p>recorder: <input id="memento-recorder-playerOneMoves" type="text" th:field="*{memento.recorder.playerOneMoves}"/></p>
+        <p>recorder: <input id="memento-recorder-playerTwoMoves" type="text" th:field="*{memento.recorder.playerTwoMoves}"/></p>
+        <p>recorder index: <input id="memento-recorder-index" type="text" th:field="*{memento.recorder.index}"/></p>
 
-        <p>playerOne name: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.name}" /></p>
-        <p>playerOne map: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.playerBoard.map}" /></p>
-        <p>PlayerOne enemy map: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.ennemyBoard.map}"/></p>
-        <p>PlayerOne ships remaining: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.shipsRemaining}"/></p>
-        <p>targetX: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.targetX}" value=1/></p>
-        <p>targetY: <input  class='torpedo-form' type="text" th:field="*{memento.playerOne.targetY}" value=0/></p>
-        <p>playerTwo map: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.playerBoard.map}" /></p>
-        <p>PlayerT ships remaining: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.shipsRemaining}"/></p>
-        <p>playerTwo ennemy map: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.ennemyBoard.map}"/></p>
-        <p>recorder: <input class='torpedo-form' type="text" th:field="*{memento.recorder.playerOneMoves}"/></p>
-        <p>recorder: <input class='torpedo-form' type="text" th:field="*{memento.recorder.playerTwoMoves}"/></p>
-        <p>recorder index: <input class='torpedo-form' type="text" th:field="*{memento.recorder.index}"/></p>
 
+        <p>PlayerOne carrier BowX: <input id="memento-playerOne-carrier-bowX" type="text" th:field="*{memento.playerOne.carrier.bowX}"/></p>
+        <p>PlayerOne carrier BowY: <input id="memento-playerOne-carrier-bowY" type="text" th:field="*{memento.playerOne.carrier.bowY}"/></p>
+        <p>PlayerOne carrier StemX: <input id="memento-playerOne-carrier-stemX" type="text" th:field="*{memento.playerOne.carrier.stemX}"/></p>
+        <p>PlayerOne carrier StemY: <input id="memento-playerOne-carrier-stemY" type="text" th:field="*{memento.playerOne.carrier.stemY}"/></p>
 
-        <p>PlayerOne carrier BowX: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.carrier.bowX}"/></p>
-        <p>PlayerOne carrier BowY: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.carrier.bowY}"/></p>
-        <p>PlayerOne carrier StemX: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.carrier.stemX}"/></p>
-        <p>PlayerOne carrier StemY: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.carrier.stemY}"/></p>
+        <p>PlayerOne submarine BowX: <input id="memento-playerOne-submarine-bowX" type="text" th:field="*{memento.playerOne.submarine.bowX}"/></p>
+        <p>PlayerOne submarine BowY: <input id="memento-playerOne-submarine-bowY" type="text" th:field="*{memento.playerOne.submarine.bowY}"/></p>
+        <p>PlayerOne submarine StemX: <input id="memento-playerOne-submarine-stemX" type="text" th:field="*{memento.playerOne.submarine.stemX}"/></p>
+        <p>PlayerOne submarine StemY: <input id="memento-playerOne-submarine-stemY" type="text" th:field="*{memento.playerOne.submarine.stemY}"/></p>
 
-        <p>PlayerOne submarine BowX: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.submarine.bowX}"/></p>
-        <p>PlayerOne submarine BowY: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.submarine.bowY}"/></p>
-        <p>PlayerOne submarine StemX: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.submarine.stemX}"/></p>
-        <p>PlayerOne submarine StemY: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.submarine.stemY}"/></p>
+        <p>PlayerOne destroyer BowX: <input id="memento-playerOne-destroyer-bowX" type="text" th:field="*{memento.playerOne.destroyer.bowX}"/></p>
+        <p>PlayerOne destroyer BowY: <input id="memento-playerOne-destroyer-bowY" type="text" th:field="*{memento.playerOne.destroyer.bowY}"/></p>
+        <p>PlayerOne destroyer StemX: <input id="memento-playerOne-destroyer-stemX" type="text" th:field="*{memento.playerOne.destroyer.stemX}"/></p>
+        <p>PlayerOne destroyer StemY: <input id="memento-playerOne-destroyer-stemY" type="text" th:field="*{memento.playerOne.destroyer.stemY}"/></p>
 
-        <p>PlayerOne destroyer BowX: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.destroyer.bowX}"/></p>
-        <p>PlayerOne destroyer BowY: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.destroyer.bowY}"/></p>
-        <p>PlayerOne destroyer StemX: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.destroyer.stemX}"/></p>
-        <p>PlayerOne destroyer StemY: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.destroyer.stemY}"/></p>
+        <p>PlayerOne cruiser BowX: <input id="memento-playerOne-cruiser-bowX" type="text" th:field="*{memento.playerOne.cruiser.bowX}"/></p>
+        <p>PlayerOne cruiser BowY: <input id="memento-playerOne-cruiser-bowY" type="text" th:field="*{memento.playerOne.cruiser.bowY}"/></p>
+        <p>PlayerOne cruiser StemX: <input id="memento-playerOne-cruiser-stemX" type="text" th:field="*{memento.playerOne.cruiser.stemX}"/></p>
+        <p>PlayerOne cruiser StemY: <input id="memento-playerOne-cruiser-stemY" type="text" th:field="*{memento.playerOne.cruiser.stemY}"/></p>
 
-        <p>PlayerOne cruiser BowX: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.cruiser.bowX}"/></p>
-        <p>PlayerOne cruiser BowY: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.cruiser.bowY}"/></p>
-        <p>PlayerOne cruiser StemX: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.cruiser.stemX}"/></p>
-        <p>PlayerOne cruiser StemY: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.cruiser.stemY}"/></p>
+        <p>PlayerOne battleship BowX: <input id="memento-playerOne-battleship-bowX" type="text" th:field="*{memento.playerOne.battleship.bowX}"/></p>
+        <p>PlayerOne battleship BowY: <input id="memento-playerOne-battleship-bowY" type="text" th:field="*{memento.playerOne.battleship.bowY}"/></p>
+        <p>PlayerOne battleship StemX: <input id="memento-playerOne-battleship-stemX" type="text" th:field="*{memento.playerOne.battleship.stemX}"/></p>
+        <p>PlayerOne battleship StemY: <input id="memento-playerOne-battleship-stemY" type="text" th:field="*{memento.playerOne.battleship.stemY}"/></p>
 
-        <p>PlayerOne battleship BowX: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.battleship.bowX}"/></p>
-        <p>PlayerOne battleship BowY: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.battleship.bowY}"/></p>
-        <p>PlayerOne battleship StemX: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.battleship.stemX}"/></p>
-        <p>PlayerOne battleship StemY: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.battleship.stemY}"/></p>
+        <p>playerTwo carrier BowX: <input id="memento-playerTwo-carrier-bowX" type="text" th:field="*{memento.playerTwo.carrier.bowX}"/></p>
+        <p>playerTwo carrier BowY: <input id="memento-playerTwo-carrier-bowY" type="text" th:field="*{memento.playerTwo.carrier.bowY}"/></p>
+        <p>playerTwo carrier StemX: <input id="memento-playerTwo-carrier-stemX" type="text" th:field="*{memento.playerTwo.carrier.stemX}"/></p>
+        <p>playerTwo carrier StemY: <input id="memento-playerTwo-carrier-stemY" type="text" th:field="*{memento.playerTwo.carrier.stemY}"/></p>
 
-        <p>playerTwo carrier BowX: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.carrier.bowX}"/></p>
-        <p>playerTwo carrier BowY: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.carrier.bowY}"/></p>
-        <p>playerTwo carrier StemX: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.carrier.stemX}"/></p>
-        <p>playerTwo carrier StemY: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.carrier.stemY}"/></p>
+        <p>playerTwo submarine BowX: <input id="memento-playerTwo-submarine-bowX" type="text" th:field="*{memento.playerTwo.submarine.bowX}"/></p>
+        <p>playerTwo submarine BowY: <input id="memento-playerTwo-submarine-bowY" type="text" th:field="*{memento.playerTwo.submarine.bowY}"/></p>
+        <p>playerTwo submarine StemX: <input id="memento-playerTwo-submarine-stemX" type="text" th:field="*{memento.playerTwo.submarine.stemX}"/></p>
+        <p>playerTwo submarine StemY: <input id="memento-playerTwo-submarine-stemY" type="text" th:field="*{memento.playerTwo.submarine.stemY}"/></p>
 
-        <p>playerTwo submarine BowX: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.submarine.bowX}"/></p>
-        <p>playerTwo submarine BowY: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.submarine.bowY}"/></p>
-        <p>playerTwo submarine StemX: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.submarine.stemX}"/></p>
-        <p>playerTwo submarine StemY: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.submarine.stemY}"/></p>
+        <p>playerTwo destroyer BowX: <input id="memento-playerTwo-destroyer-bowX" type="text" th:field="*{memento.playerTwo.destroyer.bowX}"/></p>
+        <p>playerTwo destroyer BowY: <input id="memento-playerTwo-destroyer-bowY" type="text" th:field="*{memento.playerTwo.destroyer.bowY}"/></p>
+        <p>playerTwo destroyer StemX: <input id="memento-playerTwo-destroyer-stemX" type="text" th:field="*{memento.playerTwo.destroyer.stemX}"/></p>
+        <p>playerTwo destroyer StemY: <input id="memento-playerTwo-destroyer-stemY" type="text" th:field="*{memento.playerTwo.destroyer.stemY}"/></p>
 
-        <p>playerTwo destroyer BowX: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.destroyer.bowX}"/></p>
-        <p>playerTwo destroyer BowY: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.destroyer.bowY}"/></p>
-        <p>playerTwo destroyer StemX: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.destroyer.stemX}"/></p>
-        <p>playerTwo destroyer StemY: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.destroyer.stemY}"/></p>
+        <p>playerTwo cruiser BowX: <input id="memento-playerTwo-cruiser-bowX" type="text" th:field="*{memento.playerTwo.cruiser.bowX}"/></p>
+        <p>playerTwo cruiser BowY: <input id="memento-playerTwo-cruiser-bowY" type="text" th:field="*{memento.playerTwo.cruiser.bowY}"/></p>
+        <p>playerTwo cruiser StemX: <input id="memento-playerTwo-cruiser-stemX" type="text" th:field="*{memento.playerTwo.cruiser.stemX}"/></p>
+        <p>playerTwo cruiser StemY: <input id="memento-playerTwo-cruiser-stemY" type="text" th:field="*{memento.playerTwo.cruiser.stemY}"/></p>
 
-        <p>playerTwo cruiser BowX: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.cruiser.bowX}"/></p>
-        <p>playerTwo cruiser BowY: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.cruiser.bowY}"/></p>
-        <p>playerTwo cruiser StemX: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.cruiser.stemX}"/></p>
-        <p>playerTwo cruiser StemY: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.cruiser.stemY}"/></p>
+        <p>playerTwo battleship BowX: <input id="memento-playerTwo-battleship-bowX" type="text" th:field="*{memento.playerTwo.battleship.bowX}"/></p>
+        <p>playerTwo battleship BowY: <input id="memento-playerTwo-battleship-bowY" type="text" th:field="*{memento.playerTwo.battleship.bowY}"/></p>
+        <p>playerTwo battleship StemX: <input id="memento-playerTwo-battleship-stemX" type="text" th:field="*{memento.playerTwo.battleship.stemX}"/></p>
+        <p>playerTwo battleship StemY: <input id="memento-playerTwo-battleship-stemY" type="text" th:field="*{memento.playerTwo.battleship.stemY}"/></p>
 
-        <p>playerTwo battleship BowX: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.battleship.bowX}"/></p>
-        <p>playerTwo battleship BowY: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.battleship.bowY}"/></p>
-        <p>playerTwo battleship StemX: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.battleship.stemX}"/></p>
-        <p>playerTwo battleship StemY: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.battleship.stemY}"/></p>
+        <p>playerTwo name: <input id="memento-playerTwo-name" type="text" th:field="*{memento.playerTwo.name}" /></p>
 
-        <p>playerTwo name: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.name}" /></p>
+        <p>PlayerOne carrier id: <input id="memento-playerOne-carrier-id" type="text" th:field="*{memento.playerOne.carrier.id}"/></p>
+        <p>PlayerOne submarine id: <input id="memento-playerOne-submarine-id" type="text" th:field="*{memento.playerOne.submarine.id}"/></p>
+        <p>PlayerOne cruiser id: <input id="memento-playerOne-cruiser-id" type="text" th:field="*{memento.playerOne.cruiser.id}"/></p>
+        <p>PlayerOne battleship id: <input id="memento-playerOne-battleship-id" type="text" th:field="*{memento.playerOne.battleship.id}"/></p>
+        <p>PlayerOne destroyer id: <input id="memento-playerOne-destroyer-id" type="text" th:field="*{memento.playerOne.destroyer.id}"/></p>
 
-        <p>PlayerOne carrier id: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.carrier.id}"/></p>
-        <p>PlayerOne submarine id: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.submarine.id}"/></p>
-        <p>PlayerOne cruiser id: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.cruiser.id}"/></p>
-        <p>PlayerOne battleship id: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.battleship.id}"/></p>
-        <p>PlayerOne destroyer id: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.destroyer.id}"/></p>
+        <p>PlayerTwo carrier id: <input id="memento-playerTwo-carrier-id" type="text" th:field="*{memento.playerTwo.carrier.id}"/></p>
+        <p>PlayerTwo submarine id: <input id="memento-playerTwo-submarine-id" type="text" th:field="*{memento.playerTwo.submarine.id}"/></p>
+        <p>PlayerTwo cruiser id: <input id="memento-playerTwo-cruiser-id" type="text" th:field="*{memento.playerTwo.cruiser.id}"/></p>
+        <p>PlayerTwo battleship id: <input id="memento-playerTwo-battleship-id" type="text" th:field="*{memento.playerTwo.battleship.id}"/></p>
+        <p>PlayerTwo destroyer id: <input id="memento-playerTwo-destroyer-id" type="text" th:field="*{memento.playerTwo.destroyer.id}"/></p>
 
-        <p>PlayerTwo carrier id: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.carrier.id}"/></p>
-        <p>PlayerTwo submarine id: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.submarine.id}"/></p>
-        <p>PlayerTwo cruiser id: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.cruiser.id}"/></p>
-        <p>PlayerTwo battleship id: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.battleship.id}"/></p>
-        <p>PlayerTwo destroyer id: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.destroyer.id}"/></p>
+        <p>PlayerOne carrier size: <input id="memento-playerOne-carrier-size" type="text" th:field="*{memento.playerOne.carrier.size}"/></p>
+        <p>PlayerOne submarine size: <input id="memento-playerOne-submarine-size" type="text" th:field="*{memento.playerOne.submarine.size}"/></p>
+        <p>PlayerOne cruiser size: <input id="memento-playerOne-cruiser-size" type="text" th:field="*{memento.playerOne.cruiser.size}"/></p>
+        <p>PlayerOne battleship size: <input id="memento-playerOne-battleship-size" type="text" th:field="*{memento.playerOne.battleship.size}"/></p>
+        <p>PlayerOne destroyer size: <input id="memento-playerOne-destroyer-size" type="text" th:field="*{memento.playerOne.destroyer.size}"/></p>
 
-        <p>PlayerOne carrier size: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.carrier.size}"/></p>
-        <p>PlayerOne submarine size: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.submarine.size}"/></p>
-        <p>PlayerOne cruiser size: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.cruiser.size}"/></p>
-        <p>PlayerOne battleship size: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.battleship.size}"/></p>
-        <p>PlayerOne destroyer size: <input class='torpedo-form' type="text" th:field="*{memento.playerOne.destroyer.size}"/></p>
-
-        <p>PlayerTwo carrier size: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.carrier.size}"/></p>
-        <p>PlayerTwo submarine size: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.submarine.size}"/></p>
-        <p>PlayerTwo cruiser size: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.cruiser.size}"/></p>
-        <p>PlayerTwo battleship size: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.battleship.size}"/></p>
-        <p>PlayerTwo destroyer size: <input class='torpedo-form' type="text" th:field="*{memento.playerTwo.destroyer.size}"/></p>
+        <p>PlayerTwo carrier size: <input id="memento-playerTwo-carrier-size" type="text" th:field="*{memento.playerTwo.carrier.size}"/></p>
+        <p>PlayerTwo submarine size: <input id="memento-playerTwo-submarine-size" type="text" th:field="*{memento.playerTwo.submarine.size}"/></p>
+        <p>PlayerTwo cruiser size: <input id="memento-playerTwo-cruiser-size" type="text" th:field="*{memento.playerTwo.cruiser.size}"/></p>
+        <p>PlayerTwo battleship size: <input id="memento-playerTwo-battleship-size" type="text" th:field="*{memento.playerTwo.battleship.size}"/></p>
+        <p>PlayerTwo destroyer size: <input id="memento-playerTwo-destroyer-size" type="text" th:field="*{memento.playerTwo.destroyer.size}"/></p>
 
     </form>
 </div>

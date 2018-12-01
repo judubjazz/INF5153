@@ -2,9 +2,9 @@ package battleship.routes;
 
 import battleship.Application;
 import battleship.controllers.*;
-import battleship.entities.Recorder;
 import battleship.entities.games.BattleshipGame;
 import battleship.entities.games.Game;
+import battleship.entities.players.BattleshipPlayer;
 import battleship.factories.GameFactory;
 import battleship.middlewares.Validation;
 import net.sf.json.JSONObject;
@@ -32,8 +32,7 @@ public class Routes{
 
     @GetMapping("/start")
     public String getStart(Model model) {
-        FormController form = new FormController();
-        model.addAttribute("formController", form);
+        model.addAttribute("formController", new JsonRequestController());
         return "game/start";
     }
 
@@ -52,25 +51,30 @@ public class Routes{
     @PostMapping("/play")
     public String postPlay(@ModelAttribute JsonRequestController formController, Model model){
         JSONObject data = formController.data;
-        String gameName = data.getString("name")
-                ;
+        String gameName = data.getString("name");
         GameFactory factory = GameFactory.getFactory(gameName);
-        Game game = factory.createGame(data);
-
         GameController controller = GameController.getController(gameName);
+
+        Game game = factory.createGame(data);
         game = controller.play(game);
 
         model.addAttribute("formController", formController);
         model.addAttribute("battleshipGame", game);
 
-        if(game.playerOne.winner) return "game/you-won";
-        if(game.playerTwo.winner) return "game/you-lost";
+        if(game.playerOne.winner){
+            model.addAttribute("winner", "You Won");
+            return "game/end-of-game";
+        }
+        if(game.playerTwo.winner){
+            model.addAttribute("winner", "You Lost");
+            return "game/end-of-game";
+        }
         return "game/play";
     }
 
     @PostMapping("/save")
     public String postSave(@ModelAttribute BattleshipGame battleshipGame, Model model){
-        GameController controller = new BattleShipGameController();
+        GameController<BattleshipGame, BattleshipPlayer> controller = new BattleShipGameController();
         Game game = controller.save(battleshipGame);
         model.addAttribute("battleshipGame", game);
         return "menu/save";
@@ -85,7 +89,7 @@ public class Routes{
     @RequestMapping(value="/load/{file}", method = RequestMethod.GET)
     public String getLoad(@PathVariable("file") String file, Model model){
     	try {
-	        GameController controller = new BattleShipGameController();
+	        GameController<BattleshipGame, BattleshipPlayer> controller = new BattleShipGameController();
 	        Game game = controller.load(Integer.parseInt(file));
 	        model.addAttribute("formController", new JsonRequestController());
 	        model.addAttribute("battleshipGame", game);
@@ -98,7 +102,7 @@ public class Routes{
 
     @RequestMapping(value= "/delete/{gameID}", method = RequestMethod.GET)
     public String getDelete(@PathVariable("gameID") int gameID, Model model){
-        GameController controller = new BattleShipGameController();
+        GameController<BattleshipGame, BattleshipPlayer> controller = new BattleShipGameController();
         if(!controller.delete(gameID)){
             throw new GameNotFoundException();
         }
@@ -109,12 +113,19 @@ public class Routes{
 
     @PostMapping("/replay")
     public String replayGame(@ModelAttribute BattleshipGame battleshipGame, Model model){
-        GameController controller = new BattleShipGameController();
+        GameController<BattleshipGame, BattleshipPlayer> controller = new BattleShipGameController();
         Game game = controller.replay(battleshipGame);
         model.addAttribute("battleshipGame", game);
         model.addAttribute("formController", new JsonRequestController());
-        if(battleshipGame.playerOne.winner) return "game/you-won";
-        if(battleshipGame.playerTwo.winner) return "game/you-lost";
+
+        if(game.playerOne.winner){
+            model.addAttribute("winner", "You Won");
+            return "game/end-of-game";
+        }
+        if(game.playerTwo.winner){
+            model.addAttribute("winner", "You Lost");
+            return "game/end-of-game";
+        }
         return "game/replay";
     }
 
@@ -124,11 +135,17 @@ public class Routes{
         String gameName = data.getString("name");
         GameFactory factory = GameFactory.getFactory(gameName);
         GameController controller = GameController.getController(gameName);
-        Recorder r = factory.buildRecorderFromJSONObject(JSONObject.fromObject(data));
-        Game game = controller.restart(1, r);
-        model.addAttribute("formController", formController);
-        model.addAttribute("battleshipGame", game);
-        return "game/replay";
+        Game game;
+        if (factory != null && controller != null) {
+            game = factory.createGame(data);
+            game = controller.restart(game);
+            model.addAttribute("formController", formController);
+            model.addAttribute("battleshipGame", game);
+            return "game/replay";
+        } else {
+            throw new BadRequestException();
+        }
+
     }
 
     @GetMapping("/join")
@@ -148,6 +165,9 @@ public class Routes{
         return "game/create-online-games";
     }
 
+
+
+
     /* errors handler */
     @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "game not found")
     private class GameNotFoundException extends RuntimeException {
@@ -165,16 +185,17 @@ public class Routes{
     } 
     
     /* errors handler */
-    //if else
+
     @ExceptionHandler({Exception.class})
     public String handleAnyException(Model model) {
+        System.out.println(HttpStatus.BAD_REQUEST);
     	if(HttpStatus.BAD_REQUEST != null){
         	model.addAttribute("errorType", "Bad request");
             return "error/error";
         }else if(HttpStatus.NOT_FOUND != null){
         	model.addAttribute("errorType", "Message not found");
             return "error/error";
-        }else if(HttpStatus.BAD_REQUEST != null){
+        }else if(HttpStatus.INTERNAL_SERVER_ERROR != null){
         	model.addAttribute("errorType", "A problem has occurred");
             return "error/error";
         }else{

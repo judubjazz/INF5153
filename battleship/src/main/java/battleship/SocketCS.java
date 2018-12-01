@@ -73,6 +73,27 @@ public class SocketCS {
             game.p1Socket.sendEvent("playerTwoDidPlay", res);
             client.sendEvent("playerTwoDidPlay", res);
         });
+
+        server.addEventListener("playerOneDidLeave", String.class, (client, req, ackRequest) -> {
+            JSONObject res = JSONObject.fromObject(req);
+            int gameID = res.getInt("id");
+            // TODO add a map instead of a arraylist
+            Game game = Application.gameListVsHuman.get(gameID - 1);
+            res.put("message", "player One left the game");
+            game.p2Socket.sendEvent("playerOneDidLeave", res);
+        });
+
+        server.addEventListener("playerTwoDidLeave", String.class, (client, req, ackRequest) -> {
+            JSONObject res = JSONObject.fromObject(req);
+            int gameID = res.getInt("id");
+            // TODO add a map instead of a arraylist
+            Game game = Application.gameListVsHuman.get(gameID - 1);
+            res.put("message", "player two left the game");
+            game.p1Socket.sendEvent("playerTwoDidLeave", res);
+        });
+
+
+
         server.start();
 //        Thread.sleep(10000);
 //        server.stop();
