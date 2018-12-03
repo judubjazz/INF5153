@@ -3,7 +3,7 @@
 ## Description
 
 Conception d'un petit programme dont l'exécutable est nommé battleship et
-qui permet de jouer au jeu de bataille naval
+qui permet de jouer au jeu de bataille navale
 
 #### Contexte
 * Univeristé: UQÀM
