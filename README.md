@@ -14,33 +14,20 @@ qui permet de jouer au jeu de bataille navale
 ## Auteur
 
 - Julien Guité-Vinet  (GUIJ09058407)
-- Amari
+- Amine Amari (AMAA16049302)
 
 ## Fonctionnement
 
-Pour avoir plus d'informations sur le fonctionnement général du programme, il
-suffit d'entrer la commande
-```
-bin/tp2 --help
-```
-
-
-### Récupération des données
-
-Les données géographiques sont disponibles dans le fichier JSON
-[countries.json](/countries.json).
-
-On trouve également des images des drapeaux au format PNG dans le dossier [data](/data).
-
 ### Jouer contre l'ordinateur
-
-
 
 ### Jouer en ligne
 
+### Sauver une partie
+
+### Charger une partie
 
 
-## Compilation
+## Compilation et execution du logiciel
 
 - Pour compiler le programme, ouvrir le terminal à la racine du projet
 - La commande `make` crée l'exécutable `tp3` dans le dossier [bin](/bin)
@@ -85,19 +72,22 @@ make clean
 Les tâches accomplies
 - [X] Initialisation du dépôt ```Julien```
   - [X] Gradle ```Julien```
-  - [X] Maven ```Amari```  ```Julien```  
+  - [X] Maven ```Amine```  ```Julien```  
   - [X] README (Julien)
 - [X] Configuration de Spring ```Julien```
 - [ ] Programation du Front-end 
-  - [X] Programmation du menu ```Amari```
+  - [X] Programmation du menu ```Amine```
   - [X] Programmation des grilles
-    - [X] javascript ```Amari```
-    - [X] css ```Amari```
+    - [X] javascript ```Amine```
+    - [X] css ```Amine```
     - [X] html ```Julien```
   - [X] Programation des requêtes envoyées au serveur ```Julien```
 - [ ] Programation du Back-End
   - [X] Configuration de Spring ```Julien```
   - [X] Programation des interfaces ```Julien```
+  - [X] Programation des entités
+    - [X] Classes ```Julien```
+    - [X] Héritage ```Julien```
   - [X] Programmation du Ai ```Julien```
   - [ ] Application des GOF
     - [X] Memento ```Julien```
@@ -106,8 +96,8 @@ Les tâches accomplies
     - [X] Builder ```Julien```
     - [X] Abstract Factory ```Julien```
     - [ ] State
-  - [X] Programation des routes ```Julien```   ```Amari```
-  - [X] Programtion des sockets ```Julien```
+  - [X] Programation des routes ```Julien```   ```Amine```
+  - [X] Programation des sockets ```Julien```
   - [ ] Validation des requêtes
   - [ ] Gestion des erreurs
 - [ ] Programation de la base de données
@@ -115,7 +105,7 @@ Les tâches accomplies
   - [X] XML
     - [X] Save ```Amari``` ```Julien```
     - [X] Load ```Amari``` ```Julien```
-    - [X] Delete ```Amari```
+    - [X] Delete ```Amine```
   - [ ] Mongo
     - [ ] Save
     - [ ] Load
