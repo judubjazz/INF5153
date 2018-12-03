@@ -27,28 +27,23 @@ qui permet de jouer au jeu de bataille navale
 ### Charger une partie
 
 
-## Compilation et execution du logiciel
+## exécution du logiciel
+- pour executer le programme 
+    * Java de version >= 1.8.0 doit être installé 
+    * Les ports 8090 et 9291 ne doivent pas être activement en service
+        * si les ports sont en service, il est possible de fermer ceux-ci avec la commande unix
+        ``` sh
+        fuser -k 8090/tcp
+        fuser -k 9291/tcp
+        ```
+- Pour exécuter le programme, ouvrir le terminal à la racine du projet
+- La commande `java -jar tp3.jar` lance le serveur tomcat sur le port 8090
+- Ensuite, l'application est disponible en navigant au url [http://localhost:8090/](http://localhost:8090/)
 
-- Pour compiler le programme, ouvrir le terminal à la racine du projet
-- La commande `make` crée l'exécutable `tp3` dans le dossier [bin](/bin)
-    - Pour executer, entrer la commande suivante dans le terminal :
-    
-```sh
-make 
-```
-
-- La commande `make clean` supprime les fichiers inutiles (`.o`, `.html`,
-  `.swp`, etc.).
-    * Pour executer, entrer la commande suivante dans le terminal :
-    
-```sh
-make clean 
-```
 
 ## Plateformes supportées
 
-- testé sur linux mint 18.2 sonya
-- testé sur chrome version 63 
+- testé sur linux mint 18.2 sonya avec chrome version 63 
 
 ## Dépendances
 
