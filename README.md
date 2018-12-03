@@ -71,9 +71,10 @@ make clean
 
 Les tâches accomplies
 - [X] Initialisation du dépôt ```Julien```
+  - [X] README ```Julien```
+- [X] Gestion des dépendances
   - [X] Gradle ```Julien```
   - [X] Maven ```Amine```  ```Julien```  
-  - [X] README (Julien)
 - [X] Configuration de Spring ```Julien```
 - [ ] Programation du Front-end 
   - [X] Programmation du menu ```Amine```
