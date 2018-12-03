@@ -2,8 +2,7 @@
 
 ## Description
 
-Conception d'un petit programme dont l'exécutable est nommé battleship et
-qui permet de jouer au jeu de bataille navale
+Conception d'un petit programme dont l'exécutable est nommé `tp3.jar` permettant de jouer au jeu de bataille navale.
 
 #### Contexte
 * Univeristé: UQÀM
@@ -106,7 +105,7 @@ Les tâches accomplies
     - [ ] Save
     - [ ] Load
     - [ ] Delete
-- [ ] Test de déploiement    
+- [X] Test de déploiement ```Julien```    
     
 ## État du projet
 preuve de concept du polymorphisme.
