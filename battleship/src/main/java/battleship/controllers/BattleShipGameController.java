@@ -9,7 +9,7 @@ import battleship.entities.games.Game;
 import battleship.entities.players.BattleshipPlayer;
 import battleship.entities.ships.Ship;
 import com.corundumstudio.socketio.SocketIOClient;
-import db.Db;
+import db.XMLDb;
 import net.sf.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,8 +66,8 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
     @Override
     public Game<BattleshipPlayer> replay(BattleshipGame battleshipGame){
 
-    	BattleshipPlayer p1 = (BattleshipPlayer) battleshipGame.playerOne;
-        BattleshipPlayer p2 = (BattleshipPlayer) battleshipGame.playerTwo;
+    	BattleshipPlayer p1 = battleshipGame.playerOne;
+        BattleshipPlayer p2 = battleshipGame.playerTwo;
         ArrayList<Map<String,Integer>> p1Moves = battleshipGame.recorder.playerOneMoves;
         ArrayList<Map<String,Integer>> p2Moves = battleshipGame.recorder.playerTwoMoves;
 
@@ -85,7 +85,7 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
 
     @Override
     public Game<BattleshipPlayer> save(BattleshipGame battleshipGame){
-        Db.getDb().save(battleshipGame);
+        XMLDb.getXMLDb().save(battleshipGame);
         return null;
     }
 
@@ -96,7 +96,7 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
         BattleshipPlayer p2 = new BattleshipPlayer("playerTwo");
         BattleshipAi ai = new BattleshipAi();
         BattleshipGame battleshipGame = new BattleshipGame(gameID,"battleship", p1,p2,r,ai);
-        Db.getDb().load(battleshipGame);
+        XMLDb.getXMLDb().load(battleshipGame);
         return battleshipGame;
     }
 
@@ -105,7 +105,7 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
     public boolean delete(int gameID){
         String id = String.valueOf(gameID);
         try {
-            Db.getDb().deleteNode(id);
+            XMLDb.getXMLDb().deleteNode(id);
         } catch (Exception e){
             return false;
         }
@@ -131,7 +131,7 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
         boolean difficulty = p1Settings.getBoolean("difficulty");
         BattleshipAi ai = new BattleshipAi(BattleshipAi.State.START,difficulty, null);
 
-        int id = Db.getDb().getMaxID();
+        int id = XMLDb.getXMLDb().getMaxID();
         BattleshipGame battleshipGame = new BattleshipGame(id, "battleship", player, cpu, recorder, ai);
         return  battleshipGame;
     }

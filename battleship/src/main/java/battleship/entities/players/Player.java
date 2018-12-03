@@ -1,9 +1,7 @@
 package battleship.entities.players;
 
-import battleship.entities.boards.BattleshipBoard;
 import battleship.entities.boards.Board;
-import battleship.entities.ships.*;
-import java.util.Map;
+
 
 public class Player {
     public String name;

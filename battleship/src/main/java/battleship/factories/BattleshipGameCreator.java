@@ -39,6 +39,7 @@ public class BattleshipGameCreator implements GameFactory {
                 case "playerOne":
                     JSONObject playerOneData = data.getJSONObject(gameKey);
                     buildPlayerFromJSON(playerOne, playerOneData);
+                    break;
                 case "playerTwo":
                     JSONObject playerTwoData = data.getJSONObject(gameKey);
                     buildPlayerFromJSON(playerTwo, playerTwoData);
@@ -124,8 +125,8 @@ public class BattleshipGameCreator implements GameFactory {
                     break;
             }
         }
-
     }
+
     private static void buildShipFromJSON(BattleshipPlayer player, JSONObject data, String key) {
         JSONObject ship = data.getJSONObject(key);
         JSONObject bow = ship.getJSONObject("bow");

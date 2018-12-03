@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<head>
+    <title>Play Tictactoe</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <img th:src="@{/img/navy.jpg}">
+    <div class="map-container">
+        <table class="player-two-map test">
+            <tr th:each="col, iterX: ${battleshipGame.playerOne.playerBoard.map}">
+                <td th:each="colValue, iterY: ${col}">
+                    <div th:class="tiles" th:name="${colValue}" th:text="${colValue}" th:onclick="|playTurn(event, ${iterX.index}, ${iterY.index})|" ></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div class="form-container">
+
+        <!--hidden form-->
+        <div>
+            <form action="#" th:action="@{/play}" th:object="${formController}" method="post">
+                <p><input id="data" type="text" th:field="*{data}" /></p>
+                <p><input id="submit-play-button" type="submit" value="START" /></p>
+            </form>
+        </div>
+
+
+        <!--save-->
+        <form class="torpedo-form" id='form-save' action="#" th:action="@{/save}" th:object="${battleshipGame}" method="post">
+            <div>
+                <input class="button button3" id="savegame-form-input" type="submit" value="SAVE" />
+                <a class="button button3" th:href="@{'/'}">EXIT</a>
+            </div>
+
+            <p>Game id: <input class='torpedo-form' type="text" th:field="*{id}" /></p>
+
+            <p>playerOne name: <input  type="text" th:field="*{playerOne.name}" /></p>
+            <p>playerOne map: <input  type="text" th:field="*{playerOne.playerBoard.map}" /></p>
+            <p>playerOne map width: <input  type="text" th:field="*{playerOne.playerBoard.width}" /></p>
+            <p>playerOne map heigth: <input  type="text" th:field="*{playerOne.playerBoard.height}" /></p>
+            <p>playerOne marks: <input  type="text" th:field="*{playerOne.marks}" /></p>
+
+            <p>playerTwo name: <input  type="text" th:field="*{playerTwo.name}" /></p>
+
+            <p>targetX: <input  type="text" th:field="*{playerOne.targetX}" value=1/></p>
+            <p>targetY: <input  type="text" th:field="*{playerOne.targetY}" value=0/></p>
+
+            <p>playerTwo map: <input  type="text" th:field="*{playerTwo.playerBoard.map}" /></p>
+            <p>playerTwo map width: <input  type="text" th:field="*{playerTwo.playerBoard.width}" /></p>
+            <p>playerTwo map heigth: <input  type="text" th:field="*{playerTwo.playerBoard.height}" /></p>
+            <p>playerTwo marks: <input  type="text" th:field="*{playerTwo.marks}" /></p>
+
+            <p>recorder: <input  type="text" th:field="*{recorder.playerOneMoves}"/></p>
+            <p>recorder: <input  type="text" th:field="*{recorder.playerTwoMoves}"/></p>
+
+            <p>ai state: <input  type="text" th:field="*{ai.state}"/></p>
+            <p>ai difficulty: <input  type="text" th:field="*{ai.difficulty}"/></p>
+            <p>ai start poistion: <input  type="text" th:field="*{ai.startPosition}"/></p>
+        </form>
+
+
+        <!--play-->
+        <form id='form-play'  action="#" th:action="@{/play}" th:object="${battleshipGame}" method="post">
+            <p>Game id: <input id="game-id" type="text" th:field="*{id}" /></p>
+
+            <p>playerOne name: <input id="playerOne-name"  type="text" th:field="*{playerOne.name}" /></p>
+            <p>playerOne map: <input id="playerOne-playerBoard-map"  type="text" th:field="*{playerOne.playerBoard.map}" /></p>
+            <p>playerOne map width: <input id="playerOne-playerBoard-width"  type="text" th:field="*{playerOne.playerBoard.width}" /></p>
+            <p>playerOne map heigth: <input id="playerOne-playerBoard-height"  type="text" th:field="*{playerOne.playerBoard.height}" /></p>
+            <p>targetX: <input id="targetX"  type="text" th:field="*{playerOne.targetX}" /></p>
+            <p>targetY: <input id="targetY"  type="text" th:field="*{playerOne.targetY}" /></p>
+
+            <p>playerTwo name: <input id="playerTwo-name" type="text" th:field="*{playerTwo.name}" /></p>
+            <p>playerTwo map: <input id="playerTwo-playerBoard-map" type="text" th:field="*{playerTwo.playerBoard.map}" /></p>
+            <p>playerTwo map width: <input id="playerTwo-playerBoard-width" type="text" th:field="*{playerTwo.playerBoard.width}" /></p>
+            <p>playerTwo map heigth: <input id="playerTwo-playerBoard-height" type="text" th:field="*{playerTwo.playerBoard.height}" /></p>
+            <p>playerTwo ennemy map: <input id="playerTwo-ennemyBoard-map" type="text" th:field="*{playerTwo.playerBoard.map}"/></p>
+
+            <p>recorder: <input id="recorder-playerOneMoves" type="text" th:field="*{recorder.playerOneMoves}"/></p>
+            <p>recorder: <input id="recorder-playerTwoMoves" type="text" th:field="*{recorder.playerTwoMoves}"/></p>
+
+            <p>ai status stack: <input id="ai-state" type="text" th:field="*{ai.state}"/></p>
+            <p>ai difficulty: <input id="ai-difficulty" type="text" th:field="*{ai.difficulty}"/></p>
+            <p>ai start poistion: <input id="ai-startPosition" type="text" th:field="*{ai.startPosition}"/></p>
+
+
+
+            <!--memento-->
+            <p>playerOne name: <input id="memento-playerOne-name" type="text" th:field="*{memento.playerOne.name}" /></p>
+            <p>playerOne map: <input  id="memento-playerOne-playerBoard-map" type="text" th:field="*{memento.playerOne.playerBoard.map}" /></p>
+
+            <p>playerTwo map: <input id="memento-playerTwo-playerBoard-map" type="text" th:field="*{memento.playerTwo.playerBoard.map}" /></p>
+
+            <p>recorder: <input id="memento-recorder-playerOneMoves" type="text" th:field="*{memento.recorder.playerOneMoves}"/></p>
+            <p>recorder: <input id="memento-recorder-playerTwoMoves" type="text" th:field="*{memento.recorder.playerTwoMoves}"/></p>
+            <p>recorder index: <input id="memento-recorder-index" type="text" th:field="*{memento.recorder.index}"/></p>
+
+            <p>playerTwo name: <input id="memento-playerTwo-name" type="text" th:field="*{memento.playerTwo.name}" /></p>
+
+        </form>
+    </div>
+
+</div>
+
+<th:block layout:fragment="scripts">
+    <script type="text/javascript" th:src="@{/js/lib/jquery-1.9.0.js}"></script>
+    <script type="text/javascript" th:src="@{/js/constants/constants.js}"></script>
+    <script type="text/javascript" th:src="@{/js/tictactoe/main.js}"></script>
+</th:block>
+
+</body>
+</html>

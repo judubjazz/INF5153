@@ -7,13 +7,12 @@ import battleship.entities.games.Game;
 import battleship.entities.players.BattleshipPlayer;
 import battleship.factories.GameFactory;
 import battleship.middlewares.Validation;
+import db.XMLDb;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
-
-import db.Db;
 
 import static battleship.controllers.GameController.getController;
 
@@ -24,16 +23,32 @@ public class Routes{
     public String main(){
         return "menu/mainMenu";
     }
-    
-    @GetMapping("/home")
-    public String home() {
-        return "menu/home";
+
+    @GetMapping("/select")
+    public String select() {
+        return "menu/select";
     }
 
-    @GetMapping("/start")
-    public String getStart(Model model) {
-        model.addAttribute("formController", new JsonRequestController());
-        return "game/start";
+    @RequestMapping(value= "/home/{gameName}", method = RequestMethod.GET)
+    public String home(@PathVariable("gameName") String gameName, Model model){
+        if(gameName.equals("battleship") || gameName.equals("tictactoe")){
+            model.addAttribute("gameName", gameName);
+            return "menu/home";
+        } else {
+            throw new GameNotFoundException();
+        }
+    }
+
+    @RequestMapping(value= "/start/{gameName}", method = RequestMethod.GET)
+    public String getStart(@PathVariable("gameName") String gameName, Model model){
+        if(gameName.equals("battleship") || gameName.equals("tictactoe")){
+            model.addAttribute("gameName", gameName);
+            model.addAttribute("formController", new JsonRequestController());
+            String s = "game/" + gameName + "/start";
+            return s;
+        } else {
+            throw new GameNotFoundException();
+        }
     }
 
     @PostMapping("/start")
@@ -45,7 +60,7 @@ public class Routes{
         model.addAttribute("formController", formController);
         model.addAttribute("battleshipGame", game);
 
-        return "game/play";
+        return "game/" + gameName + "/play";
     }
 
     @PostMapping("/play")
@@ -63,13 +78,13 @@ public class Routes{
 
         if(game.playerOne.winner){
             model.addAttribute("winner", "You Won");
-            return "game/end-of-game";
+            return "game/battleship/end-of-game";
         }
         if(game.playerTwo.winner){
             model.addAttribute("winner", "You Lost");
-            return "game/end-of-game";
+            return "game/battleship/end-of-game";
         }
-        return "game/play";
+        return "game/battleship/play";
     }
 
     @PostMapping("/save")
@@ -82,7 +97,7 @@ public class Routes{
     
     @GetMapping("/loadFiles")
     public String getLoadFiles(Model model){
-    	model.addAttribute("listOfFiles", Db.getDb().getIDs());
+    	model.addAttribute("listOfFiles", XMLDb.getXMLDb().getIDs());
         return "menu/loadFiles";
     } 
     
@@ -93,9 +108,9 @@ public class Routes{
 	        Game game = controller.load(Integer.parseInt(file));
 	        model.addAttribute("formController", new JsonRequestController());
 	        model.addAttribute("battleshipGame", game);
-	        return "game/play";
+	        return "game/battleship/play";
     	}catch (Exception ex) {
-        	model.addAttribute("listOfFiles", Db.getDb().getIDs());
+        	model.addAttribute("listOfFiles", XMLDb.getXMLDb().getIDs());
             return "menu/mainMenu";
     	}
     }
@@ -106,7 +121,7 @@ public class Routes{
         if(!controller.delete(gameID)){
             throw new GameNotFoundException();
         }
-        model.addAttribute("listOfFiles", Db.getDb().getIDs());
+        model.addAttribute("listOfFiles", XMLDb.getXMLDb().getIDs());
         return "menu/loadFiles";
     }
 
@@ -120,13 +135,13 @@ public class Routes{
 
         if(game.playerOne.winner){
             model.addAttribute("winner", "You Won");
-            return "game/end-of-game";
+            return "game/battleship/end-of-game";
         }
         if(game.playerTwo.winner){
             model.addAttribute("winner", "You Lost");
-            return "game/end-of-game";
+            return "game/battleship/end-of-game";
         }
-        return "game/replay";
+        return "game/battleship/replay";
     }
 
     @PostMapping("/restart")
@@ -141,7 +156,7 @@ public class Routes{
             game = controller.restart(game);
             model.addAttribute("formController", formController);
             model.addAttribute("battleshipGame", game);
-            return "game/replay";
+            return "game/battleship/replay";
         } else {
             throw new BadRequestException();
         }
@@ -151,18 +166,18 @@ public class Routes{
     @GetMapping("/join")
     public String join(Model model){
         model.addAttribute("gameList", Application.gameListVsHuman);
-        return "game/join-online-games";
+        return "game/battleship/join-online-games";
     }
 
     @RequestMapping(value="/join/{gameID}", method = RequestMethod.GET)
     public String joinGame(@PathVariable("gameID") int gameID){
-        if (Validation.gameIDisInTheList(gameID)) return "game/join-this-game";
+        if (Validation.gameIDisInTheList(gameID)) return "game/battleship/join-this-game";
         throw new GameNotFoundException();
     }
 
     @GetMapping("/create-online-game")
     public String createOnlineGame(Model model){
-        return "game/create-online-games";
+        return "game/battleship/create-online-games";
     }
 
 
@@ -183,8 +198,6 @@ public class Routes{
     private class BadRequestException extends RuntimeException {
         private static final long serialVersionUID = 43L;
     } 
-    
-    /* errors handler */
 
     @ExceptionHandler({Exception.class})
     public String handleAnyException(Model model) {

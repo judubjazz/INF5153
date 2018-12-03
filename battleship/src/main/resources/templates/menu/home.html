@@ -4,14 +4,14 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{base}">
 <head>
-    <title>Battleship</title>
+    <title>Home</title>
    	<link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
 </head>
 <body>
 <div layout:fragment="content"> 
 	<table>
 	  	<tr>
-	    	<td><a th:href="@{'/start'}">SINGLEPLAYER</a></td>
+	    	<td><a th:href="@{|/start/${gameName}|}">SINGLEPLAYER</a></td>
 		</tr>
 		<tr>
 	    	<td><a th:href="@{'/create-online-game'}">MULTIPLAYERS</a></td>

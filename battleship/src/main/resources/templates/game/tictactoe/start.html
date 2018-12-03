@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<head>
+    <title>Getting Started</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/startUp.css}"/>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="rules-container">
+        <p>Starting a New Game <span class="red">!!!</span> <br>
+            Each player places <span class="red">X</span> somewhere on the board. The goal is the mark a line
+        </p>
+    </div>
+
+    <br/>
+    <div class="custom-select center" style="width:200px;">
+        <select id="difficulty" onchange="run()">
+            <option value="false" selected="selected">easy</option>
+            <option value="true" >hard</option>
+        </select>
+    </div>
+    <div>
+        <form action="#" th:action="@{/start}" th:object="${formController}" method="post">
+            <p><input style="display: none" id="data" type="text" th:field="*{data}" /></p>
+            <p><input id="submit-fleet-button" type="submit" value="START" /></p>
+        </form>
+    </div>
+
+    <div class="center">
+        <p><input id="hidden-button" class="button button3" onclick="start()" value="START" /></p>
+        <a class="button button3" th:href="@{'/'}">EXIT</a>
+    </div>
+
+</div>
+
+<th:block layout:fragment="scripts">
+    <script type="text/javascript" th:src="@{/js/constants/constants.js}"></script>
+    <script type="text/javascript" th:src="@{/js/lib/jquery-1.9.0.js}"></script>
+    <script type="text/javascript" th:src="@{/js/tictactoe/main.js}"></script>
+
+</th:block>
+</body>
+</html>
