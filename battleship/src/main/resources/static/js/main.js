@@ -151,9 +151,12 @@ const torpedo = (event, x, y) =>{
   const aiState = $("#ai-state").val();
   const aiDifficulty = $("#ai-difficulty").val();
   const aiStartPos = $("#ai-startPosition").val();
+  const recorderIndex = $("#recorder-index").val();
+
   game.id = Number(gameID);
   game.recorder.playerOneMoves = playerOneRecorder;
   game.recorder.playerTwoMoves = playerTwoRecorder;
+  game.recorder.index = Number(recorderIndex);
   game.ai.state = aiState;
   game.ai.difficulty = aiDifficulty;
   game.ai.startPosition = aiStartPos;
@@ -164,6 +167,7 @@ const torpedo = (event, x, y) =>{
   game.memento.id = Number(gameID);
   game.memento.recorder.playerOneMoves = playerOneRecorder;
   game.memento.recorder.playerTwoMoves = playerTwoRecorder;
+  game.memento.recorder.index = Number(recorderIndex);
   game.memento.ai.state = aiState;
   game.memento.ai.difficulty = aiDifficulty;
   game.memento.ai.startPosition =aiStartPos;

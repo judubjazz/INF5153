@@ -2,7 +2,7 @@ package battleship.factories;
 
 import battleship.entities.Ais.TicTacToeAi;
 import battleship.entities.Recorder;
-import battleship.entities.boards.BattleshipBoard;
+import battleship.entities.boards.TicTacToeBoard;
 import battleship.entities.games.TicTacToeGame;
 import battleship.entities.players.TicTacToePlayer;
 import battleship.middlewares.converters.StringTo2DArrayConverter;
@@ -111,7 +111,7 @@ public class TicTacToeGameCreator implements GameFactory {
                     c.arraySize = 3;
                     String stringMap = playerData.getString(playerKey);
                     int[][] map  = c.convert(stringMap);
-                    player.playerBoard = new BattleshipBoard();
+                    player.playerBoard = new TicTacToeBoard();
                     player.playerBoard.map = map;
                     break;
                 case "target":

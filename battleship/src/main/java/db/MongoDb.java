@@ -2,7 +2,6 @@ package db;
 
 import battleship.entities.games.TicTacToeGame;
 import com.mongodb.*;
-import org.w3c.dom.*;
 
 public class MongoDb extends Db<TicTacToeGame> {
     static private MongoDb db= null;

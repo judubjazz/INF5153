@@ -127,10 +127,12 @@ public class TicTacToeAi extends Ai {
     private boolean targetHasBeenUsed(Map<String, Integer> target, Game ticTacToeGame) {
         int targetX = target.get("x");
         int targetY = target.get("y");
-        for (Map<String,Integer> t: ticTacToeGame.recorder.playerTwoMoves) {
-            int x = t.get("x");
-            int y = t.get("y");
-            if(targetX == x && targetY == y) return true;
+        if(ticTacToeGame.recorder != null){
+            for (Map<String,Integer> t: ticTacToeGame.recorder.playerTwoMoves) {
+                int x = t.get("x");
+                int y = t.get("y");
+                if(targetX == x && targetY == y) return true;
+            }
         }
         return false;
     }

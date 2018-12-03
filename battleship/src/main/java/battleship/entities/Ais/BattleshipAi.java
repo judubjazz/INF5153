@@ -80,11 +80,11 @@ public class BattleshipAi extends Ai {
         int prevTargetY = prevTarget.get("y");
         int prevTargetedArea = prevTarget.get("hit");
 
-        // backup in case of theorical edge case causing infinite loop
+        // backup in case of theorical edge case that could cause infinite loop
         try {
             switch (this.state) {
                 case START:
-                    if (prevTargetedArea == 0) {
+                    if (prevTargetedArea == 0 || hasJustSwitchState) {
                         nextTarget = targetRandomPosition(battleshipGame);
                     } else {
                         this.startPosition = new HashMap<>(prevTarget);
@@ -150,7 +150,7 @@ public class BattleshipAi extends Ai {
                 this.hasJustSwitchState = true;
                 return targetMinMaxPosition(battleshipGame);
             }
-        } catch (Exception e){
+        } catch (StackOverflowError e){
             e.printStackTrace();
             return targetRandomPosition(battleshipGame);
         }

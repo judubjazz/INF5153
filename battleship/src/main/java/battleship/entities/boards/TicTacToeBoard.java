@@ -8,7 +8,7 @@ public class TicTacToeBoard extends Board{
     public boolean hidden;
 
     public TicTacToeBoard() {
-        super(10, 10, new int[][]{
+        super(3, 3, new int[][]{
                 {0, 0, 0},
                 {0, 0, 0},
                 {0, 0, 0},

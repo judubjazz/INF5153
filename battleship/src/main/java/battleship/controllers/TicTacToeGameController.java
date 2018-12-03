@@ -43,8 +43,13 @@ public class TicTacToeGameController implements GameController<TicTacToeGame, Ti
         int targetX3 = targetX + 2;
 
 
-        if(actor.playerBoard.map[targetX2][targetY] == actor.sign && actor.playerBoard.map[targetX3][targetY] == actor.sign ) {
-            return true;
+        try{
+            if(actor.playerBoard.map[targetX2][targetY] == actor.sign && actor.playerBoard.map[targetX3][targetY] == actor.sign ) {
+                return true;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return false;
     }
@@ -119,7 +124,10 @@ public class TicTacToeGameController implements GameController<TicTacToeGame, Ti
 
     @Override
     public Game restart(TicTacToeGame game) {
-        return null;
+        game.memento.memento = game.memento;
+        game.memento.recorder = game.recorder;
+        game = game.memento;
+        return game;
     }
 
     @Override

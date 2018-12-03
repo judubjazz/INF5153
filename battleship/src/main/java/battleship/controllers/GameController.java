@@ -1,6 +1,5 @@
 package battleship.controllers;
 
-import battleship.entities.Recorder;
 import battleship.entities.games.Game;
 import battleship.entities.players.Player;
 import com.corundumstudio.socketio.SocketIOClient;

@@ -106,7 +106,81 @@ const start = () => {
 
 const playTurn = (event, x, y) =>{
   event.preventDefault();
+  //
+  // const players = [P1, P2];
+  // players.forEach((player)=>{
+  //   game[player].map = $(`#${player}-${PLAYERBOARD}-${MAP}`).val();
+  //   game.memento[player].map = $(`#${MEMENTO}-${player}-${PLAYERBOARD}-${MAP}`).val();
+  // });
+  //
+  // const playerOneRecorder = $("#recorder-playerOneMoves").val();
+  // const playerTwoRecorder = $("#recorder-playerTwoMoves").val();
+  // const gameID = $("#game-id").val();
+  // const aiState = $("#ai-state").val();
+  // const aiDifficulty = $("#ai-difficulty").val();
+  // const aiStartPos = $("#ai-startPosition").val();
+  // game.id = Number(gameID);
+  // game.recorder.playerOneMoves = playerOneRecorder;
+  // game.recorder.playerTwoMoves = playerTwoRecorder;
+  // game.ai.state = aiState;
+  // game.ai.difficulty = aiDifficulty;
+  // game.ai.startPosition = aiStartPos;
+  //
+  // game.memento.id = Number(gameID);
+  // game.memento.recorder.playerOneMoves = playerOneRecorder;
+  // game.memento.recorder.playerTwoMoves = playerTwoRecorder;
+  // game.memento.ai.state = aiState;
+  // game.memento.ai.difficulty = aiDifficulty;
+  // game.memento.ai.startPosition =aiStartPos;
 
+  setData();
+  game.playerOne.target.x = Number(x);
+  game.playerOne.target.y = Number(y);
+  const json = JSON.stringify(game);
+  console.log(json);
+  $("#data").val(json);
+  $("#submit-play-button").click();
+};
+
+
+const postRestart = () =>{
+  // const players = [P1, P2];
+  // players.forEach((player)=>{
+  //   game[player].map = $(`#${player}-${PLAYERBOARD}-${MAP}`).val();
+  //   game.memento[player].map = $(`#${MEMENTO}-${player}-${PLAYERBOARD}-${MAP}`).val();
+  // });
+  //
+  // const playerOneRecorder = $("#recorder-playerOneMoves").val();
+  // const playerTwoRecorder = $("#recorder-playerTwoMoves").val();
+  // const gameID = $("#game-id").val();
+  // const aiState = $("#ai-state").val();
+  // const aiDifficulty = $("#ai-difficulty").val();
+  // const aiStartPos = $("#ai-startPosition").val();
+  // game.id = Number(gameID);
+  // game.recorder.playerOneMoves = playerOneRecorder;
+  // game.recorder.playerTwoMoves = playerTwoRecorder;
+  // game.ai.state = aiState;
+  // game.ai.difficulty = aiDifficulty;
+  // game.ai.startPosition = aiStartPos;
+  // game.playerOne.target.x = Number(x);
+  // game.playerOne.target.y = Number(y);
+  //
+  //
+  // game.memento.id = Number(gameID);
+  // game.memento.recorder.playerOneMoves = playerOneRecorder;
+  // game.memento.recorder.playerTwoMoves = playerTwoRecorder;
+  // game.memento.ai.state = aiState;
+  // game.memento.ai.difficulty = aiDifficulty;
+  // game.memento.ai.startPosition =aiStartPos;
+
+  setData();
+  const json = JSON.stringify(game);
+  console.log(json);
+  $("#data").val(json);
+  $("#restart-form-submit").click();
+};
+
+const setData = () => {
   const players = [P1, P2];
   players.forEach((player)=>{
     game[player].map = $(`#${player}-${PLAYERBOARD}-${MAP}`).val();
@@ -125,9 +199,6 @@ const playTurn = (event, x, y) =>{
   game.ai.state = aiState;
   game.ai.difficulty = aiDifficulty;
   game.ai.startPosition = aiStartPos;
-  game.playerOne.target.x = x;
-  game.playerOne.target.y = y;
-
 
   game.memento.id = Number(gameID);
   game.memento.recorder.playerOneMoves = playerOneRecorder;
@@ -135,9 +206,4 @@ const playTurn = (event, x, y) =>{
   game.memento.ai.state = aiState;
   game.memento.ai.difficulty = aiDifficulty;
   game.memento.ai.startPosition =aiStartPos;
-
-  const json = JSON.stringify(game);
-  console.log(json);
-  $("#data").val(json);
-  $("#submit-play-button").click();
 };

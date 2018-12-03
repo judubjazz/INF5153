@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>End of Game</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/won-lost.css}"/>
+</head>
+<body>
+
+<div class="home-options-container">
+	<h1><span th:text="${winner}"/></h1>
+
+
+    <div>
+        <form action="#" th:action="@{/restart}" th:object="${formController}" method="post">
+            <p><input id="data" type="text" th:field="*{data}" /></p>
+            <p><input id="restart-form-submit" type="submit" value="START" /></p>
+        </form>
+    </div>
+
+
+
+    <form class='torpedo-form' action="#" th:action="@{/restart}" th:object="${battleshipGame}" method="post">
+    
+        <table>
+		  	<tr>
+		    	<td><a class="button button3 size" th:href="@{'/'}">MAIN MENU</a></td>
+			</tr>
+			<tr>
+		    	<td><a class="button button3" th:href="@{'/loadFiles'}">LOAD GAME</a></td>
+			</tr>
+            <tr>
+                <td><input class="button button3 size" id="replay-form-submit" onclick="postRestart()" value="REPLAY" /></td>
+            </tr>
+			<tr>
+		    	<td><a class="button button3 size" th:href="@{'/'}">EXIT</a></td>
+			</tr>
+		</table>
+
+        <p>Game id: <input id="game-id" type="text" th:field="*{id}" /></p>
+
+        <p>playerOne name: <input id="playerOne-name"  type="text" th:field="*{playerOne.name}" /></p>
+        <p>playerOne map: <input id="playerOne-playerBoard-map"  type="text" th:field="*{playerOne.playerBoard.map}" /></p>
+        <p>playerOne map width: <input id="playerOne-playerBoard-width"  type="text" th:field="*{playerOne.playerBoard.width}" /></p>
+        <p>playerOne map heigth: <input id="playerOne-playerBoard-height"  type="text" th:field="*{playerOne.playerBoard.height}" /></p>
+
+        <!--player TWo-->
+
+        <p>targetX: <input id="targetX"  type="text" th:field="*{playerOne.targetX}" /></p>
+        <p>targetY: <input id="targetY"  type="text" th:field="*{playerOne.targetY}" /></p>
+
+        <p>playerTwo name: <input id="playerTwo-name" type="text" th:field="*{playerTwo.name}" /></p>
+        <p>playerTwo map: <input id="playerTwo-playerBoard-map" type="text" th:field="*{playerTwo.playerBoard.map}" /></p>
+        <p>playerTwo map width: <input id="playerTwo-playerBoard-width" type="text" th:field="*{playerTwo.playerBoard.width}" /></p>
+        <p>playerTwo map heigth: <input id="playerTwo-playerBoard-height" type="text" th:field="*{playerTwo.playerBoard.height}" /></p>
+
+
+        <p>recorder: <input id="recorder-playerOneMoves" type="text" th:field="*{recorder.playerOneMoves}"/></p>
+        <p>recorder: <input id="recorder-playerTwoMoves" type="text" th:field="*{recorder.playerTwoMoves}"/></p>
+
+        <p>ai status stack: <input id="ai-state" type="text" th:field="*{ai.state}"/></p>
+        <p>ai difficulty: <input id="ai-difficulty" type="text" th:field="*{ai.difficulty}"/></p>
+        <p>ai start poistion: <input id="ai-startPosition" type="text" th:field="*{ai.startPosition}"/></p>
+
+        <!--memento-->
+
+        <p>playerOne name: <input id="memento-playerOne-name" type="text" th:field="*{memento.playerOne.name}" /></p>
+        <p>playerOne map: <input  id="memento-playerOne-playerBoard-map" type="text" th:field="*{memento.playerOne.playerBoard.map}" /></p>
+
+        <p>playerTwo map: <input id="memento-playerTwo-playerBoard-map" type="text" th:field="*{memento.playerTwo.playerBoard.map}" /></p>
+        <p>recorder: <input id="memento-recorder-playerOneMoves" type="text" th:field="*{memento.recorder.playerOneMoves}"/></p>
+        <p>recorder: <input id="memento-recorder-playerTwoMoves" type="text" th:field="*{memento.recorder.playerTwoMoves}"/></p>
+        <p>recorder index: <input id="memento-recorder-index" type="text" th:field="*{memento.recorder.index}"/></p>
+        <p>playerTwo name: <input id="memento-playerTwo-name" type="text" th:field="*{memento.playerTwo.name}" /></p>
+    </form>
+</div>
+
+<script type="text/javascript" th:src="@{/js/lib/jquery-1.9.0.js}"></script>
+<script type="text/javascript" th:src="@{/js/constants/constants.js}"></script>
+<script type="text/javascript" th:src="@{/js/tictactoe/main.js}"></script>
+</body>
+</html>

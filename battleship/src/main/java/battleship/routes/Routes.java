@@ -78,13 +78,13 @@ public class Routes{
 
         if(game.playerOne.winner){
             model.addAttribute("winner", "You Won");
-            return "game/battleship/end-of-game";
+            return "game/" + gameName + "/end-of-game";
         }
         if(game.playerTwo.winner){
             model.addAttribute("winner", "You Lost");
-            return "game/battleship/end-of-game";
+            return "game/" + gameName + "/end-of-game";
         }
-        return "game/battleship/play";
+        return "game/" + gameName + "/play";
     }
 
     @PostMapping("/save")
@@ -127,21 +127,26 @@ public class Routes{
 
 
     @PostMapping("/replay")
-    public String replayGame(@ModelAttribute BattleshipGame battleshipGame, Model model){
-        GameController<BattleshipGame, BattleshipPlayer> controller = new BattleShipGameController();
-        Game game = controller.replay(battleshipGame);
+    public String replayGame(@ModelAttribute JsonRequestController formController, Model model){
+        JSONObject data = formController.data;
+        String gameName = data.getString("name");
+        GameFactory factory = GameFactory.getFactory(gameName);
+        GameController controller = GameController.getController(gameName);
+
+        Game game = factory.createGame(data);
+        game = controller.replay(game);
         model.addAttribute("battleshipGame", game);
         model.addAttribute("formController", new JsonRequestController());
 
         if(game.playerOne.winner){
             model.addAttribute("winner", "You Won");
-            return "game/battleship/end-of-game";
+            return "game/" + gameName + "/end-of-game";
         }
         if(game.playerTwo.winner){
             model.addAttribute("winner", "You Lost");
-            return "game/battleship/end-of-game";
+            return "game/" + gameName + "/end-of-game";
         }
-        return "game/battleship/replay";
+        return "game/" + gameName + "/replay";
     }
 
     @PostMapping("/restart")
@@ -156,7 +161,7 @@ public class Routes{
             game = controller.restart(game);
             model.addAttribute("formController", formController);
             model.addAttribute("battleshipGame", game);
-            return "game/battleship/replay";
+            return "game/" + gameName + "/replay";
         } else {
             throw new BadRequestException();
         }
