@@ -68,14 +68,19 @@ Les tâches accomplies
   - [X] README ```Julien```
 - [X] Gestion des dépendances
   - [X] Gradle ```Julien```
-  - [X] Maven ```Amine```  ```Julien```  
+  - [X] Maven ```Julien```  
 - [X] Configuration de Spring ```Julien```
 - [ ] Programation du Front-end 
   - [X] Programmation du menu ```Amine```
   - [X] Programmation des grilles
-    - [X] javascript ```Amine```
-    - [X] css ```Amine```
-    - [X] html ```Julien```
+    - [X] Grilles statiques
+      - [X] javascript ```Amine```
+      - [X] css ```Amine``` ```Julien```
+      - [X] html ```Julien```
+    - [X] Grilles dinamiques  
+      - [X] javascript ```Julien```
+      - [X] css ```Julien```
+      - [X] html ```Julien```
   - [X] Programation des requêtes envoyées au serveur ```Julien```
 - [ ] Programation du Back-End
   - [X] Configuration de Spring ```Julien```
