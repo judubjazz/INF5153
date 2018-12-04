@@ -99,6 +99,8 @@ Les tâches accomplies
   - [X] Programation des routes ```Julien```   ```Amine```
   - [X] Programation des sockets ```Julien```
   - [ ] Validation des requêtes
+    - [X] Validation des grilles ```Julien```
+    - [ ] jsonschema
   - [ ] Gestion des erreurs
 - [ ] Programation de la base de données
   - [ ] Programation de l'interface
