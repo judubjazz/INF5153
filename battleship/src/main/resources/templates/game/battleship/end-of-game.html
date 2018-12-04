@@ -112,6 +112,7 @@
 
         <p>recorder: <input id="recorder-playerOneMoves" type="text" th:field="*{recorder.playerOneMoves}"/></p>
         <p>recorder: <input id="recorder-playerTwoMoves" type="text" th:field="*{recorder.playerTwoMoves}"/></p>
+        <p>recorder: <input id="recorder-index" type="text" th:field="*{recorder.index}"/></p>
 
         <p>ai status stack: <input id="ai-state" type="text" th:field="*{ai.state}"/></p>
         <p>ai difficulty: <input id="ai-difficulty" type="text" th:field="*{ai.difficulty}"/></p>
@@ -145,14 +146,14 @@
 
 
 
+
+
         <!--memento-->
 
         <p>playerOne name: <input id="memento-playerOne-name" type="text" th:field="*{memento.playerOne.name}" /></p>
         <p>playerOne map: <input  id="memento-playerOne-playerBoard-map" type="text" th:field="*{memento.playerOne.playerBoard.map}" /></p>
         <p>PlayerOne enemy map: <input  id="memento-playerOne-ennemyBoard-map" type="text" th:field="*{memento.playerOne.ennemyBoard.map}"/></p>
         <p>PlayerOne ships remaining: <input id="memento-playerOne-shipsRemaining" type="text" th:field="*{memento.playerOne.shipsRemaining}"/></p>
-        <!--<p>targetX: <input  type="text" th:field="*{memento.playerOne.targetX}" value=1/></p>-->
-        <!--<p>targetY: <input  type="text" th:field="*{memento.playerOne.targetY}" value=0/></p>-->
         <p>playerTwo map: <input id="memento-playerTwo-playerBoard-map" type="text" th:field="*{memento.playerTwo.playerBoard.map}" /></p>
         <p>PlayerT ships remaining: <input id="memento-playerTwo-shipsRemaining" type="text" th:field="*{memento.playerTwo.shipsRemaining}"/></p>
         <p>playerTwo ennemy map: <input id="memento-playerTwo-ennemyBoard-map" type="text" th:field="*{memento.playerTwo.ennemyBoard.map}"/></p>

@@ -3,31 +3,27 @@ package db;
 import battleship.entities.*;
 import battleship.entities.Ais.BattleshipAi;
 import battleship.entities.games.BattleshipGame;
-import battleship.entities.games.Game;
 import battleship.entities.players.BattleshipPlayer;
 import battleship.entities.ships.Ship;
 import battleship.middlewares.converters.StringTo2DArrayConverter;
 import battleship.middlewares.converters.StringToArrayListConverter;
-import battleship.middlewares.converters.StringToMapStringIntegerConverter;
 import battleship.middlewares.converters.toStringConverters;
 
-//import org.springframework.ui.Model;
+import net.sf.json.JSONObject;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-//import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-//import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-//import java.io.File;
+
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.util.ArrayList;
-//import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 // TODO in the XMLDb.xml file, set an attribute to game instead of an inner element
@@ -123,8 +119,10 @@ public class XMLDb extends Db<BattleshipGame>{
                         break;
                     case "startPosition":
                         text = setting.getTextContent();
-                        StringToMapStringIntegerConverter c = new StringToMapStringIntegerConverter();
-                        Map<String, Integer> startPosition = c.convert(text);
+                        JSONObject jo = JSONObject.fromObject(text);
+                        Map<String, Integer> startPosition = new HashMap<>();
+                        startPosition.put("x", jo.getInt("x"));
+                        startPosition.put("y", jo.getInt("y"));
                         ai.startPosition = startPosition;
                         break;
                     case "state":
@@ -201,7 +199,7 @@ public class XMLDb extends Db<BattleshipGame>{
                         player.shipsRemaining = shipsRemaining;
                         break;
                     case "map":
-                        // TODO create a function setMap()
+                        // TODO create a builder setMap()
                         String mapToString = setting.getTextContent();
                         StringTo2DArrayConverter c= new StringTo2DArrayConverter();
                         int[][] map = c.convert(mapToString);
@@ -216,7 +214,7 @@ public class XMLDb extends Db<BattleshipGame>{
                         setFleet(fleetNodeList, player);
                         break;
                     case "recorder":
-                        // TODO create a function setRecorder();
+                        // TODO create a builder setRecorder();
                         String recorderToString = setting.getTextContent();
                         StringToArrayListConverter converter = new StringToArrayListConverter();
                         ArrayList<Map<String, Integer>> playerMoves = converter.convert(recorderToString);

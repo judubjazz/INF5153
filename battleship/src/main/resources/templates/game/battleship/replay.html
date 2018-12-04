@@ -13,7 +13,7 @@
 <div layout:fragment="content">
     <h1>Replay</h1>
     <div class="map-container">
-    <table class="player-one-map test">
+    <table class="player-one-map">
         <tr th:each="col: ${battleshipGame.playerOne.playerBoard.map}">
             <td th:each="colValue: ${col}">
                 <div class="tiles" th:name="${colValue}" th:text="${colValue}"></div>
@@ -21,7 +21,7 @@
         </tr>
     </table>
 
-    <table class="player-two-map test">
+    <table class="player-one-map">
         <tr th:each="col, iterX: ${battleshipGame.playerOne.ennemyBoard.map}">
             <td th:each="colValue, iterY: ${col}">
                 <div th:class="tiles" th:name="${colValue}" th:text="${colValue}" th:onclick="|torpedo(event, ${iterX.index}, ${iterY.index})|" ></div>
@@ -143,11 +143,6 @@
         <p>PlayerTwo cruiser size: <input id="playerTwo-cruiser-size"  type="text" th:field="*{playerTwo.cruiser.size}"/></p>
         <p>PlayerTwo battleship size: <input id="playerTwo-battleship-size"  type="text" th:field="*{playerTwo.battleship.size}"/></p>
         <p>PlayerTwo destroyer size: <input id="playerTwo-destroyer-size"  type="text" th:field="*{playerTwo.destroyer.size}"/></p>
-
-
-
-
-
 
 
         <!--memento-->

@@ -42,6 +42,17 @@ public class BattleshipPlayer extends Player {
         ennemyBoard.hidden = true;
     }
 
+    public BattleshipPlayer(BattleshipPlayer other) {
+        this.carrier = other.carrier;
+        this.submarine = other.submarine;
+        this.destroyer = other.destroyer;
+        this.battleship = other.battleship;
+        this.cruiser = other.cruiser;
+        this.fleet = other.fleet;
+        this.shipsRemaining = other.shipsRemaining;
+    }
+
+
     // Getters & Setters
 
     public Ship getCarrier() {
@@ -98,5 +109,17 @@ public class BattleshipPlayer extends Player {
 
     public void setShipsRemaining(int shipsRemaining) {
         this.shipsRemaining = shipsRemaining;
+    }
+
+    @Override
+    public String toString() {
+        return "BattleshipPlayer{" +
+                "carrier=" + carrier +
+                ", submarine=" + submarine +
+                ", destroyer=" + destroyer +
+                ", battleship=" + battleship +
+                ", cruiser=" + cruiser +
+                ", shipsRemaining=" + shipsRemaining +
+                '}';
     }
 }

@@ -88,9 +88,14 @@ public class Routes{
     }
 
     @PostMapping("/save")
-    public String postSave(@ModelAttribute BattleshipGame battleshipGame, Model model){
-        GameController<BattleshipGame, BattleshipPlayer> controller = new BattleShipGameController();
-        Game game = controller.save(battleshipGame);
+    public String postSave(@ModelAttribute JsonRequestController formController, Model model){
+        JSONObject data = formController.data;
+        String gameName = data.getString("name");
+        GameFactory factory = GameFactory.getFactory(gameName);
+        GameController controller = GameController.getController(gameName);
+
+        Game game = factory.createGame(data);
+        game = controller.save(game);
         model.addAttribute("battleshipGame", game);
         return "menu/save";
     }

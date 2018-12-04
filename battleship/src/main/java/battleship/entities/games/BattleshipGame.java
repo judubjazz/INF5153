@@ -28,9 +28,10 @@ public class BattleshipGame extends Game {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.ai = ai;
-        if (this.memento == null){
-            this.memento = new BattleshipGame(this);
-        }
+        this.memento = new BattleshipGame();
+//        if (this.memento == null){
+//            this.memento = new BattleshipGame(this);
+//        }
     }
 
     public BattleshipGame(int id, String name, BattleshipPlayer playerOne, BattleshipPlayer playerTwo) {
@@ -39,11 +40,12 @@ public class BattleshipGame extends Game {
         this.playerTwo = playerTwo;
     }
 
-    private BattleshipGame(BattleshipGame game){
-        this.id = game.id;
-        this.playerOne = game.playerOne;
-        this.playerTwo = game.playerTwo;
-        this.ai = game.ai;
+    public BattleshipGame(BattleshipGame other) {
+        super(other.id, other.name, other.playerOne, other.playerTwo);
+        this.ai = other.ai;
+        this.playerOne = other.playerOne;
+        this.playerTwo = other.playerTwo;
+        this.memento = other.memento;
     }
 
     @Override
@@ -80,5 +82,14 @@ public class BattleshipGame extends Game {
 
     public void setMemento(BattleshipGame memento) {
         this.memento = memento;
+    }
+
+    @Override
+    public String toString() {
+        return "BattleshipGame{" +
+                "ai=" + ai +
+                ", playerOne=" + playerOne +
+                ", playerTwo=" + playerTwo +
+                '}';
     }
 }
