@@ -24,11 +24,12 @@
             <p class="standard">WELCOME</p>
             <p>Joining a game <span class="red">!!!</span> <br>
                 Each player places the <span class="red">5 ships</span> somewhere on their board.
-                The ships can only be placed <span class="red">vertically</span> or <span class="red">horizontally</span>.
+                The ships can only be placed <span class="red">vertically</span> or <span
+                        class="red">horizontally</span>.
                 Diagonal placement is <span class="red">not allowed</span>.
-                No part of a ship may hang off the edge of the board.  Ships may not overlap each other.
+                No part of a ship may hang off the edge of the board. Ships may not overlap each other.
                 No ships may be placed on another ship. Once the guessing begins, the players may not move the ships.
-                The 5 ships are:  <span class="red">Carrier</span> (occupies 5 spaces),
+                The 5 ships are: <span class="red">Carrier</span> (occupies 5 spaces),
                 <span class="red">Battleship</span> (4),
                 <span class="red">Cruiser</span> (3),
                 <span class="red">Submarine</span> (3), and
@@ -37,21 +38,30 @@
         </div>
 
         <!--<div class="fleet-container" ondrop="drop(event)" ondragover="allowDrop(event)">-->
-            <!--<div id="submarine" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">1</div>-->
-            <!--<div id="destroyer" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">2</div>-->
-            <!--<div id="cruiser" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">3</div>-->
-            <!--<div id="battleship" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">4</div>-->
-            <!--<div id="carrier" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">5</div>-->
+        <!--<div id="submarine" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">1</div>-->
+        <!--<div id="destroyer" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">2</div>-->
+        <!--<div id="cruiser" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">3</div>-->
+        <!--<div id="battleship" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">4</div>-->
+        <!--<div id="carrier" draggable="true" ondblclick="rotateShip(this.id)" ondragstart="drag(event)">5</div>-->
         <!--</div>-->
 
         <div class="map-container">
-            <table class="player-one-map">
-                <tr th:each="i: ${#numbers.sequence(0,9)}">
-                    <td th:each="j: ${#numbers.sequence(0,9)}">
-                        <div th:id="${i + ',' + j}" class="tiles" name="0" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                    </td>
-                </tr>
-            </table>
+            <!--<table class="player-one-map">-->
+            <!--<tr th:each="i: ${#numbers.sequence(0,9)}">-->
+            <!--<td th:each="j: ${#numbers.sequence(0,9)}">-->
+            <!--<div th:id="${i + ',' + j}" class="tiles" name="0" ondrop="drop(event)" ondragover="allowDrop(event)"></div>-->
+            <!--</td>-->
+            <!--</tr>-->
+            <!--</table>-->
+
+            <div class="player-one-map">
+                <table>
+                    <tr th:each="i: ${#numbers.sequence(0,9)}">
+                        <td th:each="j: ${#numbers.sequence(0,9)}" th:id="${i + ',' + j}"
+                            onclick="shipsChooser(this)"></td>
+                    </tr>
+                </table>
+            </div>
 
             <div id="dinamic-player-map"></div>
             <div id="dinamic-player-targets"></div>
@@ -68,8 +78,9 @@
     <script type="text/javascript" th:src="@{/js/lib/jquery-1.9.0.js}"></script>
     <script type="text/javascript" th:src="@{/js/constants/constants.js}"></script>
     <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
-    <script type="text/javascript" th:src="@{/js/multiplayers.js}"></script>
-    <script type="text/javascript" th:src="@{/js/player2-socket.js}"></script>
+    <script type="text/javascript" th:src="@{/js/battleship/multiplayers.js}"></script>
+    <script type="text/javascript" th:src="@{/js/battleship/player2-socket.js}"></script>
+    <script type="text/javascript" th:src="@{/js/battleship/difficulty.js}"></script>
 </th:block>
 </body>
 </html>

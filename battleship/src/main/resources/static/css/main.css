@@ -27,7 +27,11 @@ table, td, th, tr {
 }
 
 table {
+    width: 300px;
+    height: 300px;
     border-collapse: collapse;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 th {
@@ -79,6 +83,8 @@ span{
     font-size: 140%;
     font-style: normal;
 }
+
+
 /*CONTAINERS*/
 
 .main-wrapper{
