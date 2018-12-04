@@ -9,6 +9,7 @@ import battleship.entities.games.Game;
 import battleship.entities.players.BattleshipPlayer;
 import battleship.entities.ships.Ship;
 import com.corundumstudio.socketio.SocketIOClient;
+import db.Db;
 import db.XMLDb;
 import net.sf.json.JSONObject;
 import java.util.ArrayList;
@@ -45,10 +46,18 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
 
         int targetedArea = actor.ennemyBoard.map[targetX][targetY];
 
-        if(targetedArea > 0){ennemy.shipsRemaining--;}
+        if(targetedArea > 0){
+            actor.ennemyBoard.map[targetX][targetY] = -1;
+            ennemy.playerBoard.map[targetX][targetY] = -1;
+            ennemy.shipsRemaining--;
+        } else if (targetedArea == 0) {
+            actor.ennemyBoard.map[targetX][targetY] = -2;
+            ennemy.playerBoard.map[targetX][targetY] = -2;
+        }
+
+        if(ennemy.shipsRemaining == 0){ actor.winner = true; }
 
         target.put("hit", targetedArea);
-
         if(recorder != null){
             if(actor.name.equals("playerOne")){
                 recorder.playerOneMoves.add(target);
@@ -56,11 +65,6 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
                 recorder.playerTwoMoves.add(target);
             }
         }
-
-        actor.ennemyBoard.map[targetX][targetY] = -1;
-        ennemy.playerBoard.map[targetX][targetY] = -1;
-
-        if(ennemy.shipsRemaining == 0){ actor.winner = true; }
     }
 
     @Override
@@ -86,7 +90,8 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
     @Override
     public Game<BattleshipPlayer> save(BattleshipGame battleshipGame){
         XMLDb.getXMLDb().save(battleshipGame);
-        return null;
+        Db.getDb("battleship").save(battleshipGame);
+        return battleshipGame;
     }
 
     @Override
@@ -96,7 +101,7 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
         BattleshipPlayer p2 = new BattleshipPlayer("playerTwo");
         BattleshipAi ai = new BattleshipAi();
         BattleshipGame battleshipGame = new BattleshipGame(gameID,"battleship", p1,p2,r,ai);
-        XMLDb.getXMLDb().load(battleshipGame);
+        Db.getDb("battleship").load(battleshipGame);
         return battleshipGame;
     }
 
