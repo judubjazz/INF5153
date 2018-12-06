@@ -78,11 +78,11 @@ public class Routes{
         model.addAttribute("battleshipGame", game);
 
         if(game.playerOne.winner){
-            model.addAttribute("winner", "You Won");
+            model.addAttribute("winner", "Vous avez gagné");
             return "game/" + gameName + "/end-of-game";
         }
         if(game.playerTwo.winner){
-            model.addAttribute("winner", "You Lost");
+            model.addAttribute("winner", "Vous avez perdu");
             return "game/" + gameName + "/end-of-game";
         }
         return "game/" + gameName + "/play";
@@ -145,11 +145,11 @@ public class Routes{
         model.addAttribute("formController", new JsonRequestController());
 
         if(game.playerOne.winner){
-            model.addAttribute("winner", "You Won");
+            model.addAttribute("winner", "Vous avez gagné");
             return "game/" + gameName + "/end-of-game";
         }
         if(game.playerTwo.winner){
-            model.addAttribute("winner", "You Lost");
+            model.addAttribute("winner", "Vous avez perdu");
             return "game/" + gameName + "/end-of-game";
         }
         return "game/" + gameName + "/replay";

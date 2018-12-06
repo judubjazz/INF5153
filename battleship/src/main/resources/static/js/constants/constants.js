@@ -1,16 +1,16 @@
 'use strict';
 
 const constants = {
-  WAITING_OPP_TURN: 'waiting for opponent to play turn',
-  TARGET_OPP_SHIP: 'target an opponent ship',
-  WAITING_GAME_CONNECTION: 'waiting for a player to connect game with id',
+  WAITING_OPP_TURN: 'En attente que l\'adversaire joue son tour',
+  TARGET_OPP_SHIP: 'torpillez un bateau ennemie',
+  WAITING_GAME_CONNECTION: 'En attente qu\'un adversaire se connecte à la partie',
   SHIP_LOCATION_ERR: 'ships locations invalid',
   HOME_URL: 'http://localhost:8090',
-  START_GAME: 'Start Game',
-  CREATE_GAME: 'Create Game',
-  JOIN_GAME: 'Join Game',
-  YOU_LOST: 'You lost',
-  YOU_WON: 'You won',
+  START_GAME: 'Commencer une partie',
+  CREATE_GAME: 'Créer une partie',
+  JOIN_GAME: 'Joindre la Partie',
+  YOU_LOST: 'Vous avez perdu',
+  YOU_WON: 'Vous avez gagné',
   ID: 'id',
   SIZE: 'size',
   NAME: 'name',
@@ -37,6 +37,6 @@ const constants = {
   DIFF: 'difficulty',
   START_POS: 'startPosition',
   MEMENTO: 'memento',
-  QUIT_GAME_MSG: 'You will loose the game if you leave !',
-  OPP_DID_QUIT: 'Your opponent left the game.'
+  QUIT_GAME_MSG: 'Vous aller perdre la partie si vous quitez !',
+  OPP_DID_QUIT: 'Votre opposant a quitter la partie.'
 };

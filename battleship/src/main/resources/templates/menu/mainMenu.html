@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{base}">
 <head>
-    <title>Battleship</title>
+    <title>menu principal</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/mainMenu.css}"/>
 </head>
 <body>
@@ -13,10 +13,10 @@
 	<br/><br/><br/>
     <table>
 	  	<tr>
-	    	<td><a th:href="@{'/select'}">START GAME</a></td>
+	    	<td><a th:href="@{'/select'}">COMMENCER UNE PARTIE</a></td>
 		</tr>
 		<tr>
-	    	<td><a th:href="@{'/loadFiles'}">LOAD GAME</a></td>
+	    	<td><a th:href="@{'/loadFiles'}">CHARGER UNE PARTIE</a></td>
 		</tr>
 	</table>
 </div>

@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Fin de la partie</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/won-lost.css}"/>
 </head>
 <body>
@@ -15,7 +15,7 @@
     <div>
         <form action="#" th:action="@{/restart}" th:object="${formController}" method="post">
             <p><input id="data" type="text" th:field="*{data}" /></p>
-            <p><input id="restart-form-submit" type="submit" value="START" /></p>
+            <p><input id="restart-form-submit" type="submit" value="REVISUALISER" /></p>
         </form>
     </div>
 
@@ -25,16 +25,16 @@
     
         <table>
 		  	<tr>
-		    	<td><a class="button button3 size" th:href="@{'/'}">MAIN MENU</a></td>
+		    	<td><a class="button button3 size" th:href="@{'/'}">MENU PRINCIPAL</a></td>
 			</tr>
 			<tr>
-		    	<td><a class="button button3" th:href="@{'/loadFiles'}">LOAD GAME</a></td>
+		    	<td><a class="button button3" th:href="@{'/loadFiles'}">CHARGER UNE PARTIE</a></td>
 			</tr>
             <tr>
-                <td><input class="button button3 size" id="replay-form-submit" onclick="postRestart()" value="REPLAY" /></td>
+                <td><input class="button button3 size" id="replay-form-submit" onclick="postRestart()" value="REVISUALISER" /></td>
             </tr>
 			<tr>
-		    	<td><a class="button button3 size" th:href="@{'/'}">EXIT</a></td>
+		    	<td><a class="button button3 size" th:href="@{'/'}">SORTIR</a></td>
 			</tr>
 		</table>
 

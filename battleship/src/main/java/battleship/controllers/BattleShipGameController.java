@@ -89,7 +89,6 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
 
     @Override
     public Game<BattleshipPlayer> save(BattleshipGame battleshipGame){
-//        XMLDb.getXMLDb().save(battleshipGame);
         Db.getDb("battleship").save(battleshipGame);
         return battleshipGame;
     }

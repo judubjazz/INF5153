@@ -22,17 +22,15 @@
 
         <div class="rules-container">
             <p class="standard">WELCOME</p>
-            <p>Joining a game <span class="red">!!!</span> <br>
-                Each player places the <span class="red">5 ships</span> somewhere on their board.
-                The ships can only be placed <span class="red">vertically</span> or <span
-                        class="red">horizontally</span>.
-                Diagonal placement is <span class="red">not allowed</span>.
-                No part of a ship may hang off the edge of the board. Ships may not overlap each other.
-                No ships may be placed on another ship. Once the guessing begins, the players may not move the ships.
-                The 5 ships are: <span class="red">Carrier</span> (occupies 5 spaces),
+            <p>Joindre une partie <span class="red">!!!</span> <br>
+                Chaques joueurs placent <span class="red">5 bateaux</span> sur la grille.
+                Les bateaux peuvent seulement être placés de façon <span class="red">verticale</span> ou <span class="red">horizontale</span>.
+                Les bateaux doivent être contenus dans la grille et ne pas s'entrecroiser.
+                Une fois la partie commencée, les bateaux ne peuvent plus être bougés.
+                Les 5 bateaux sont:  <span class="red">Carrier</span> (occupe 5 places),
                 <span class="red">Battleship</span> (4),
                 <span class="red">Cruiser</span> (3),
-                <span class="red">Submarine</span> (3), and
+                <span class="red">Submarine</span> (3), et
                 <span class="red">Destroyer</span> (2).
             </p>
         </div>
@@ -46,13 +44,7 @@
         <!--</div>-->
 
         <div class="map-container">
-            <!--<table class="player-one-map">-->
-            <!--<tr th:each="i: ${#numbers.sequence(0,9)}">-->
-            <!--<td th:each="j: ${#numbers.sequence(0,9)}">-->
-            <!--<div th:id="${i + ',' + j}" class="tiles" name="0" ondrop="drop(event)" ondragover="allowDrop(event)"></div>-->
-            <!--</td>-->
-            <!--</tr>-->
-            <!--</table>-->
+
 
             <div class="player-one-map">
                 <table>
@@ -64,12 +56,13 @@
             </div>
 
             <div id="dinamic-player-map"></div>
+
             <div id="dinamic-player-targets"></div>
         </div>
 
         <div class="options-container">
-            <button class="button button3" onclick="joinGame()">JOIN</button>
-            <a class="button button3" th:href="@{'/'}">EXIT</a>
+            <button class="button button3" onclick="joinGame()">JOINDRE</button>
+            <a class="button button3" th:href="@{'/'}">SORTIR</a>
         </div>
     </div>
 </div>

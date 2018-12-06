@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{base}">
 <head>
-    <title>Play online</title>
+    <title>Jouer en ligne</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
 </head>
@@ -18,20 +18,19 @@
 
 
     <div class="main-wrapper">
-        <h1 id="message-header">Create Game</h1>
+        <h1 id="message-header">Créer une partie</h1>
 
         <div class="rules-container">
-            <p class="standard">WELCOME</p>
-            <p>Starting a New Game <span class="red">!!!</span> <br>
-                Each player places the <span class="red">5 ships</span> somewhere on their board.
-                The ships can only be placed <span class="red">vertically</span> or <span class="red">horizontally</span>.
-                Diagonal placement is <span class="red">not allowed</span>.
-                No part of a ship may hang off the edge of the board.  Ships may not overlap each other.
-                No ships may be placed on another ship. Once the guessing begins, the players may not move the ships.
-                The 5 ships are:  <span class="red">Carrier</span> (occupies 5 spaces),
+            <p class="standard">BIENVENUE</p>
+            <p>Créer une partie en ligne <span class="red">!!!</span> <br>
+                Chaques joueurs placent <span class="red">5 bateaux</span> sur la grille.
+                Les bateaux peuvent seulement être placés de façon <span class="red">verticale</span> ou <span class="red">horizontale</span>.
+                Les bateaux doivent être contenus dans la grille et ne pas s'entrecroiser.
+                Une fois la partie commencée, les bateaux ne peuvent plus être bougés.
+                Les 5 bateaux sont:  <span class="red">Carrier</span> (occupe 5 places),
                 <span class="red">Battleship</span> (4),
                 <span class="red">Cruiser</span> (3),
-                <span class="red">Submarine</span> (3), and
+                <span class="red">Submarine</span> (3), et
                 <span class="red">Destroyer</span> (2).
             </p>
         </div>
@@ -62,8 +61,8 @@
         </div>
 
         <div class="options-container">
-            <button class="button button3" onclick="createGame()">CREATE</button>
-            <a class="button button3" th:href="@{'/'}">EXIT</a>
+            <button class="button button3" onclick="createGame()">CRÉER</button>
+            <a class="button button3" th:href="@{'/'}">SORTIR</a>
         </div>
     </div>
 </div>

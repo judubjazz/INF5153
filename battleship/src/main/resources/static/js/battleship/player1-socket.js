@@ -72,7 +72,7 @@ socket.on('playerDidJoinGame', (res) => {
   console.log(res);
   renderTargetsMap();
   renderPlayerMap();
-  hideLoader('target an opponnent ship');
+  hideLoader(TARGET_OPP_SHIP);
   $('#dinamic-player-map').css('display','block');
   $('#dinamic-player-targets').css('display', 'block');
 

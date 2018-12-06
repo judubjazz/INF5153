@@ -11,12 +11,12 @@
 
 <body>
 <div layout:fragment="content">
-    <h1>Replay</h1>
+    <h1>Revisualiser</h1>
     <div class="map-container">
     <table class="player-one-map">
         <tr th:each="col: ${battleshipGame.playerOne.playerBoard.map}">
             <td th:each="colValue: ${col}">
-                <div class="tiles" th:name="${colValue}" th:text="${colValue}"></div>
+                <div class="tiles" th:name="${colValue}"></div>
             </td>
         </tr>
     </table>
@@ -24,7 +24,7 @@
     <table class="player-one-map">
         <tr th:each="col, iterX: ${battleshipGame.playerOne.ennemyBoard.map}">
             <td th:each="colValue, iterY: ${col}">
-                <div th:class="tiles" th:name="${colValue}" th:text="${colValue}" th:onclick="|torpedo(event, ${iterX.index}, ${iterY.index})|" ></div>
+                <div th:class="tiles" th:name="${colValue}" th:onclick="|torpedo(event, ${iterX.index}, ${iterY.index})|" ></div>
             </td>
         </tr>
     </table>
@@ -34,11 +34,11 @@
 
             <form action="#" th:action="@{/replay}" th:object="${formController}" method="post">
                 <p><input id="data" type="text" th:field="*{data}" /></p>
-                <p><input id="replay-form-submit" type="submit" value="START" /></p>
+                <p><input id="replay-form-submit" type="submit" value="REVISUALISER" /></p>
             </form>
 
     <form action="#" th:action="@{/replay}" th:object="${battleshipGame}" method="post">
-        <p><input type="submit" value="replay" /></p>
+        <p><input type="submit" value="REVISUALISER" /></p>
 
         <p>Game id: <input id="game-id" type="text" th:field="*{id}" /></p>
         <p>playerOne name: <input id="playerOne-name"  type="text" th:field="*{playerOne.name}" /></p>
