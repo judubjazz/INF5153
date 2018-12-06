@@ -18,65 +18,44 @@ Conception d'un petit programme dont l'exécutable est nommé `tp3.jar` permetta
 ## Fonctionnement
 
 ### Jouer Battleship contre l'ordinateur
-Le joueur doit cliqué sur COMMENCER UNE PARTIE  
-
-Ensuite il choisit le jeu battleship  
-
-Ensuite il choisit de jouer en mode UN JOUEUR  
-
-Une grille s'affichera.  
-
-Par défaut, le jouer peut appuyer sur COMMENCER et la partie positionera automatiquement les bateaux de façon non-aléatoire.  
-L'utilisateur peut cependant choisir de positionner lui-même ses bateaux en cliquant sur la grille.  
-
-Par la suite la partie débute et le joueur peut tenter de couler tous les bateaux du système. 
+- Le joueur doit cliqué sur COMMENCER UNE PARTIE  
+- Ensuite il choisit le jeu battleship  
+- Ensuite il choisit de jouer en mode UN JOUEUR  
+- Une grille s'affichera.  
+- Par défaut, le jouer peut appuyer sur COMMENCER et la partie positionera automatiquement les bateaux de façon non-aléatoire.  
+- L'utilisateur peut cependant choisir de positionner lui-même ses bateaux en cliquant sur la grille.  
+- Par la suite la partie débute et le joueur peut tenter de couler tous les bateaux du système. 
 
 ### Jouer Battleship en ligne
 #### Joueur créant la partie
-Le joueur doit cliquer sur COMMENCER UNE PARTIE   
-
-Ensuite il choisit le jeu battleship  
-
-Ensuite il choisit de jouer en mode MULTI JOUEUR  
-
-Une grille s'affichera.  
-
-Par défaut, le jouer peut appuyer sur Créer et la partie positionera automatiquement les bateaux de façon non-aléatoire.  
-
-L'utilisateur peut cependant choisir de positionner lui-même ses bateaux en cliquant sur la grille.  
-
-Par la suite l'utilisateur est en attente d'un opposant.  
+- Le joueur doit cliquer sur COMMENCER UNE PARTIE   
+- Ensuite il choisit le jeu battleship  
+- Ensuite il choisit de jouer en mode MULTI JOUEUR  
+- Une grille s'affichera.  
+- Par défaut, le jouer peut appuyer sur Créer et la partie positionera automatiquement les bateaux de façon non-aléatoire.  
+- L'utilisateur peut cependant choisir de positionner lui-même ses bateaux en cliquant sur la grille.  
+- Par la suite l'utilisateur est en attente d'un opposant.  
 
 #### Joueur se joignant à une partie
-L'opposant peut cliquer sur COMMENCER UNE PARTIE  
-
-Ensuite il choisit le jeu battleship  
-
-Ensuite il choisit le LOBBY.  
-
-Ensuite il choisit un partie qui est disponible dans la liste.  
-
-Ensuite il peut cliquer sur Joindre  et la partie positionera automatiquement les bateaux de façon non-aléatoire.  
-
-L'utilisateur peut cependant choisir de positionner lui-même ses bateaux en cliquant sur la grille.  
-
-Par la suite la partie débute et le joueur qui a créer la partie joue en premier 
+- L'opposant peut cliquer sur COMMENCER UNE PARTIE  
+- Ensuite il choisit le jeu battleship  
+- Ensuite il choisit le LOBBY.  
+- Ensuite il choisit un partie qui est disponible dans la liste.  
+- Ensuite il peut cliquer sur JOINDRE et la partie positionera automatiquement les bateaux de façon non-aléatoire.  
+- L'utilisateur peut cependant choisir de positionner lui-même ses bateaux en cliquant sur la grille.  
+- Par la suite la partie débute et le joueur qui a créer la partie joue en premier 
 
 ### Sauver une partie Battleship
 
-L'utilisateur débute une partie UN JOUEUR  
-
-L'utilisateur peut alors cliquer sur SAUVER  
-
-Une page de confirmation s'affichera.
+- L'utilisateur débute une partie UN JOUEUR  
+- L'utilisateur peut alors cliquer sur SAUVER  
+- Une page de confirmation s'affichera.
 
 ### Charger une partie
 
-L'utilisateur navigue au menu principale  
-
-L'utilisateur peut alors cliquer sur CHARGER UNE PARTIE.  
-
-L'utilisateur peut charger la partie de son choix.  
+- L'utilisateur navigue au menu principal  
+- L'utilisateur peut alors cliquer sur CHARGER UNE PARTIE.  
+- L'utilisateur peut charger la partie de son choix.  
 
 
 ## Gestion des dépendances
@@ -88,7 +67,13 @@ L'utilisateur peut charger la partie de son choix.
 ``` sh
 ./gradlew build
 ```
-un exécutable nommé tp3 sera compilé dans le fichier `battleship/build/`
+- un exécutable nommé `tp3.jar` sera compilé dans le fichier `battleship/build/libs`
+- l'exécutable doit être déplacé à la racine du projet.
+
+```sh
+cd build/libs
+mv tp3.jar ../../
+```
 
 ## Exécution du logiciel
 - pour executer le programme 
@@ -128,7 +113,7 @@ un exécutable nommé tp3 sera compilé dans le fichier `battleship/build/`
 ## Division des tâches
 
 Les tâches accomplies
-- [] Rapport 
+- [X] Rapport 
    - [X] Diagrammes de classes ```Julien```
    - [X] Diagrammes de séquences ```Julien```
    - [X] Mise en contexte ```Amine```
