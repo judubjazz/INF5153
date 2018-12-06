@@ -69,7 +69,6 @@ socket.on('playerDidCreateGame', (res) => {
 });
 
 socket.on('playerDidJoinGame', (res) => {
-  console.log(res);
   renderTargetsMap();
   renderPlayerMap();
   hideLoader(TARGET_OPP_SHIP);
@@ -79,7 +78,6 @@ socket.on('playerDidJoinGame', (res) => {
 });
 
 socket.on('playerOneDidPlay', (res) => {
-  console.log('player one did play', res);
   const {x, y, winner, hit} = res;
   if(hit > 0){
     game.targets[x][y] = -1;

@@ -119,7 +119,9 @@ var game = {
 };
 
 
-
+// TODO possibile to reunite many js file in the main
+// TODO same applies with css
+// TODO add a getData function
 /*GAME RELATED*/
 
 const torpedo = (event, x, y) =>{

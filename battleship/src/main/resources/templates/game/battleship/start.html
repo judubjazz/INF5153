@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{base}">
 <head> 
-    <title>Getting Started</title>
+    <title>Commencer une partie</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/startUp.css}"/>
 </head>
@@ -37,20 +37,20 @@
 	<br/>
     <div class="custom-select center" style="width:200px;">
 	    <select id="difficulty" onchange="run()">
-	        <option value="false" selected="selected">easy</option>
-	         <option value="true" >hard</option>
+	        <option value="false" selected="selected">débutant</option>
+	         <option value="true" >avancé</option>
 	    </select>
     </div>
     <div>
         <form action="#" th:action="@{/start}" th:object="${formController}" method="post">
             <p><input style="display: none" id="data" type="text" th:field="*{data}" /></p>
-            <p><input id="submit-fleet-button" type="submit" value="START" /></p>
+            <p><input id="submit-fleet-button" type="submit" value="COMMENCER" /></p>
         </form>
     </div>
 
     <div class="center">
-        <p><input id="hidden-button" class="button button3" onclick="start()" value="START" /></p>
-        <a class="button button3" th:href="@{'/'}">EXIT</a>
+        <p><input id="hidden-button" class="button button3" onclick="start()" value="COMMENCER" /></p>
+        <a class="button button3" th:href="@{'/'}">RETOUR</a>
 	</div>
 
 </div>

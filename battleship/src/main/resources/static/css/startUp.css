@@ -144,7 +144,7 @@ td:hover{
     background-color: #4CAF50; /* Green */
     border: none;
     color: white;
-    padding: 22px 63px;
+    padding: 22px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -152,7 +152,7 @@ td:hover{
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
     cursor: pointer;
-    width: 70px;
+    width: 120px;
 }
 
 .button3 {

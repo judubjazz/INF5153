@@ -51,7 +51,7 @@ p{
 .button {
     border: none;
     color: white;
-    padding: 22px 63px;
+    padding: 22px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -60,6 +60,7 @@ p{
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
     cursor: pointer;
+    width: 120px;
 }
 
 .button3 {
@@ -109,7 +110,6 @@ span{
 
 .options-container{
     display: flex;
-    flex-direction: column;
     justify-content: center;
 }
 
