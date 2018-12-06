@@ -18,28 +18,53 @@ Conception d'un petit programme dont l'exécutable est nommé `tp3.jar` permetta
 ## Fonctionnement
 
 ### Jouer Battleship contre l'ordinateur
-Le joueur doit clické sur débuter
+Le joueur doit cliqué sur débuter
 Ensuite il choisit le jeu battleship
 Ensuite il choisit de jouer en mode singleplayer
 Une grille s'affichera.
 Par défaut, le jouer peut appuyer sur Commencer et la partie positionera automatiquement les bateaux de façon non-aléatoire.
-L'utilisateur peut cependant choisir de positionner lui-même ses bateaux.
-Par la suite la partie débute et le joueur peut tenter de couler tous les bateaux du systèmes. 
+L'utilisateur peut cependant choisir de positionner lui-même ses bateaux en cliquant sur la grille.
+Par la suite la partie débute et le joueur peut tenter de couler tous les bateaux du système. 
 
-### Jouer en ligne
-Le joueur doit clické sur débuter
+### Jouer Battleship en ligne
+Le joueur doit cliquer sur débuter
 Ensuite il choisit le jeu battleship
-Ensuite il choisit de jouer en mode singleplayer
+Ensuite il choisit de jouer en mode multiplayer
 Une grille s'affichera.
-Par défaut, le jouer peut appuyer sur Commencer et la partie positionera automatiquement les bateaux de façon non-aléatoire.
-L'utilisateur peut cependant choisir de positionner lui-même ses bateaux.
-Par la suite la partie débute et le joueur peut tenter de couler tous les bateaux du systèmes. 
-### Sauver une partie
+Par défaut, le jouer peut appuyer sur Créer et la partie positionera automatiquement les bateaux de façon non-aléatoire.
+L'utilisateur peut cependant choisir de positionner lui-même ses bateaux en cliquant sur la grille.
+
+Par la suite l'utilisateur est en attente d'un opposant.
+
+L'opposant peut cliquer sur débuter.
+Ensuite il choisit le jeu battleship.
+Ensuite il choisit le lobby.
+Ensuite il choisit un partie qui est disponible dans la liste.
+Ensuite il peut cliquer sur Joindre  et la partie positionera automatiquement les bateaux de façon non-aléatoire.
+L'utilisateur peut cependant choisir de positionner lui-même ses bateaux en cliquant sur la grille.
+Par la suite la partie débute et le joueur qui a créer la partie joue en premier 
+
+### Sauver une partie Battleship
+
+L'utilisateur débute une partie singleplayer.
+L'utilisateur peut alors cliquer sur Sauvegarder.
+Une page de confirmation s'affichera.
 
 ### Charger une partie
 
+L'utilisateur navigue au menu principale.
+L'utilisateur peut alors cliquer sur Charger.
+L'utilisateur peut charger la partie de son choix.
 
-## exécution du logiciel
+## Compilation
+- pour compiler le logiciel, ouvrir le terminal à la racine du projet.
+- entrer la commande 
+``` sh
+./gradlew build
+```
+un exécutable nommé tp3 sera compilé dans le fichier `battleship/build/`
+
+## Exécution du logiciel
 - pour executer le programme 
     * Java de version >= 1.8.0 doit être installé 
     * Les ports 8090 et 9291 ne doivent pas être activement en service
