@@ -42,6 +42,13 @@ public class BattleshipAi extends Ai {
         return map;
     }
 
+    /**
+     * Ai switches state from Start, Up, Down, Right, Left
+     * if he had previously hit a ship, it will iterate all differents state
+     * else it will hit a random target
+     * @param battleshipGame
+     * @return a target with keys x, y
+     */
     public Map<String, Integer> targetMinMaxPosition(BattleshipGame battleshipGame) {
         // first turn
         if (battleshipGame.recorder.playerTwoMoves.size() < 1) return targetRandomPosition(battleshipGame);

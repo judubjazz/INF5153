@@ -119,7 +119,8 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
 
     @Override
     public Game<BattleshipPlayer> start(JSONObject p1Settings) {
-        // TODO validation of the player fleet, some validation methods are available in Board class, maybe add a Validation class
+        // TODO validation of the player fleet
+        // TODO the game could be instantiate before in the routes with the game factory
         JSONObject p1FleetJSON = p1Settings.getJSONObject("fleet");
         Map<String, Ship> playerOneFleet = Ship.buildFleet(p1FleetJSON);
         BattleshipBoard p1Board = new BattleshipBoard();

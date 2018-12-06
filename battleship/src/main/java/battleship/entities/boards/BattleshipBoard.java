@@ -81,6 +81,13 @@ public class BattleshipBoard extends Board {
 
 
     // TODO refactor this in two or three different functions
+
+    /**
+     * Initiate all 5 differents ship, then localise them on the board
+     * If a ships overlaps another one or is out of bounds, it will relocalise it
+     * @param board
+     * @return a map with the ship's name as keys
+     */
     public static Map<String, Ship> generateFleet(BattleshipBoard board) {
         Map<String, Ship> fleet = new HashMap<>();
         Ship carrier = new Carrier();
@@ -106,8 +113,9 @@ public class BattleshipBoard extends Board {
         fleet.put("submarine", submarine);
         return fleet;
     }
-    // Getters & Setters
 
+
+    // Getters & Setters
 
     public boolean isHidden() {
         return hidden;

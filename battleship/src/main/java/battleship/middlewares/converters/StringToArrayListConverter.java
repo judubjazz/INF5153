@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * class needed by spring to convert the Recorder
+ */
 public class StringToArrayListConverter implements Converter<String, ArrayList<Map<String, Integer>>> {
 
     @Override

@@ -1,13 +1,7 @@
 package battleship.entities.Ais;
 
-import battleship.entities.boards.Board;
-import battleship.entities.games.Game;
-import battleship.entities.ships.*;
-import battleship.middlewares.Validation;
-
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
+
 
 public class Ai {
     public boolean difficulty;

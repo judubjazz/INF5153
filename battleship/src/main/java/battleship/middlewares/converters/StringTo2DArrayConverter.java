@@ -2,6 +2,9 @@ package battleship.middlewares.converters;
 
 import org.springframework.core.convert.converter.Converter;
 
+/**
+ * class needed by spring to create the Board map
+ */
 public class StringTo2DArrayConverter implements Converter<String, int [][]> {
     public int arraySize = 10;
 

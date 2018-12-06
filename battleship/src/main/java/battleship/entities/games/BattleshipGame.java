@@ -84,12 +84,4 @@ public class BattleshipGame extends Game {
         this.memento = memento;
     }
 
-    @Override
-    public String toString() {
-        return "BattleshipGame{" +
-                "ai=" + ai +
-                ", playerOne=" + playerOne +
-                ", playerTwo=" + playerTwo +
-                '}';
-    }
 }

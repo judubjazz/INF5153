@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * class needed by spring to convert the Targets into the recorder
+ */
 public class StringToMapStringIntegerConverter implements Converter<String, Map<String, Integer>> {
 
     @Override

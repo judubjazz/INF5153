@@ -210,10 +210,5 @@ public class Routes{
         private static final long serialVersionUID = 43L;
     } 
 
-    @ExceptionHandler({Exception.class})
-    public String handleAnyException(Model model) {
-        model.addAttribute("errorType", "A problem has occurred");
-        return "error/error";
-    }
 }
 

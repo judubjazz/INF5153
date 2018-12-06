@@ -111,15 +111,4 @@ public class BattleshipPlayer extends Player {
         this.shipsRemaining = shipsRemaining;
     }
 
-    @Override
-    public String toString() {
-        return "BattleshipPlayer{" +
-                "carrier=" + carrier +
-                ", submarine=" + submarine +
-                ", destroyer=" + destroyer +
-                ", battleship=" + battleship +
-                ", cruiser=" + cruiser +
-                ", shipsRemaining=" + shipsRemaining +
-                '}';
-    }
 }
