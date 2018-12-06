@@ -13,14 +13,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
-
 import static battleship.controllers.GameController.getController;
+
+
 
 @Controller
 public class Routes{
 
     @GetMapping("/")
-    public String main(){
+    public String mainMenu(){
         return "menu/mainMenu";
     }
 
@@ -132,7 +133,7 @@ public class Routes{
 
 
     @PostMapping("/replay")
-    public String replayGame(@ModelAttribute JsonRequestController formController, Model model){
+    public String postReplay(@ModelAttribute JsonRequestController formController, Model model){
         JSONObject data = formController.data;
         String gameName = data.getString("name");
         GameFactory factory = GameFactory.getFactory(gameName);
@@ -155,7 +156,7 @@ public class Routes{
     }
 
     @PostMapping("/restart")
-    public String postRestartGame(@ModelAttribute JsonRequestController formController, Model model){
+    public String postRestart(@ModelAttribute JsonRequestController formController, Model model){
         JSONObject data = formController.data;
         String gameName = data.getString("name");
         GameFactory factory = GameFactory.getFactory(gameName);
@@ -174,13 +175,13 @@ public class Routes{
     }
 
     @GetMapping("/join")
-    public String join(Model model){
+    public String lobby(Model model){
         model.addAttribute("gameList", Application.gameListVsHuman);
         return "game/battleship/join-online-games";
     }
 
     @RequestMapping(value="/join/{gameID}", method = RequestMethod.GET)
-    public String joinGame(@PathVariable("gameID") int gameID){
+    public String join(@PathVariable("gameID") int gameID){
         if (Validation.gameIDisInTheList(gameID)) return "game/battleship/join-this-game";
         throw new GameNotFoundException();
     }
@@ -199,7 +200,7 @@ public class Routes{
         private static final long serialVersionUID = 41L;
     }
 
-    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, reason = "socket server error")
+    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, reason = "server error")
     private class ServerErrorException extends RuntimeException {
         private static final long serialVersionUID = 42L;
     }
@@ -211,20 +212,8 @@ public class Routes{
 
     @ExceptionHandler({Exception.class})
     public String handleAnyException(Model model) {
-        System.out.println(HttpStatus.BAD_REQUEST);
-    	if(HttpStatus.BAD_REQUEST != null){
-        	model.addAttribute("errorType", "Bad request");
-            return "error/error";
-        }else if(HttpStatus.NOT_FOUND != null){
-        	model.addAttribute("errorType", "Message not found");
-            return "error/error";
-        }else if(HttpStatus.INTERNAL_SERVER_ERROR != null){
-        	model.addAttribute("errorType", "A problem has occurred");
-            return "error/error";
-        }else{
-        	model.addAttribute("errorType", "A problem has occurred");
-            return "error/error";
-        }
+        model.addAttribute("errorType", "A problem has occurred");
+        return "error/error";
     }
 }
 

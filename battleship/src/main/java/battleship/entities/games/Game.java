@@ -1,7 +1,5 @@
 package battleship.entities.games;
 
-import battleship.entities.Ais.Ai;
-import battleship.entities.players.BattleshipPlayer;
 import battleship.entities.players.Player;
 import battleship.entities.Recorder;
 import com.corundumstudio.socketio.SocketIOClient;

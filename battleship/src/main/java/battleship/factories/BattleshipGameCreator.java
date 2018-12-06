@@ -18,7 +18,6 @@ import java.util.Map;
 public class BattleshipGameCreator implements GameFactory {
     @Override
     public BattleshipGame createGame(JSONObject data) {
-        System.out.println(data);
         BattleshipGame battleshipGame = new BattleshipGame();
         BattleshipPlayer playerOne = new BattleshipPlayer();
         BattleshipPlayer playerTwo = new BattleshipPlayer();

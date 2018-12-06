@@ -89,7 +89,7 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
 
     @Override
     public Game<BattleshipPlayer> save(BattleshipGame battleshipGame){
-        XMLDb.getXMLDb().save(battleshipGame);
+//        XMLDb.getXMLDb().save(battleshipGame);
         Db.getDb("battleship").save(battleshipGame);
         return battleshipGame;
     }
@@ -128,7 +128,7 @@ public class BattleShipGameController implements GameController<BattleshipGame, 
 
         // fleet has to be validated with the grid, therefore the grid is initialise inside generateFleet maybe change the function name
         BattleshipBoard cpuBoard = new BattleshipBoard();
-        Map<String, Ship> cpuFleet = BattleshipAi.generateFleet(cpuBoard);
+        Map<String, Ship> cpuFleet = BattleshipBoard.generateFleet(cpuBoard);
 
         BattleshipPlayer cpu = new BattleshipPlayer(cpuFleet, cpuBoard, p1Board, "playerTwo");
         BattleshipPlayer player = new BattleshipPlayer(playerOneFleet, p1Board, cpuBoard, "playerOne");

@@ -1,6 +1,8 @@
 package battleship.entities.boards;
 
-import battleship.entities.ships.Ship;
+import battleship.entities.ships.*;
+
+import java.util.HashMap;
 import java.util.Map;
 
 public class BattleshipBoard extends Board {
@@ -77,6 +79,33 @@ public class BattleshipBoard extends Board {
         return true;
     }
 
+
+    // TODO refactor this in two or three different functions
+    public static Map<String, Ship> generateFleet(BattleshipBoard board) {
+        Map<String, Ship> fleet = new HashMap<>();
+        Ship carrier = new Carrier();
+        Ship battleship = new Battleship();
+        Ship cruiser = new Cruiser();
+        Ship destroyer = new Destroyer();
+        Ship submarine = new Submarine();
+
+        carrier = carrier.locateToRandomPosition(board);
+        board.locateShip(carrier);
+        battleship = battleship.locateToRandomPosition(board);
+        board.locateShip(battleship);
+        cruiser = cruiser.locateToRandomPosition(board);
+        board.locateShip(cruiser);
+        destroyer = destroyer.locateToRandomPosition(board);
+        board.locateShip(destroyer);
+        submarine = submarine.locateToRandomPosition(board);
+        board.locateShip(submarine);
+        fleet.put("carrier", carrier);
+        fleet.put("battleship", battleship);
+        fleet.put("cruiser", cruiser);
+        fleet.put("destroyer", destroyer);
+        fleet.put("submarine", submarine);
+        return fleet;
+    }
     // Getters & Setters
 
 

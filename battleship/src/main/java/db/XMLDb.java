@@ -111,7 +111,6 @@ public class XMLDb extends Db<BattleshipGame>{
         for (int i = 0; i < aiSettings.getLength(); i++) {
             Node setting = aiSettings.item(i);
             if (setting.getNodeType() == Node.ELEMENT_NODE) {
-                //NodeList caseSettings = setting.getChildNodes();
                 String text;
                 switch (setting.getNodeName()) {
                     case "difficulty":
@@ -120,14 +119,16 @@ public class XMLDb extends Db<BattleshipGame>{
                     case "startPosition":
                         text = setting.getTextContent();
                         JSONObject jo = JSONObject.fromObject(text);
-                        Map<String, Integer> startPosition = new HashMap<>();
-                        startPosition.put("x", jo.getInt("x"));
-                        startPosition.put("y", jo.getInt("y"));
-                        ai.startPosition = startPosition;
+                        if (jo.size() > 0){
+                            Map<String, Integer> startPosition = new HashMap<>();
+                            startPosition.put("x", jo.getInt("x"));
+                            startPosition.put("y", jo.getInt("y"));
+                            ai.startPosition = startPosition;
+                        }
                         break;
                     case "state":
                         text = setting.getTextContent();
-                        ai.state = ai.stringToState(text);
+                        if (text.length() > 0) ai.state = ai.stringToState(text);
                         break;
                 }
             }
@@ -495,6 +496,7 @@ public class XMLDb extends Db<BattleshipGame>{
         }
     }
 
+    @SuppressWarnings("unused")
     private void updatePlayer(NodeList playerSettings, BattleshipPlayer player) {
         for(int i = 0; i < playerSettings.getLength(); ++i){
             Node setting = playerSettings.item(i);
@@ -514,6 +516,7 @@ public class XMLDb extends Db<BattleshipGame>{
         }
     }
 
+    @SuppressWarnings("unused")
     private void updateFleet(NodeList fleet, BattleshipPlayer player){
         for(int i =0 ; i < fleet.getLength(); ++i){
             Node setting = fleet.item(i);
@@ -537,6 +540,7 @@ public class XMLDb extends Db<BattleshipGame>{
         }
     }
 
+    @SuppressWarnings("unused")
     private void updateShipPosition(NodeList shipSettings, Ship ship) {
         for(int i = 0 ; i < shipSettings.getLength(); ++i){
             Node setting = shipSettings.item(i);
