@@ -12,6 +12,7 @@ public class Game<P extends Player> {
     public P playerTwo;
     public SocketIOClient p1Socket;
     public SocketIOClient p2Socket;
+    public boolean draw = false;
 
 
     public Game(){}

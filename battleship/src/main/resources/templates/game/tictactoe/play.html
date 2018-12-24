@@ -40,31 +40,6 @@
                 <input class="button button3" id="savegame-form-input" type="submit" value="SAVE" />
                 <a class="button button3" th:href="@{'/'}">EXIT</a>
             </div>
-
-            <p>Game id: <input class='torpedo-form' type="text" th:field="*{id}" /></p>
-
-            <p>playerOne name: <input  type="text" th:field="*{playerOne.name}" /></p>
-            <p>playerOne map: <input  type="text" th:field="*{playerOne.playerBoard.map}" /></p>
-            <p>playerOne map width: <input  type="text" th:field="*{playerOne.playerBoard.width}" /></p>
-            <p>playerOne map heigth: <input  type="text" th:field="*{playerOne.playerBoard.height}" /></p>
-            <p>playerOne marks: <input  type="text" th:field="*{playerOne.marks}" /></p>
-
-            <p>playerTwo name: <input  type="text" th:field="*{playerTwo.name}" /></p>
-
-            <p>targetX: <input  type="text" th:field="*{playerOne.targetX}" value=1/></p>
-            <p>targetY: <input  type="text" th:field="*{playerOne.targetY}" value=0/></p>
-
-            <p>playerTwo map: <input  type="text" th:field="*{playerTwo.playerBoard.map}" /></p>
-            <p>playerTwo map width: <input  type="text" th:field="*{playerTwo.playerBoard.width}" /></p>
-            <p>playerTwo map heigth: <input  type="text" th:field="*{playerTwo.playerBoard.height}" /></p>
-            <p>playerTwo marks: <input  type="text" th:field="*{playerTwo.marks}" /></p>
-
-            <p>recorder: <input  type="text" th:field="*{recorder.playerOneMoves}"/></p>
-            <p>recorder: <input  type="text" th:field="*{recorder.playerTwoMoves}"/></p>
-
-            <p>ai state: <input  type="text" th:field="*{ai.state}"/></p>
-            <p>ai difficulty: <input  type="text" th:field="*{ai.difficulty}"/></p>
-            <p>ai start poistion: <input  type="text" th:field="*{ai.startPosition}"/></p>
         </form>
 
 
@@ -73,6 +48,7 @@
             <p>Game id: <input id="game-id" type="text" th:field="*{id}" /></p>
 
             <p>playerOne name: <input id="playerOne-name"  type="text" th:field="*{playerOne.name}" /></p>
+            <p>playerOne sign: <input id="playerOne-sign"  type="text" th:field="*{playerOne.sign}" /></p>
             <p>playerOne map: <input id="playerOne-playerBoard-map"  type="text" th:field="*{playerOne.playerBoard.map}" /></p>
             <p>playerOne map width: <input id="playerOne-playerBoard-width"  type="text" th:field="*{playerOne.playerBoard.width}" /></p>
             <p>playerOne map heigth: <input id="playerOne-playerBoard-height"  type="text" th:field="*{playerOne.playerBoard.height}" /></p>
@@ -80,6 +56,7 @@
             <p>targetY: <input id="targetY"  type="text" th:field="*{playerOne.targetY}" /></p>
 
             <p>playerTwo name: <input id="playerTwo-name" type="text" th:field="*{playerTwo.name}" /></p>
+            <p>playerTwo sign: <input id="playerTwo-sign"  type="text" th:field="*{playerTwo.sign}" /></p>
             <p>playerTwo map: <input id="playerTwo-playerBoard-map" type="text" th:field="*{playerTwo.playerBoard.map}" /></p>
             <p>playerTwo map width: <input id="playerTwo-playerBoard-width" type="text" th:field="*{playerTwo.playerBoard.width}" /></p>
             <p>playerTwo map heigth: <input id="playerTwo-playerBoard-height" type="text" th:field="*{playerTwo.playerBoard.height}" /></p>
@@ -88,7 +65,8 @@
             <p>recorder: <input id="recorder-playerOneMoves" type="text" th:field="*{recorder.playerOneMoves}"/></p>
             <p>recorder: <input id="recorder-playerTwoMoves" type="text" th:field="*{recorder.playerTwoMoves}"/></p>
 
-            <p>ai status stack: <input id="ai-state" type="text" th:field="*{ai.state}"/></p>
+            <p>ai state: <input id="ai-state" type="text" th:field="*{ai.state}"/></p>
+            <p>ai strategy: <input id="ai-strategy" type="text" th:field="*{ai.strategy}"/></p>
             <p>ai difficulty: <input id="ai-difficulty" type="text" th:field="*{ai.difficulty}"/></p>
             <p>ai start poistion: <input id="ai-startPosition" type="text" th:field="*{ai.startPosition}"/></p>
 
@@ -96,8 +74,10 @@
 
             <!--memento-->
             <p>playerOne name: <input id="memento-playerOne-name" type="text" th:field="*{memento.playerOne.name}" /></p>
+            <p>playerOne sign: <input id="memento-playerOne-sign" type="text" th:field="*{memento.playerOne.sign}" /></p>
             <p>playerOne map: <input  id="memento-playerOne-playerBoard-map" type="text" th:field="*{memento.playerOne.playerBoard.map}" /></p>
 
+            <p>playerTwo sign: <input id="memento-playerTwo-sign" type="text" th:field="*{memento.playerTwo.sign}" /></p>
             <p>playerTwo map: <input id="memento-playerTwo-playerBoard-map" type="text" th:field="*{memento.playerTwo.playerBoard.map}" /></p>
 
             <p>recorder: <input id="memento-recorder-playerOneMoves" type="text" th:field="*{memento.recorder.playerOneMoves}"/></p>

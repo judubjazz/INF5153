@@ -6,7 +6,7 @@
 <head>
     <title>Commencé une partie</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/startUp.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
 </head>
 <body>
 <div layout:fragment="content">
@@ -17,13 +17,8 @@
         </p>
     </div>
 
-    <br/>
-    <div class="custom-select center" style="width:200px;">
-        <select id="difficulty" onchange="run()">
-            <option value="false" selected="selected">débutant</option>
-            <option value="true" >avancé</option>
-        </select>
-    </div>
+
+
     <div>
         <form action="#" th:action="@{/start}" th:object="${formController}" method="post">
             <p><input style="display: none" id="data" type="text" th:field="*{data}" /></p>
@@ -31,11 +26,18 @@
         </form>
     </div>
 
+
     <div class="center">
         <p><input id="hidden-button" class="button button3" onclick="start()" value="START" /></p>
         <a class="button button3" th:href="@{'/'}">EXIT</a>
     </div>
 
+    <div class="custom-select center">
+        <select id="difficulty">
+            <option value="false" selected="selected">easy</option>
+            <option value="true">hard</option>
+        </select>
+    </div>
 </div>
 
 <th:block layout:fragment="scripts">

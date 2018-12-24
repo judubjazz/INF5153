@@ -78,11 +78,13 @@ public class Routes{
         model.addAttribute("battleshipGame", game);
 
         if(game.playerOne.winner){
-            model.addAttribute("winner", "Vous avez gagné");
+            model.addAttribute("winner", "You Won");
             return "game/" + gameName + "/end-of-game";
-        }
-        if(game.playerTwo.winner){
-            model.addAttribute("winner", "Vous avez perdu");
+        }else if(game.playerTwo.winner){
+            model.addAttribute("winner", "You Lost");
+            return "game/" + gameName + "/end-of-game";
+        }else if(game.draw){
+            model.addAttribute("winner", "Draw");
             return "game/" + gameName + "/end-of-game";
         }
         return "game/" + gameName + "/play";

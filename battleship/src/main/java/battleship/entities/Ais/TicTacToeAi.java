@@ -1,37 +1,38 @@
 package battleship.entities.Ais;
 
-import battleship.entities.boards.TicTacToeBoard;
-import battleship.entities.games.Game;
+import battleship.entities.Ais.Strategy.*;
+import battleship.entities.Recorder;
+import battleship.entities.boards.Board;
 import battleship.entities.games.TicTacToeGame;
-import battleship.entities.ships.*;
-import battleship.middlewares.Validation;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 public class TicTacToeAi extends Ai {
-    public enum State {UP, DOWN, LEFT, RIGHT, START, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT}
+    public enum State {FIRST, SECOND, THIRD, FOURTH}
+    public enum Strategy {DEFEND_CORNERS, ATTACK, ATTACK_CORNERS, DEFEND_MIDDLE, DEFEND_DEFAULT}
+
     public boolean difficulty;
     public TicTacToeAi.State state;
-    public Map<String, Integer> startPosition;
+    public Strategy strategy;
 
-    public TicTacToeAi() {super();}
+    public TicTacToeAi() {
+        super();
+    }
 
     public TicTacToeAi(TicTacToeAi.State state, boolean difficulty, Map<String, Integer> startPosition) {
         super();
         this.state = state;
         this.difficulty = difficulty;
-        this.startPosition = startPosition;
     }
 
 
-    // TODO refactor this in two or three different functions
-    public static Map<String, Ship> generateFleet(TicTacToeBoard board) {
-        Map<String, Ship> fleet = new HashMap<>();
-        return fleet;
+    public static boolean targetHasBeenUsed(Map<String, Integer> target, Board b) {
+        int targetX = target.get("x");
+        int targetY = target.get("y");
+        return b.map[targetX][targetY] != 0;
     }
-
 
     public Map<String, Integer> targetRandomPosition(TicTacToeGame ticTacToeGame) {
         Random r = new Random();
@@ -40,117 +41,194 @@ public class TicTacToeAi extends Ai {
         int y = r.nextInt(ticTacToeGame.playerOne.playerBoard.height);
         map.put("x", x);
         map.put("y", y);
-        if (targetHasBeenUsed(map, ticTacToeGame)) targetRandomPosition(ticTacToeGame);
+        if (targetHasBeenUsed(map, ticTacToeGame.playerOne.playerBoard)) return targetRandomPosition(ticTacToeGame);
         return map;
     }
 
-    public Map<String, Integer> targetMinMaxPosition(TicTacToeGame ticTacToeGame) {
-        if (ticTacToeGame.recorder.playerTwoMoves.size() < 1) return targetRandomPosition(ticTacToeGame);
+    public static boolean opponentPlayedInCorners(Recorder r, int index) {
+        Map<String, Integer> target = r.playerOneMoves.get(index);
+        int x = target.get("x");
+        int y = target.get("y");
+        return x != 1 && y != 1;
+    }
 
-        Map<String, Integer> nextTarget = new HashMap<>();
-        Map<String, Integer> prevTarget = ticTacToeGame.recorder.playerTwoMoves.get(ticTacToeGame.recorder.playerTwoMoves.size() - 1);
-        int prevTargetX = prevTarget.get("x");
-        int prevTargetY = prevTarget.get("y");
-        int prevTargetedArea = prevTarget.get("hit");
+    private boolean opponentPlayedInMiddle(Recorder r, int index) {
+        Map<String, Integer> target = r.playerOneMoves.get(index);
+        int x = target.get("x");
+        int y = target.get("y");
+        return x == 1 && y == 1;
+    }
 
-        switch (this.state) {
-            case START:
-                if (prevTargetedArea == 0) {
-                    nextTarget = targetRandomPosition(ticTacToeGame);
-                } else {
-                    this.startPosition = new HashMap<>(prevTarget);
-                    this.state = TicTacToeAi.State.UP;
-                    nextTarget = new HashMap<>(this.startPosition);
-                    nextTarget.replace("y", ++prevTargetY);
-                }
-                break;
-            case UP:
-                if (prevTargetedArea == 0 || prevTargetedArea == -1) {
-                    this.state = TicTacToeAi.State.DOWN;
-                    nextTarget = new HashMap<>(this.startPosition);
-                    prevTargetY = nextTarget.get("y");
-                    nextTarget.replace("y", --prevTargetY);
-                } else {
-                    nextTarget = new HashMap<>(prevTarget);
-                    nextTarget.replace("y", ++prevTargetY);
-                }
-                break;
-            case DOWN:
-                if (prevTargetedArea == 0 || prevTargetedArea == -1) {
-                    this.state = TicTacToeAi.State.LEFT;
-                    nextTarget = new HashMap<>(this.startPosition);
-                    prevTargetX = nextTarget.get("x");
-                    nextTarget.replace("x", --prevTargetX);
-                } else {
-                    nextTarget = new HashMap<>(prevTarget);
-                    nextTarget.replace("y", --prevTargetY);
-                }
-                break;
-            case LEFT:
-                if (prevTargetedArea == 0 || prevTargetedArea == -1) {
-                    this.state = TicTacToeAi.State.RIGHT;
-                    nextTarget = new HashMap<>(this.startPosition);
-                    prevTargetX = nextTarget.get("x");
-                    nextTarget.replace("x", ++prevTargetX);
-                } else {
-                    nextTarget = new HashMap<>(prevTarget);
-                    nextTarget.replace("x", --prevTargetX);
-                }
-                break;
-            case RIGHT:
-                if (prevTargetedArea == 0 || prevTargetedArea == -1) {
-                    this.state = TicTacToeAi.State.START;
-                    nextTarget = targetRandomPosition(ticTacToeGame);
-                } else {
-                    nextTarget = new HashMap<>(prevTarget);
-                    nextTarget.replace("x", ++prevTargetX);
-                }
-                break;
+    private Map<String, Integer> resolveFirstCase(TicTacToeGame ticTacToeGame) {
+        Map<String, Integer> nextTarget;
+        StrategyController c = new FirstStrategy();
+
+        if (opponentPlayedInCorners(ticTacToeGame.recorder, 0)) {
+            nextTarget = c.defendCorners(null, null);
+            this.strategy = Strategy.DEFEND_CORNERS;
+        } else if (opponentPlayedInMiddle(ticTacToeGame.recorder, 0)) {
+            nextTarget = c.defendMiddle(null, null);
+            this.strategy = Strategy.DEFEND_MIDDLE;
+        } else {
+            nextTarget = c.attack(null, null);
+            this.strategy = Strategy.ATTACK;
         }
-        if (Validation.targetIsOutOfBound(nextTarget, ticTacToeGame.playerOne.playerBoard) || targetHasBeenUsed(nextTarget, ticTacToeGame)) {
-            switchToNextState();
-            // TODO when state is forced to switch to next state because of validation, it keeps in mind the last prevTarget and jump a state case (does not enter case else); add a condition so it is forced to do at least one iteration into the else case
-            return targetMinMaxPosition(ticTacToeGame);
+        return nextTarget;
+    }
+
+    private Map<String, Integer> resolveSecondCase(TicTacToeGame ticTacToeGame) {
+        Map<String, Integer> nextTarget = new HashMap<>();
+        StrategyController c = new SecondStrategy();
+
+        switch (this.strategy) {
+            case DEFEND_MIDDLE:
+                if (c.hasToDefend(ticTacToeGame.playerOne.playerBoard)) {
+                    nextTarget = c.defendMiddle(ticTacToeGame.recorder, ticTacToeGame.playerOne.playerBoard);
+                } else {
+                    nextTarget.put("x", 2);
+                    nextTarget.put("y", 0);
+                }
+                // opponent played middle on first move thus cpu will automaticly be attacking after second turn
+                this.strategy = Strategy.ATTACK;
+                break;
+            case DEFEND_CORNERS:
+                boolean opponentTargetedASafePosition = ((SecondStrategy) c).opponentTargetedASafePosition(ticTacToeGame.recorder);
+                // bottoms right positions are backed up by the cpu middle marks on first turn
+                if (opponentTargetedASafePosition) {
+                    nextTarget = ((SecondStrategy) c).defendCross(ticTacToeGame.recorder, ticTacToeGame.playerOne.playerBoard);
+                    this.strategy = Strategy.ATTACK_CORNERS;
+                } else {
+                    nextTarget = c.defendCorners(ticTacToeGame.recorder, ticTacToeGame.playerOne.playerBoard);
+                    this.strategy = Strategy.DEFEND_DEFAULT;
+                }
+                break;
+            case ATTACK:
+                if (opponentPlayedInMiddle(ticTacToeGame.recorder,1)) {
+                    nextTarget = c.defend(ticTacToeGame.recorder, ticTacToeGame.playerOne.playerBoard);
+                    this.strategy = Strategy.DEFEND_DEFAULT;
+                } else {
+                    nextTarget = c.attack(ticTacToeGame.recorder, ticTacToeGame.playerOne.playerBoard);
+                    this.strategy = Strategy.ATTACK;
+                }
+                break;
         }
         return nextTarget;
     }
 
 
-    private void switchToNextState(){
-        if(this.state.equals(TicTacToeAi.State.START)) this.state = TicTacToeAi.State.UP;
-        else if(this.state.equals(TicTacToeAi.State.UP)) this.state = TicTacToeAi.State.DOWN;
-        else if(this.state.equals(TicTacToeAi.State.DOWN)) this.state = TicTacToeAi.State.LEFT;
-        else if(this.state.equals(TicTacToeAi.State.LEFT)) this.state = TicTacToeAi.State.RIGHT;
-        else if(this.state.equals(TicTacToeAi.State.RIGHT)) this.state = TicTacToeAi.State.START;
-    }
+    private Map<String, Integer> resolveThirdCase(TicTacToeGame ticTacToeGame) {
+        StrategyController c = new ThirdStrategy();
+        Map<String, Integer> nextTarget = new HashMap<>();
 
-    private boolean targetHasBeenUsed(Map<String, Integer> target, Game ticTacToeGame) {
-        int targetX = target.get("x");
-        int targetY = target.get("y");
-        if(ticTacToeGame.recorder != null){
-            for (Map<String,Integer> t: ticTacToeGame.recorder.playerTwoMoves) {
-                int x = t.get("x");
-                int y = t.get("y");
-                if(targetX == x && targetY == y) return true;
-            }
+        switch(this.strategy){
+            case ATTACK:
+                nextTarget = c.attack(ticTacToeGame.recorder, ticTacToeGame.playerOne.playerBoard);
+                //cpu will win on this turn or will defend on next one
+                this.strategy = Strategy.DEFEND_DEFAULT;
+                // player one did defend thus player two needs to also defends after third turn
+                if (nextTarget.size() == 0) {
+                    nextTarget = c.defend(ticTacToeGame.recorder, ticTacToeGame.playerOne.playerBoard);
+                    this.strategy = Strategy.DEFEND_DEFAULT;
+                }
+                break;
+            case ATTACK_CORNERS:
+                nextTarget = c.attack(ticTacToeGame.recorder,ticTacToeGame.playerOne.playerBoard);
+                if(nextTarget.size() == 0){
+                    nextTarget = c.attackCorners(ticTacToeGame.recorder, ticTacToeGame.playerOne.playerBoard);
+                }
+                this.strategy = Strategy.ATTACK_CORNERS;
+                break;
+            case DEFEND_DEFAULT:
+                nextTarget = c.attack(ticTacToeGame.recorder, ticTacToeGame.playerOne.playerBoard);
+                //cpu will win on this turn or will defend on next one
+                this.strategy = Strategy.DEFEND_DEFAULT;
+                // player one did defend thus cpu can reattack
+                if (nextTarget.size() == 0) {
+                    nextTarget = ((ThirdStrategy) c).getCrossTarget(ticTacToeGame.recorder, ticTacToeGame.playerOne.playerBoard);
+                    this.strategy = Strategy.ATTACK;
+                }
+                break;
         }
-        return false;
+        return nextTarget;
     }
 
-    public TicTacToeAi.State stringToState(String s){
+    private Map<String, Integer> resolveFourthCase(TicTacToeGame ticTacToeGame) {
+        Map<String, Integer> nextTarget = new HashMap<>();
+        StrategyController c = new FourthStrategy();
+
+        switch(this.strategy){
+            case DEFEND_DEFAULT:
+                nextTarget = c.defend(ticTacToeGame.recorder, ticTacToeGame.playerOne.playerBoard);
+                if (nextTarget.size() == 0){
+                    nextTarget = c.attack(ticTacToeGame.recorder, ticTacToeGame.playerOne.playerBoard);
+                }
+                break;
+            case ATTACK:
+                nextTarget = c.attack(ticTacToeGame.recorder, ticTacToeGame.playerOne.playerBoard);
+                break;
+            case ATTACK_CORNERS:
+                nextTarget = c.attackCorners(ticTacToeGame.recorder, ticTacToeGame.playerOne.playerBoard);
+                if (nextTarget.size() == 0){
+                    nextTarget = c.defendCorners(ticTacToeGame.recorder, ticTacToeGame.playerOne.playerBoard);
+                }
+                break;
+        }
+        return nextTarget;
+    }
+
+
+    public Map<String, Integer> targetMinMaxPosition(TicTacToeGame ticTacToeGame) {
+        Map<String, Integer> nextTarget = new HashMap<>();
+        switch (this.state) {
+            case FIRST:
+                nextTarget = resolveFirstCase(ticTacToeGame);
+                this.state = State.SECOND;
+                break;
+            case SECOND:
+                nextTarget = resolveSecondCase(ticTacToeGame);
+                this.state = State.THIRD;
+                break;
+            case THIRD:
+                nextTarget = resolveThirdCase(ticTacToeGame);
+                this.state = State.FOURTH;
+                break;
+            case FOURTH:
+                nextTarget = resolveFourthCase(ticTacToeGame);
+                break;
+        }
+        return nextTarget;
+    }
+
+
+    public TicTacToeAi.State stringToState(String s) {
         switch (s) {
-            case "START":
-                return TicTacToeAi.State.START;
-            case "UP":
-                return TicTacToeAi.State.UP;
-            case "DOWN":
-                return TicTacToeAi.State.DOWN;
-            case "LEFT":
-                return TicTacToeAi.State.LEFT;
-            case "RIGHT":
-                return TicTacToeAi.State.RIGHT;
+            case "FIRST":
+                return State.FIRST;
+            case "SECOND":
+                return State.SECOND;
+            case "THIRD":
+                return State.THIRD;
+            case "FOURTH":
+                return State.FOURTH;
             default:
-                return TicTacToeAi.State.START;
+                return State.FIRST;
+        }
+    }
+
+    public TicTacToeAi.Strategy stringToStrategy(String s) {
+        switch (s) {
+            case "DEFEND_DEFAULT":
+                return Strategy.DEFEND_DEFAULT;
+            case "ATTACK":
+                return Strategy.ATTACK;
+            case "ATTACK_CORNERS":
+                return Strategy.ATTACK_CORNERS;
+            case "DEFEND_CORNERS":
+                return Strategy.DEFEND_CORNERS;
+            case "DEFEND_MIDDLE":
+                return Strategy.DEFEND_MIDDLE;
+            default:
+                return Strategy.DEFEND_DEFAULT;
         }
     }
 
@@ -183,5 +261,13 @@ public class TicTacToeAi extends Ai {
     @Override
     public void setStartPosition(Map<String, Integer> startPosition) {
         this.startPosition = startPosition;
+    }
+
+    public Strategy getStrategy() {
+        return strategy;
+    }
+
+    public void setStrategy(Strategy strategy) {
+        this.strategy = strategy;
     }
 }

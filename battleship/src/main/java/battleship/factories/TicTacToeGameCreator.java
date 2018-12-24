@@ -6,6 +6,8 @@ import battleship.entities.boards.TicTacToeBoard;
 import battleship.entities.games.TicTacToeGame;
 import battleship.entities.players.TicTacToePlayer;
 import battleship.middlewares.converters.StringTo2DArrayConverter;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
 import java.util.HashMap;
@@ -16,7 +18,6 @@ public class TicTacToeGameCreator implements GameFactory {
     @Override
     public TicTacToeGame createGame(JSONObject data) {
 
-        System.out.println(data);
         TicTacToeGame battleshipGame = new TicTacToeGame();
         TicTacToePlayer playerOne = new TicTacToePlayer();
         TicTacToePlayer playerTwo = new TicTacToePlayer();
@@ -53,6 +54,10 @@ public class TicTacToeGameCreator implements GameFactory {
                         TicTacToeAi.State state = ai.stringToState(stringState);
                         ai.state = state;
 
+                        String stringStrategy = aiData.getString("strategy");
+                        TicTacToeAi.Strategy strategy = ai.stringToStrategy(stringStrategy);
+                        ai.strategy = strategy;
+
                         String stringStartPosition = aiData.getString("startPosition");
                         Map<String, Integer> startPosition = new HashMap<>();
                         if(stringStartPosition.length() > 2){
@@ -71,8 +76,8 @@ public class TicTacToeGameCreator implements GameFactory {
                     break;
                 case "memento":
                     JSONObject memento = data.getJSONObject(gameKey);
-                    TicTacToeGame m = createGame(memento);
-                    battleshipGame.memento = m;
+//                    TicTacToeGame m = createGame(memento);
+//                    battleshipGame.memento = m;
             }
         }
 
@@ -102,7 +107,6 @@ public class TicTacToeGameCreator implements GameFactory {
                         Iterator<?> marksKeys = playerMarks.keys();
                         while (marksKeys.hasNext()) {
                             String key = (String) marksKeys.next();
-                            System.out.println(key);
                         }
                     }
                     break;
@@ -121,12 +125,46 @@ public class TicTacToeGameCreator implements GameFactory {
                     player.targetX = targetX;
                     player.targetY = targetY;
                     break;
+                case "sign":
+                    int sign = playerData.getInt("sign");;
+                    player.sign = sign;
+                    break;
             }
         }
     }
     
     @Override
-    public Recorder buildRecorderFromJSONObject(JSONObject data) {
-        return null;
+    public Recorder buildRecorderFromJSONObject(JSONObject recorderData) {
+        Recorder recorder = new Recorder();
+        try {
+            JSONArray p1recorder = recorderData.getJSONArray("playerOneMoves");
+            for (int i = 0; i < p1recorder.size(); i++) {
+                JSONObject item = p1recorder.getJSONObject(i);
+                Map<String, Integer> map = new HashMap<>();
+                int targetX = item.getInt("x");
+                int targetY = item.getInt("y");
+                map.put("x", targetX);
+                map.put("y", targetY);
+                recorder.playerOneMoves.add(map);
+            }
+
+            JSONArray p2recorder = recorderData.getJSONArray("playerTwoMoves");
+            for (int i = 0; i < p2recorder.size(); i++) {
+                JSONObject item = p2recorder.getJSONObject(i);
+                Map<String, Integer> map = new HashMap<>();
+                int targetX = item.getInt("x");
+                int targetY = item.getInt("y");
+                map.put("x", targetX);
+                map.put("y", targetY);
+                recorder.playerTwoMoves.add(map);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+        int index = recorderData.getInt("index");
+        recorder.index = index;
+
+        return recorder;
     }
 }

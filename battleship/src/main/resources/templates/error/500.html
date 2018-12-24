@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>404 Not Found</title>
+    <title>500 Internal server</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/error.css}"/>
 </head>
@@ -10,13 +10,13 @@
 
     <img th:src="@{/img/navy.jpg}">
     <br/><br/>
-    <p>Erreur de serveur</p>
+    <p>500 sorry try again later</p>
     <table>
         <tr>
-            <td><a class="button button3 size" th:href="@{'/'}">MENU PRINCIPAL</a></td>
+            <td><a class="button button3 size" th:href="@{'/'}">MENUL</a></td>
         </tr>
         <tr>
-            <td><a class="button button3 size" th:href="@{'/loadFiles'}">CHARGER UNE PARTIE</a></td>
+            <td><a class="button button3 size" th:href="@{'/loadFiles'}">LOAD</a></td>
         </tr>
     </table>
 

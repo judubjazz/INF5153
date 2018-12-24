@@ -4,19 +4,19 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{base}">
 <head>
-    <title>Sauvegarde</title>
+    <title>Save</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/save.css}"/>
 </head>
 <body>
 <div layout:fragment="content">
-	<p>La partie a été <span>Sauvegardée</span></p>
+	<p>Game has been succelly<span>Saved</span></p>
 	<br/>
 	<table>
 	  	<tr>
-	    	<td><a th:href="@{'/home'}">COMMENCER UNE PARTIE</a></td>
+	    	<td><a th:href="@{'/home'}">START</a></td>
 		</tr>
 		<tr>
-	    	<td><a th:href="@{'/loadFiles'}">CHARGER UNE PARTIE</a></td>
+	    	<td><a th:href="@{'/loadFiles'}">LOAD</a></td>
 		</tr>
 	</table>
 </div>

@@ -43,6 +43,15 @@ public class TicTacToeGame extends Game {
         this.ai = game.ai;
     }
 
+    public boolean isDraw(){
+        int [][] map = this.playerOne.playerBoard.map;
+        int count = 0;
+        for (int i = 0; i < 3; ++i)
+            for (int j = 0 ; j < 3; ++j)
+                if (map[i][j] == 0) ++count;
+        return count == 0;
+    }
+
     @Override
     public TicTacToePlayer getPlayerOne() {
         return playerOne;

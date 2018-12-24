@@ -34,20 +34,69 @@ public class TicTacToeGameController implements GameController<TicTacToeGame, Ti
         return false;
     }
 
+    private boolean winnerVerticaly(TicTacToePlayer actor, int x, int y) {
+        if(y == 0) {
+            if(actor.playerBoard.map[x][y+1] == actor.sign && actor.playerBoard.map[x][y+2] == actor.sign ) {
+                return true;
+            }
+        } else if (y ==1){
+            if(actor.playerBoard.map[x][y-1] == actor.sign && actor.playerBoard.map[x][y+1] == actor.sign ) {
+                return true;
+            }
+        } else if (y ==2){
+            if(actor.playerBoard.map[x][y-1] == actor.sign && actor.playerBoard.map[x][y - 2 ] == actor.sign ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean winnerHorizontaly(TicTacToePlayer actor, int x, int y) {
+        if(x == 0) {
+            if(actor.playerBoard.map[x + 1][y] == actor.sign && actor.playerBoard.map[x + 2][y] == actor.sign ) {
+                return true;
+            }
+        } else if (x ==1){
+            if(actor.playerBoard.map[x - 1][y] == actor.sign && actor.playerBoard.map[x+1][y] == actor.sign ) {
+                return true;
+            }
+        } else if (x ==2){
+            if(actor.playerBoard.map[x-1 ][y] == actor.sign && actor.playerBoard.map[x - 2 ][y] == actor.sign ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean winnerDiagonaly(TicTacToePlayer actor, int x, int y) {
+        if(x == 0 && y == 0) {
+            if(actor.playerBoard.map[x + 1][y+1] == actor.sign && actor.playerBoard.map[x + 2][y + 2] == actor.sign ) {
+                return true;
+            }
+        } else if (x == 2 && y == 0){
+            if(actor.playerBoard.map[x - 1][y+1] == actor.sign && actor.playerBoard.map[x-2][y+2] == actor.sign ) {
+                return true;
+            }
+        } else if (x == 0 && y == 2){
+            if(actor.playerBoard.map[x + 1 ][y -1 ] == actor.sign && actor.playerBoard.map[x + 2 ][y - 2] == actor.sign ) {
+                return true;
+            }
+        } else if (x==2 && y == 2){
+            if(actor.playerBoard.map[x -1  ][y -1 ] == actor.sign && actor.playerBoard.map[x -2 ][y - 2] == actor.sign ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean weHaveAWinner(TicTacToePlayer actor, Map<String,Integer> target){
-        // TODO only checks horizontals lines for testing
         int targetX = target.get("x");
         int targetY = target.get("y");
 
-        int targetX2 = targetX + 1;
-        int targetX3 = targetX + 2;
-
-
         try{
-            if(actor.playerBoard.map[targetX2][targetY] == actor.sign && actor.playerBoard.map[targetX3][targetY] == actor.sign ) {
+            if(winnerVerticaly(actor, targetX, targetY) || winnerHorizontaly(actor, targetX, targetY) || winnerDiagonaly(actor, targetX, targetY)){
                 return true;
             }
-
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -67,11 +116,8 @@ public class TicTacToeGameController implements GameController<TicTacToeGame, Ti
         }
 
         actor.playerBoard.map[targetX][targetY] = actor.sign;
-
-        actor.playerBoard.map = ennemy.playerBoard.map;
-
+        ennemy.playerBoard.map = actor.playerBoard.map;
         if(weHaveAWinner(actor,target)) actor.winner = true;
-
     }
 
     @Override
@@ -85,15 +131,17 @@ public class TicTacToeGameController implements GameController<TicTacToeGame, Ti
 
         playTurn(p1,p2,target,game.recorder);
 
-        // cpu counter attacks
-        if(game.ai.difficulty){
-            target = game.ai.targetMinMaxPosition(game);
+        if(!p1.winner && !game.isDraw()){
+            if(game.ai.difficulty){
+                target = game.ai.targetMinMaxPosition(game);
+            } else {
+                target = game.ai.targetRandomPosition(game);
+            }
+            // cpu counter attacks
+            playTurn(p2,p1,target,game.recorder);
         } else {
-            target = game.ai.targetRandomPosition(game);
+            game.draw = true;
         }
-
-        playTurn(p2,p1,target,game.recorder);
-
         return game;
     }
 
@@ -105,16 +153,15 @@ public class TicTacToeGameController implements GameController<TicTacToeGame, Ti
     @Override
     public Game start(JSONObject p1Settings) {
         // TODO this could be done by the game factory
-        JSONObject p1FleetJSON = p1Settings.getJSONObject("marks");
         TicTacToeBoard board = new TicTacToeBoard();
         Map<String,Integer> playerTargets = new HashMap<>();
         Map<String,Integer> cpuTargets = new HashMap<>();
 
-        TicTacToePlayer cpu = new TicTacToePlayer(cpuTargets, board, null, "playerTwo", 'O');
-        TicTacToePlayer player = new TicTacToePlayer(playerTargets, board, null, "playerOne", 'X');
+        TicTacToePlayer cpu = new TicTacToePlayer(cpuTargets, board, null, "playerTwo", -1);
+        TicTacToePlayer player = new TicTacToePlayer(playerTargets, board, null, "playerOne", 1);
         Recorder recorder = new Recorder(new ArrayList<>(), new ArrayList<>());
         boolean difficulty = p1Settings.getBoolean("difficulty");
-        TicTacToeAi ai = new TicTacToeAi(TicTacToeAi.State.START,difficulty, null);
+        TicTacToeAi ai = new TicTacToeAi(TicTacToeAi.State.FIRST,difficulty, null);
 
 //        int id = Db.getDb().getMaxID();
         // TODO add a id

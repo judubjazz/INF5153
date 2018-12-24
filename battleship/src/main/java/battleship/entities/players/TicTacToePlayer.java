@@ -14,7 +14,7 @@ public class TicTacToePlayer extends Player {
 
     public TicTacToePlayer(String name) {
         super(name);
-        this.playerBoard = new BattleshipBoard();
+        this.playerBoard = new TicTacToeBoard();
     }
 
 
