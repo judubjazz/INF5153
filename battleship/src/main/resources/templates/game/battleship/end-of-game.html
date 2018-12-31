@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Fin de la partie</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/won-lost.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
 </head>
 <body>
 
@@ -15,7 +15,7 @@
     <div>
         <form action="#" th:action="@{/restart}" th:object="${formController}" method="post">
             <p><input id="data" type="text" th:field="*{data}" /></p>
-            <p><input id="restart-form-submit" type="submit" value="REVISUALISER" /></p>
+            <p><input id="restart-form-submit" type="submit" value="REPLAY" /></p>
         </form>
     </div>
 

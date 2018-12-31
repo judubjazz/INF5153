@@ -35,9 +35,11 @@
 
 
         <!--save-->
-        <form class="torpedo-form" id='form-save' action="#" th:action="@{/save}" th:object="${battleshipGame}" method="post">
+        <form class="torpedo-form" id='form-save' action="#" th:action="@{/save}" th:object="${formController}" method="post">
             <div>
-                <input class="button button3" id="savegame-form-input" type="submit" value="SAVE" />
+                <p><input style="display: none" id="save-data" type="text" th:field="*{data}" /></p>
+                <p><input id="submit-save-button" type="submit" value="START" /></p>
+                <input id="hidden-button" class="button button3" onclick="postSave()" value="SAVE" />
                 <a class="button button3" th:href="@{'/'}">EXIT</a>
             </div>
         </form>

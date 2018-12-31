@@ -18,7 +18,7 @@ public class TicTacToeGameCreator implements GameFactory {
     @Override
     public TicTacToeGame createGame(JSONObject data) {
 
-        TicTacToeGame battleshipGame = new TicTacToeGame();
+        TicTacToeGame ticTacToeGame = new TicTacToeGame();
         TicTacToePlayer playerOne = new TicTacToePlayer();
         TicTacToePlayer playerTwo = new TicTacToePlayer();
         TicTacToeAi ai = new TicTacToeAi();
@@ -29,11 +29,11 @@ public class TicTacToeGameCreator implements GameFactory {
             switch (gameKey) {
                 case "id":
                     int gameID = data.getInt(gameKey);
-                    battleshipGame.id = gameID;
+                    ticTacToeGame.id = gameID;
                     break;
                 case "name":
                     String gameName = data.getString(gameKey);
-                    battleshipGame.name = gameName;
+                    ticTacToeGame.name = gameName;
                     break;
                 case "playerOne":
                     JSONObject playerOneData = data.getJSONObject(gameKey);
@@ -72,7 +72,7 @@ public class TicTacToeGameCreator implements GameFactory {
                 case "recorder":
                     JSONObject recorderData = data.getJSONObject(gameKey);
                     Recorder recorder = buildRecorderFromJSONObject(recorderData);
-                    battleshipGame.recorder = recorder;
+                    ticTacToeGame.recorder = recorder;
                     break;
                 case "memento":
                     JSONObject memento = data.getJSONObject(gameKey);
@@ -81,14 +81,14 @@ public class TicTacToeGameCreator implements GameFactory {
             }
         }
 
-        battleshipGame.setPlayerOne(playerOne);
-        battleshipGame.setPlayerTwo(playerTwo);
-        battleshipGame.playerOne.winner = battleshipGame.playerTwo.winner = false;
+        ticTacToeGame.setPlayerOne(playerOne);
+        ticTacToeGame.setPlayerTwo(playerTwo);
+        ticTacToeGame.playerOne.winner = ticTacToeGame.playerTwo.winner = false;
         playerOne.ennemyBoard= playerTwo.playerBoard;
         playerTwo.ennemyBoard = playerOne.playerBoard;
-        battleshipGame.ai = ai;
+        ticTacToeGame.ai = ai;
 
-        return battleshipGame;
+        return ticTacToeGame;
     }
 
 

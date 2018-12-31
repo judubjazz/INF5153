@@ -2,6 +2,7 @@ package db;
 
 import battleship.entities.games.TicTacToeGame;
 import com.mongodb.*;
+import battleship.middlewares.converters.toStringConverters;
 
 public class MongoDb extends Db<TicTacToeGame> {
     static private MongoDb db= null;
@@ -32,14 +33,36 @@ public class MongoDb extends Db<TicTacToeGame> {
         return getMongoDB("inf5153").getCollection(name);
     }
 
-    public void save(TicTacToeGame battleshipGame) {
+    public void save(TicTacToeGame ticTacToeGame) {
         DBCollection collection = getCollection("games");
-        DBObject game = new BasicDBObject("_id", "jo")
-                .append("name", "Jo Bloggs")
-                .append("address", new BasicDBObject("street", "123 Fake St")
-                        .append("city", "Faketon")
-                        .append("state", "MA")
-                        .append("zip", 12345));
+        String id = String.valueOf(ticTacToeGame.id);
+        String map1 = toStringConverters.mapToString(ticTacToeGame.playerOne.playerBoard.map);
+        String map2 = toStringConverters.mapToString(ticTacToeGame.playerTwo.playerBoard.map);
+        String playerOneMoves = ticTacToeGame.recorder.playerOneMoves.toString();
+        String playerTwoMoves = ticTacToeGame.recorder.playerTwoMoves.toString();
+        String state = String.valueOf(ticTacToeGame.ai.state);
+        String strategy = String.valueOf(ticTacToeGame.ai.strategy);
+
+        BasicDBObject playerOne = new BasicDBObject("name", "playerOne")
+                .append("id", 1)
+                .append("map", map1)
+                .append("sign", 1);
+        BasicDBObject playerTwo = new BasicDBObject("name", "playerTwo")
+                .append("id", 2)
+                .append("map", map2)
+                .append("sign", -1);
+        BasicDBObject ai = new BasicDBObject("state", state)
+                .append("strategy", strategy)
+                .append("difficulty", ticTacToeGame.ai.difficulty);
+        BasicDBObject recorder = new BasicDBObject("playerOneMoves", playerOneMoves)
+                .append("playerTwoMoves", playerTwoMoves)
+                .append("index", ticTacToeGame.recorder.index);
+        DBObject game = new BasicDBObject("_id", id)
+                .append("name", ticTacToeGame.name)
+                .append("playerOne", playerOne)
+                .append("playerTwo", playerTwo)
+                .append("ai", ai)
+                .append("recorder", recorder);
         collection.insert(game);
 
     }

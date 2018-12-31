@@ -26,6 +26,7 @@ public class TicTacToeGameController implements GameController<TicTacToeGame, Ti
 
     @Override
     public Game save(TicTacToeGame game) {
+        Db.getDb(game.name).save(game);
         return null;
     }
 

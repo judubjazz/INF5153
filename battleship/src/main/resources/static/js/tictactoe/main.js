@@ -129,6 +129,13 @@ const postRestart = () =>{
   $("#restart-form-submit").click();
 };
 
+const postSave = () =>{
+  setData();
+  const json = JSON.stringify(game);
+  console.log(json);
+  $("#save-data").val(json);
+  $("#submit-save-button").click();
+};
 
 const setData = () => {
   const players = [P1, P2];
